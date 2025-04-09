@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="28"
+   height="28"
+   id="svg5129"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   version="1.0"
+   inkscape:export-filename="D:\Vero\Develop\workspaces\ePims_BioProj\eP-Back\src\main\cea\edyp\epims\transfer\gui\images\refresh_full.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   sodipodi:docbase="D:\Vero\Develop\workspaces\ePims_BioProj\eP-Back\resources\main\icones"
+   sodipodi:docname="refresh_full.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs5131" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.098901"
+     inkscape:cx="22.045419"
+     inkscape:cy="12.029796"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     width="28px"
+     height="28px"
+     inkscape:window-width="748"
+     inkscape:window-height="579"
+     inkscape:window-x="400"
+     inkscape:window-y="129"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata5134">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <image
+       y="0.090099014"
+       x="4"
+       id="image2210"
+       height="21.464466"
+       width="23.434008"
+       sodipodi:absref="Z:\Documents\images\icone\refresh.gif"
+       xlink:href="Z:\Documents\images\icone\refresh.gif"
+       inkscape:export-filename="D:\Vero\Data\refresh_list.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.66084462;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 0.33042231,8.2580909 L 2.3689801,5.2419343 L 4.4075379,8.6695777 L 6.4460956,2.6712017 L 8.4846536,8.6695777 L 12.865785,3.8463699 L 14.960723,6.3271886 L 16.278488,5.6464095"
+       id="path2171"
+       sodipodi:nodetypes="cccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="10.088734"
+       y="27.400734"
+       id="text6679"><tspan
+         sodipodi:role="line"
+         id="tspan6681"
+         x="10.088734"
+         y="27.400734">Full</tspan></text>
+  </g>
+</svg>

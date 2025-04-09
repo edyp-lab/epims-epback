@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<instruments>
+  <instrument>
+    <label>Exploris2</label>
+    <name>Xpl1</name>
+    <src>PATH_TO_INSTRUM_DATA</src>
+    <format>LTQ Thermo</format>
+    <removeFiles>false</removeFiles>
+    <transfer_mode>0</transfer_mode>
+  </instrument>
+
+  <instrument>
+    <label>Nems</label>
+    <name>Nems</name>
+    <src>PATH_TO_INSTRUM_DATA</src>
+    <format>NEMS</format>
+    <removeFiles>false</removeFiles>
+    <transfer_mode>0</transfer_mode>
+  </instrument>
+
+</instruments>

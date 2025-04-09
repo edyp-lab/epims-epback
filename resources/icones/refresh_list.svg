@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="28"
+   height="28"
+   id="svg5129"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   version="1.0"
+   inkscape:export-filename="D:\Vero\Develop\workspaces\ePims_BioProj\eP-Back\src\main\cea\edyp\epims\transfer\gui\images\refresh_list.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   sodipodi:docbase="D:\Vero\Develop\workspaces\ePims_BioProj\eP-Back\resources\main\icones"
+   sodipodi:docname="refresh_list.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs5131" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.098901"
+     inkscape:cx="22.80479"
+     inkscape:cy="12.029796"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     width="28px"
+     height="28px"
+     inkscape:window-width="748"
+     inkscape:window-height="579"
+     inkscape:window-x="192"
+     inkscape:window-y="153" />
+  <metadata
+     id="metadata5134">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <rect
+       style="opacity:1;fill:#c8b7b7;fill-opacity:1;stroke:#ababab;stroke-width:0.40000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2212"
+       width="20.708128"
+       height="3.0304577"
+       x="1.0233943"
+       y="2.1473663"
+       inkscape:export-filename="D:\Vero\Data\refresh_list.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       y="5.0109372"
+       x="1.0233943"
+       height="3.0304577"
+       width="20.708128"
+       id="rect4154"
+       style="opacity:1;fill:#c8b7b7;fill-opacity:1;stroke:#ababab;stroke-width:0.40000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="D:\Vero\Data\refresh_list.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       style="opacity:1;fill:#c8b7b7;fill-opacity:1;stroke:#ababab;stroke-width:0.40000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4156"
+       width="20.708128"
+       height="3.0304577"
+       x="1.0233943"
+       y="8.1045351"
+       inkscape:export-filename="D:\Vero\Data\refresh_list.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       y="11.2"
+       x="1.0233943"
+       height="3.0304577"
+       width="20.708128"
+       id="rect4158"
+       style="opacity:1;fill:#c8b7b7;fill-opacity:1;stroke:#ababab;stroke-width:0.40000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="D:\Vero\Data\refresh_list.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       id="path5585"
+       d="M 1.6242452,12.812884 L 3.9518082,12.121706 L 5.4140532,12.812884 L 8.3616812,11.646522 L 9.2038612,12.726486 L 12.572578,12.208103 L 15.099116,12.726486 L 18.467835,12.121706 L 18.046745,12.121706"
+       style="fill:none;fill-rule:evenodd;stroke:#636363;stroke-width:0.37423286px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#636363;stroke-width:0.37423286px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 1.6242452,9.8128836 L 3.9518082,9.1217061 L 5.4140532,9.8128836 L 8.3616812,8.646522 L 9.2038612,9.7264856 L 12.572578,9.2081032 L 15.099116,9.7264856 L 18.467835,9.1217061 L 18.046745,9.1217061"
+       id="path5583" />
+    <image
+       y="4.8602872"
+       x="4.9659905"
+       id="image2210"
+       height="21.464466"
+       width="23.434008"
+       sodipodi:absref="Z:\Documents\images\icone\refresh.gif"
+       xlink:href="Z:\Documents\images\icone\refresh.gif"
+       inkscape:export-filename="D:\Vero\Data\refresh_list.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#636363;stroke-width:0.37423286px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 1.9692933,3.948032 L 4.2968563,3.256855 L 5.7591013,3.948032 L 8.7067293,2.7816709 L 9.5489093,3.8616349 L 12.917627,3.3432521 L 15.444165,3.8616349 L 18.812884,3.256855 L 18.391794,3.256855"
+       id="path5579" />
+    <path
+       id="path5581"
+       d="M 1.7143442,6.8128836 L 4.0419072,6.1217061 L 5.5041522,6.8128836 L 8.4517802,5.646522 L 9.2939602,6.7264856 L 12.662677,6.2081032 L 15.189215,6.7264856 L 18.557934,6.1217061 L 18.136844,6.1217061"
+       style="fill:none;fill-rule:evenodd;stroke:#636363;stroke-width:0.37423286px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>

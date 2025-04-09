@@ -1,0 +1,38 @@
+<configuration>
+ <contextName>ePBack Application</contextName>
+<!--  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--    &lt;!&ndash; encoders are assigned the type-->
+<!--         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default &ndash;&gt;-->
+<!--    <encoder>-->
+<!--       <pattern>%-5level: [%thread] +%-4relative ms %date{dd MMM - HH:mm:ss} %logger{0} - %msg%n</pattern>-->
+<!--    </encoder>-->
+<!--  </appender>-->
+
+ <appender name="RollingfileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+   <append>true</append>
+   <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+       <fileNamePattern>ePBack.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+       <maxFileSize>500MB</maxFileSize>
+   </rollingPolicy>
+
+   <encoder>
+     <pattern>%-5level: %date{dd MMM - HH:mm:ss} [%thread] %logger{0} - %msg%n</pattern>
+   </encoder>
+  </appender>
+
+    <appender name="Cappender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-5level: %date{dd/MM/yyyy-HH:mm:ss} [%thread] - %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+  <logger name="cea.edyp.epims" level="DEBUG">
+  </logger>
+
+  <root level="info">
+<!--    <appender-ref ref="STDOUT" />-->
+    <appender-ref ref="Cappender" />
+    <appender-ref ref="RollingfileAppender" />
+  </root>
+  
+</configuration>

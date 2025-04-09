@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<backpims>
+   <dataformats>
+		<dataformat>
+			<name>QTOF Waters</name>
+			<class>cea.edyp.epims.transfer.dataformat.waters.MLFormat</class>
+		</dataformat>
+		<dataformat>
+			<name>LTQ Thermo</name>
+			<class>cea.edyp.epims.transfer.dataformat.thermo.LTQFormat</class>
+		</dataformat>
+		<dataformat>
+			<name>QTrap Applied</name>
+			<class>cea.edyp.epims.transfer.dataformat.applied.QTrapFormat</class>
+		</dataformat>		 
+		<dataformat>
+			<name>Wiff Scan Applied</name>
+			<class>cea.edyp.epims.transfer.dataformat.applied.WiffScanFormat</class>
+		</dataformat>
+		<dataformat>
+			<name>Maldi 4800 Applied</name>
+			<class>cea.edyp.epims.transfer.dataformat.applied.Maldi4800Format</class>
+		</dataformat>
+		<dataformat>
+			<name>UltraFlex Bruker</name>
+			<class>cea.edyp.epims.transfer.dataformat.bruker.UltraFlexFormat</class>
+		</dataformat>
+	   <dataformat>
+		   <name>NEMS</name>
+		   <class>cea.edyp.epims.transfer.dataformat.nems.NemsFormat</class>
+	   </dataformat>
+	   <dataformat>
+		   <name>timsTOF Bruker</name>
+		   <class>cea.edyp.epims.transfer.dataformat.bruker.TimsTOFFormat</class>
+	   </dataformat>
+	</dataformats>
+</backpims>

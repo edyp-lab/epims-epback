@@ -1,0 +1,45 @@
+$$ Version: 01.00
+$$ Acquired Name: UF0856
+$$ Acquired Date: 20-Jan-2005
+$$ Acquired Time: 03:49:29
+$$ Job Code: 20050119
+$$ Task Code: BIOINFO
+$$ User Name: adrait
+$$ Instrument: UF196
+$$ Conditions: 
+$$ Laboratory Name: 
+$$ Sample Description: Myosine 205 Exclude
+$$ Solvent Delay: 0.0000
+$$ Submitter: brugiere
+$$ SampleID: 
+$$ Bottle Number: 1:2,C
+$$ Plate Desc: 
+$$ Cal MS1 Static: 0.000000000000000e0,T0
+$$ Cal MS2 Static: 0.000000000000000e0,T0
+$$ Associated Datafile: 
+$$ Cal MS1 Static Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS1 Dynamic Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS1 Fast Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS2 Static Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS2 Dynamic Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS2 Fast Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal Time: 14:46
+$$ Cal Date: 01/18/05
+$$ Analog Channel 1 Offset: 0.000
+$$ Analog Channel 2 Offset: 0.000
+$$ Analog Channel 3 Offset: 0.000
+$$ Analog Channel 4 Offset: 0.000
+$$ Mux Stream: 0
+$$ Cal Temperature: 0.0000000
+$$ Cal Function 1: -4.281852625747875e-2,1.001561313217511e0,-2.187025534133352e-5,1.379146142448268e-6,-3.554994527758293e-8,3.295651143220141e-10,T1
+$$ Cal Function 2: -4.281852625747875e-2,1.001561313217511e0,-2.187025534133352e-5,1.379146142448268e-6,-3.554994527758293e-8,3.295651143220141e-10,T1
+$$ Cal Function 3: -4.281852625747875e-2,1.001561313217511e0,-2.187025534133352e-5,1.379146142448268e-6,-3.554994527758293e-8,3.295651143220141e-10,T1
+$$ Cal Function 4: -4.281852625747875e-2,1.001561313217511e0,-2.187025534133352e-5,1.379146142448268e-6,-3.554994527758293e-8,3.295651143220141e-10,T1
+$$ Cal Function 5: -4.281852625747875e-2,1.001561313217511e0,-2.187025534133352e-5,1.379146142448268e-6,-3.554994527758293e-8,3.295651143220141e-10,T1
+$$ Cal Function 6: -4.281852625747875e-2,1.001561313217511e0,-2.187025534133352e-5,1.379146142448268e-6,-3.554994527758293e-8,3.295651143220141e-10,T1
+$$ Cal StdDev Function 1: 0.000000000000000e0
+$$ Cal StdDev Function 2: 0.000000000000000e0
+$$ Cal StdDev Function 3: 0.000000000000000e0
+$$ Cal StdDev Function 4: 0.000000000000000e0
+$$ Cal StdDev Function 5: 0.000000000000000e0
+$$ Cal StdDev Function 6: 0.000000000000000e0

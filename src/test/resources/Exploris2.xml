@@ -1,0 +1,18 @@
+<map>
+  <entry>
+    <string>C:\Temp\Vero\epims_instrum_data\hf1\HF1_023192.raw</string>
+    <list>
+      <cea.edyp.epims.transfer.dataformat.thermo.LTQAnalysis>
+        <analysisFile>C:\Temp\Vero\epims_instrum_data\hf1\HF1_023192.raw</analysisFile>
+        <destinationPath>C:\Temp\Vero\pims_root\repository\b\ProFI\WP4\130711TMO\samples\data\RAW</destinationPath>
+        <analyseType>RESEARCH</analyseType>
+        <sample>130711TMO_HELA_200</sample>
+        <description>NCS4 aurora 25 cm PVP0084 IO2575027834  + old preco + grounding tube viper inv cap-terre 1.7kv</description>
+        <user>hesse</user>
+        <acqDate>2024-03-07 01:28:06.604 UTC</acqDate>
+        <duration>0.0</duration>
+        <status>0</status>
+      </cea.edyp.epims.transfer.dataformat.thermo.LTQAnalysis>
+    </list>
+  </entry>
+</map>

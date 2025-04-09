@@ -1,0 +1,76 @@
+Parameters for C:\MassLynx\Qtof\tuneexp.exp
+ 
+Temperature Correction Is Disabled
+TDC Gain Control	0.0
+TDC Amp Edge Control	0.0
+Using 4 GHz TDC	YES
+Using TTP 4 GHz TDC	YES
+ 
+Instrument Parameters - Function 1:
+Polarity	ES+
+Calibration	Dynamic 2
+Capillary	3.00	3.00
+Cone	60	94
+RF Lens1 Energy	0.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (°C)	80	79
+Desolvation Temp (°C)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	32.1
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	65.0	-62.8
+Pre-filter	5.0	26.7
+Transport	6.0	-5.8
+Aperture3	7.0	-7.6
+Acceleration	200	-200
+Focus	0	0
+Tube Lens	135	-135
+Offset1	-2.6	-62.5
+Offset2	0.0	-65.3
+Pusher	962	888
+TOF (kV)	9.10	-9.18
+Reflectron	35.00	2.06
+Pusher Cycle Time (µs)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-549
+MCP	2100	2155
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1810.0600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	100.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	1.97e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	9.11e-7
+ 
+ 
+Function Parameters - Function 1 - TOF MSMS FUNCTION
+Set Mass				785.7
+Start Mass				50.0
+End Mass				2000.0
+Start Time (mins)			0.0
+End Time (mins)				60.0
+Data Format				Continuum
+Ion Mode				ES Mode
+Polarity				Positive
+Instrument Parameter Filename		D:\UF196oct2004.PRO\ACQUDB\27102004.IPR
+Scans To Sum				1000000
+Scan Time (sec)				2.4
+Interscan Time (sec)			0.1
+Use Tune Page Collision Energy		YES
+Collision Energy (eV)			30.0
+Use Tune Page Cone Voltage		YES
+Cone Voltage (V)			35.0
+ 

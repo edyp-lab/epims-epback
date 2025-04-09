@@ -1,0 +1,1 @@
+.\jdk\bin\java -Xms512m -Xmx1G -Djava.library.path="./lib" -jar eP-Back-@version@.jar

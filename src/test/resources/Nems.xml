@@ -1,0 +1,19 @@
+<map>
+  <entry>
+    <string>C:\Temp\Vero\epims_instrum_data\NEMS\Data_2023\03-08-2021</string>
+    <list>
+      <cea.edyp.epims.transfer.dataformat.nems.NemsAnalysis>
+        <analysisDirectoryFile>C:\Temp\Vero\epims_instrum_data\NEMS\Data_2023\03-08-2021</analysisDirectoryFile>
+        <status>-1</status>
+        <analyseType>RESEARCH</analyseType>
+        <sample>MATV_AB</sample>
+        <name>MATV_AB_03-08-2021</name>
+        <destinationPath>C:\Temp\Vero\pims_root\repository\b\NEMS\VIROPHAGE\VIRO-CSCL\samples\data\RAW</destinationPath>
+        <duration>0.0</duration>
+        <acqDate>2021-08-02 22:00:00.0 UTC</acqDate>
+        <operator>masselon</operator>
+        <description>SAMPLE:MATV_AB, FOLDER:TOTOT_DE45D_03082021</description>
+      </cea.edyp.epims.transfer.dataformat.nems.NemsAnalysis>
+    </list>
+  </entry>
+</map>

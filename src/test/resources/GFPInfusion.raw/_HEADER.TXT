@@ -1,0 +1,35 @@
+$$ Version: 01.00
+$$ Acquired Name: GFP281004MSMS2
+$$ Acquired Date: 28-Oct-2004
+$$ Acquired Time: 14:48:19
+$$ Job Code: 
+$$ Task Code: 
+$$ User Name: 
+$$ Instrument: QTOF
+$$ Conditions: 
+$$ Laboratory Name: 
+$$ Sample Description: 
+$$ Solvent Delay: 0.0000
+$$ Submitter: 
+$$ SampleID: 
+$$ Bottle Number: 
+$$ Plate Desc: 
+$$ Cal MS1 Static: 0.000000000000000e0,T0
+$$ Cal MS2 Static: 0.000000000000000e0,T0
+$$ Associated Datafile: 
+$$ Cal MS1 Static Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS1 Dynamic Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS1 Fast Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS2 Static Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS2 Dynamic Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal MS2 Fast Params: 0,0,0.00,0.00,0.0,0.0,0.0,,
+$$ Cal Time: 09:25
+$$ Cal Date: 08/03/99
+$$ Analog Channel 1 Offset: 0.000
+$$ Analog Channel 2 Offset: 0.000
+$$ Analog Channel 3 Offset: 0.000
+$$ Analog Channel 4 Offset: 0.000
+$$ Mux Stream: 0
+$$ Cal Temperature: 0.0000000
+$$ Cal Function 1: 0.000000000000000e0,1.000000000000000e0,T1
+$$ Cal StdDev Function 1: 0.000000000000000e0

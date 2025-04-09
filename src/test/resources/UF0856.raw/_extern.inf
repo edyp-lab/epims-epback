@@ -1,0 +1,467 @@
+Parameters for D:\UF196janv05.PRO\ACQUDB\(5-8)60minExclud855.EXP
+ 
+Temperature Correction Is Disabled
+TDC Gain Control	0.0
+TDC Amp Edge Control	0.0
+Using 4 GHz TDC	YES
+Using TTP 4 GHz TDC	YES
+ 
+Instrument Parameters - Function 1:
+Polarity	ES+
+Calibration	Dynamic 1
+Capillary	3.50	3.49
+Cone	60	112
+RF Lens1 Energy	40.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (캜)	80	79
+Desolvation Temp (캜)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	10.4
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	70.0	-67.8
+Pre-filter	5.0	4.8
+Transport	6.0	-6.7
+Aperture3	7.0	-7.6
+Acceleration	200	-200
+Focus	0	-1
+Tube Lens	140	-140
+Offset1	-2.5	-67.5
+Offset2	0.0	-70.3
+Pusher	962	889
+TOF (kV)	9.10	-9.19
+Reflectron	35.00	2.06
+Pusher Cycle Time (탎)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-547
+MCP	2300	2357
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1809.8600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	80.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	2.45e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	5.23e-7
+ 
+ 
+Function Parameters - Function 1 - TOF SURVEY FUNCTION
+[ACQUISITION]
+Survey Start Time				0.0
+Survey End Mass					60.0
+Survey Ion Mode					ES Mode
+Survey Polarity					Positive
+[MS SURVEY]
+Survey Start Mass				400.0
+Survey End Mass					1600.0
+Intensity Threshold				15.0
+Survey Scan Time				1.0
+Survey Interscan Time				0.1
+Survey Data Format				Continuum
+Survey Use Tune Page CV				YES
+Survey Cone Voltage (V)				35.0
+[MS/MS]
+MSMS Start Mass					50.0
+MSMS End Mass					2000.0
+Number of components				5
+MSMS to MS Switch Criteria			Intensity Falling Below Threshold
+Switchback threshold (counts/second)		10.0
+Use MSMS to MS Switch After Time		YES
+MSMS Switch After Time (sec)			8.0
+MSMS Scan Time (sec)				1.0
+MSMS Interscan Time (sec)			0.1
+MSMS Data Format				Continuum
+Use Tune Page Cone Voltage			YES
+MSMS Cone Voltage (V)				35.0
+Use MS/MS ipr File				NO
+MSMS Instrument Parameter Filename		
+[PEAK DETECTION]
+Peak Detection Window				1.0
+Use Include By Charge State			YES
+Charge State(s)					2,3,4
+Number Of Include Components			100
+Charge State Tolerance Window			0.2
+Charge State Extraction Window			2.0
+Discard survey data				NO
+[COLLISION ENERGY]
+Use Charge State Recognition			YES
+Maximum Charge State				4
+Charge State 1 Filename				C:\MassLynx\Default.pro\Acqudb\Collision_CS_1_CE.txt
+Charge State 2 Filename				C:\MassLynx\Default.pro\Acqudb\Collision_CS_1_CE.txt
+Charge State 3 Filename				C:\MassLynx\Default.pro\Acqudb\Collision_CS_2_CE.txt
+Charge State 4 Filename				C:\MassLynx\Default.pro\Acqudb\Collision_CS_3_CE.txt
+Charge State 5 Filename				C:\MassLynx\Default.pro\Acqudb\Default_CS_4_CE.txt
+Charge State 6 Filename				
+CS Recognition Components			60.0
+CS Recognition Tolerance Window			3.0
+CS Recognition Extraction Window		2.0
+[INCLUDE]
+Precursor Selection				Everything
+[EXCLUDE]
+Detected Precursor Inclusion			Using Real Time Exclusion
+Detected Precursor Inclusion			Include After Time
+Include After Time (s)				180.0
+Use Exclude Masses List				NO
+Exclude Mass Range				
+Use Exclude File Masses				YES
+Exclude Mass Filename				D:\UF196dec2004.PRO\Data\UF0855.raw\_auto.txt
+Exclude Window +/- (mDa)			550.0
+Exclude Retention Time Window			90.0
+[ADDUCTS]
+Use Adduct File Masses				NO
+Adduct Filename					
+[VARIABLE FLOW]
+Use Variable Flow				NO
+Port Number					1.0
+ 
+Instrument Parameters - Function 2:
+Polarity	ES+
+Calibration	Dynamic 2
+Capillary	3.50	3.49
+Cone	60	112
+RF Lens1 Energy	40.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (캜)	80	79
+Desolvation Temp (캜)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	10.4
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	70.0	-67.8
+Pre-filter	5.0	4.8
+Transport	6.0	-6.7
+Aperture3	7.0	-7.3
+Acceleration	200	-200
+Focus	0	0
+Tube Lens	140	-139
+Offset1	-2.5	-67.5
+Offset2	0.0	-70.0
+Pusher	962	895
+TOF (kV)	9.10	-9.17
+Reflectron	35.00	2.06
+Pusher Cycle Time (탎)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-547
+MCP	2300	2352
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1809.8600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	80.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	2.45e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	5.23e-7
+ 
+ 
+Function Parameters - Function 2 - TOF SURVEY FUNCTION
+Set Mass				0.0
+Start Mass				50.0
+End Mass				2000.0
+Start Time (mins)			0.0
+End Time (mins)				60.0
+Data Format				Continuum
+Ion Mode				ES Mode
+Polarity				Positive
+Instrument Parameter Filename		D:\UF196janv05.PRO\ACQUDB\20050118.IPR
+Scans To Sum				16960
+Scan Time (sec)				1.0
+Interscan Time (sec)			0.1
+Use Tune Page Collision Energy		YES
+Collision Energy (eV)			30.0
+Use Tune Page Cone Voltage		YES
+Cone Voltage (V)			35.0
+ 
+Instrument Parameters - Function 3:
+Polarity	ES+
+Calibration	Dynamic 2
+Capillary	3.50	3.49
+Cone	60	112
+RF Lens1 Energy	40.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (캜)	80	79
+Desolvation Temp (캜)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	10.4
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	70.0	-67.8
+Pre-filter	5.0	4.8
+Transport	6.0	-6.7
+Aperture3	7.0	-7.3
+Acceleration	200	-200
+Focus	0	0
+Tube Lens	140	-139
+Offset1	-2.5	-67.5
+Offset2	0.0	-70.0
+Pusher	962	895
+TOF (kV)	9.10	-9.17
+Reflectron	35.00	2.06
+Pusher Cycle Time (탎)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-547
+MCP	2300	2352
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1809.8600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	80.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	2.45e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	5.23e-7
+ 
+ 
+Function Parameters - Function 3 - TOF SURVEY FUNCTION
+Set Mass				0.0
+Start Mass				50.0
+End Mass				2000.0
+Start Time (mins)			0.0
+End Time (mins)				60.0
+Data Format				Continuum
+Ion Mode				ES Mode
+Polarity				Positive
+Instrument Parameter Filename		D:\UF196janv05.PRO\ACQUDB\20050118.IPR
+Scans To Sum				16960
+Scan Time (sec)				1.0
+Interscan Time (sec)			0.1
+Use Tune Page Collision Energy		YES
+Collision Energy (eV)			30.0
+Use Tune Page Cone Voltage		YES
+Cone Voltage (V)			35.0
+ 
+Instrument Parameters - Function 4:
+Polarity	ES+
+Calibration	Dynamic 2
+Capillary	3.50	3.49
+Cone	60	112
+RF Lens1 Energy	40.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (캜)	80	79
+Desolvation Temp (캜)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	10.4
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	70.0	-67.8
+Pre-filter	5.0	4.8
+Transport	6.0	-6.7
+Aperture3	7.0	-7.3
+Acceleration	200	-200
+Focus	0	0
+Tube Lens	140	-139
+Offset1	-2.5	-67.5
+Offset2	0.0	-70.0
+Pusher	962	895
+TOF (kV)	9.10	-9.17
+Reflectron	35.00	2.06
+Pusher Cycle Time (탎)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-547
+MCP	2300	2352
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1809.8600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	80.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	2.45e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	5.23e-7
+ 
+ 
+Function Parameters - Function 4 - TOF SURVEY FUNCTION
+Set Mass				0.0
+Start Mass				50.0
+End Mass				2000.0
+Start Time (mins)			0.0
+End Time (mins)				60.0
+Data Format				Continuum
+Ion Mode				ES Mode
+Polarity				Positive
+Instrument Parameter Filename		D:\UF196janv05.PRO\ACQUDB\20050118.IPR
+Scans To Sum				16960
+Scan Time (sec)				1.0
+Interscan Time (sec)			0.1
+Use Tune Page Collision Energy		YES
+Collision Energy (eV)			30.0
+Use Tune Page Cone Voltage		YES
+Cone Voltage (V)			35.0
+ 
+Instrument Parameters - Function 5:
+Polarity	ES+
+Calibration	Dynamic 2
+Capillary	3.50	3.49
+Cone	60	112
+RF Lens1 Energy	40.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (캜)	80	79
+Desolvation Temp (캜)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	10.4
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	70.0	-67.8
+Pre-filter	5.0	4.8
+Transport	6.0	-6.7
+Aperture3	7.0	-7.3
+Acceleration	200	-200
+Focus	0	0
+Tube Lens	140	-139
+Offset1	-2.5	-67.5
+Offset2	0.0	-70.0
+Pusher	962	895
+TOF (kV)	9.10	-9.17
+Reflectron	35.00	2.06
+Pusher Cycle Time (탎)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-547
+MCP	2300	2352
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1809.8600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	80.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	2.45e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	5.23e-7
+ 
+ 
+Function Parameters - Function 5 - TOF SURVEY FUNCTION
+Set Mass				0.0
+Start Mass				50.0
+End Mass				2000.0
+Start Time (mins)			0.0
+End Time (mins)				60.0
+Data Format				Continuum
+Ion Mode				ES Mode
+Polarity				Positive
+Instrument Parameter Filename		D:\UF196janv05.PRO\ACQUDB\20050118.IPR
+Scans To Sum				16960
+Scan Time (sec)				1.0
+Interscan Time (sec)			0.1
+Use Tune Page Collision Energy		YES
+Collision Energy (eV)			30.0
+Use Tune Page Cone Voltage		YES
+Cone Voltage (V)			35.0
+ 
+Instrument Parameters - Function 6:
+Polarity	ES+
+Calibration	Dynamic 2
+Capillary	3.50	3.49
+Cone	60	112
+RF Lens1 Energy	40.0
+Aperture 1	0.0
+RF Lens2 Energy	0.0
+Source Temp (캜)	80	79
+Desolvation Temp (캜)	150	1020
+Cone Gas Flow (L/Hr)	50	63
+Desolvation Gas Flow (L/Hr)	30	24
+LM Resolution	10.0
+HM Resolution	10.0
+Collision Energy	10.0	10.4
+Ion Energy	0.8
+Steering	0.00	-0.78
+Entrance	70.0	-67.8
+Pre-filter	5.0	4.8
+Transport	6.0	-6.7
+Aperture3	7.0	-7.3
+Acceleration	200	-200
+Focus	0	0
+Tube Lens	140	-139
+Offset1	-2.5	-67.5
+Offset2	0.0	-70.0
+Pusher	962	895
+TOF (kV)	9.10	-9.17
+Reflectron	35.00	2.06
+Pusher Cycle Time (탎)	Auto
+Pusher Frequency (Hz)	16129.03
+Multiplier	550	-547
+MCP	2300	2352
+Centroid Threshold	0.0
+Min Points	2.0
+Np Multiplier	1.00
+Resolution	4000.0
+Lock Mass	0.0000
+Mass Window +/-	1.0000
+Lteff	1809.8600
+Veff	9100.0000
+	1.0000
+TDC Start (mV)	400.0000
+TDC Stop (mV)	80.0000
+TDC Threshold	0.0000
+Pirani Pressure(mbar)	2.45e0
+Penning Pressure(mbar)	OFF
+Tof Penning Pressure(mbar)	5.23e-7
+ 
+ 
+Function Parameters - Function 6 - TOF SURVEY FUNCTION
+Set Mass				0.0
+Start Mass				50.0
+End Mass				2000.0
+Start Time (mins)			0.0
+End Time (mins)				60.0
+Data Format				Continuum
+Ion Mode				ES Mode
+Polarity				Positive
+Instrument Parameter Filename		D:\UF196janv05.PRO\ACQUDB\20050118.IPR
+Scans To Sum				16960
+Scan Time (sec)				1.0
+Interscan Time (sec)			0.1
+Use Tune Page Collision Energy		YES
+Collision Energy (eV)			30.0
+Use Tune Page Cone Voltage		YES
+Cone Voltage (V)			35.0
+ 

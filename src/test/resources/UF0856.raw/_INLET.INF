@@ -1,0 +1,103 @@
+
+ACE Experimental Record
+
+
+---------------------   Run method parameters   ----------------
+
+Waters CapLC Initial Conditions
+
+Method Type                =    Normal    
+
+Percentage A               =    95.0      
+Percentage B               =    5.0       
+Solvent Select             =    A1        
+Solvent Name A1            =    Solvent A1
+Solvent Name A2            =    Solvent A2
+Solvent Name A3            =    Solvent A3
+Solvent Name B             =    Solvent B 
+
+Total Flow(ul)             =    4.500     
+Run Time (min)             =    63.55     
+Low Pressure(psi)          =    0.0       
+High Pressure(psi)         =    5000.0    
+
+Aux Flow(ul)               =    20.000    
+Aux Low Pressure(psi)      =    0.0       
+Aux High Pressure Aux(psi) =    5000.0    
+
+Column Temperature (°C)    =    15.0      
+Temperature Range(°C)      =    20.0      
+Column Name                =    Column    
+
+Pump Synchronisation       =    Off       
+
+Initial Switch 1           =    Off       
+Initial Switch 2           =    Off       
+Initial Stream Select      =    Position 1
+Initial Vent Valve         =    System    
+
+Chart Recorder 1           =    None      
+Chart Recorder 2           =    None      
+
+
+Waters CapLC Gradient Timetable 
+
+Time           Percent A      Percent B      Flow           Curve          
+0.01           95.0           5.0            4.500            1            
+30.00          50.0           50.0           4.500            6            
+40.00          50.0           50.0           4.500            6            
+45.00          10.0           90.0           4.500            6            
+47.00          95.0           5.0            4.500            6            
+60.00          95.0           5.0            4.500            6            
+
+
+Waters CapLC Auxiliary C Flow Timetable 
+
+Time           Flow           Curve          
+0.01           20.000           1            
+5.00           20.000           6            
+6.00           1.000            6            
+28.00          1.000            6            
+55.00          20.000           6            
+
+
+
+Waters CapLC Event Table
+
+Time(min)         Event             Action            Parameter         
+5.00              Stream Select     Position 2                          
+53.00             Stream Select     Position 1                          
+
+
+Waters CapLC Autosampler Parameters
+
+Vial Location              =    1,A       
+Draw Height(mm)            =    2         
+Draw Speed                 =    Slow      
+Inject Type                =    uL Pickup 
+Flush Volume(ul)           =    10.00     
+Use Head Space Pressure    =    No        
+Use Air Space Segment      =    No        
+Use Low Dispersion Mode    =    No        
+Wash Volume(ul)            =    25.00     
+Sample Temperature(°C)     =    15.00     
+Temperature Limit(°C)      =    20.00     
+
+Waters CapLC Mix Method
+
+Mix Delay(mins)            =    0.00      
+Mix Cycles                 =    1         
+Reagent A Position         =    0         
+Reagent A Volume(ul)       =    1.00      
+Reagent B Position         =    0         
+Reagent B Volume(ul)       =    1.00      
+
+
+
+Sample Run Injection Parameter
+
+Injection Volume (ul)   -   6.40
+----------------------------  oOo  -----------------------------
+
+
+End of experimental record.

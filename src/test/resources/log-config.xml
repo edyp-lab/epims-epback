@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+        
+  <appender name="Fappender" class="org.apache.log4j.FileAppender">
+    <param name="File" value="ePBack-${user.name}.log"/>
+    <param name="Append" value="false"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d [%t] %p - %C{1} - %m%n"/>
+    </layout>
+  </appender>
+
+  <appender name="Cappender" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} [%t] %p - %C{1} - %m%n"/>
+    </layout>
+  </appender>
+
+  <category name="cea.edyp.epims">
+    <priority value="debug"/>
+  </category>
+
+  <root>
+    <priority value ="debug"/>
+    <appender-ref ref="Cappender"/>
+    <appender-ref ref="Fappender"/>
+  </root>
+</log4j:configuration>
+    
