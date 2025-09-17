@@ -77,6 +77,10 @@ public class DecoratedAnalysis implements Analysis {
 		analysis.setSample(sample);
 	}
 
+	public File getSourceFile() {
+		return analysis.getSourceFile();
+	}
+
 	public File getFile() {
 		return analysis.getFile();
 	}

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import cea.edyp.epims.transfer.dataformat.applied.QTrapAnalysis;
 import cea.edyp.epims.transfer.dataformat.bruker.TimsTOFAnalysis;
+import cea.edyp.epims.transfer.dataformat.bruker.TimsTOFAnalysisV2;
 import cea.edyp.epims.transfer.dataformat.nems.NemsAnalysis;
 import cea.edyp.epims.transfer.dataformat.thermo.LTQAnalysis;
 import org.perf4j.slf4j.Slf4JStopWatch;
@@ -42,7 +43,7 @@ public class CacheManager {
 	}
 	
 	private void initializeXStream() {
-		Class[] typeClasses = new Class[8];
+		Class[] typeClasses = new Class[9];
 		typeClasses[0] = QTrapAnalysis.class;
 		typeClasses[1] = LTQAnalysis.class;
 		typeClasses[2] = MLAnalysis.class;
@@ -51,6 +52,7 @@ public class CacheManager {
 		typeClasses[5] = WiffScanAnalysis.class;
 		typeClasses[6] = NemsAnalysis.class;
 		typeClasses[7] = TimsTOFAnalysis.class;
+		typeClasses[8] = TimsTOFAnalysisV2.class;
 		xstream.allowTypes(typeClasses);
 
 		xstream.omitField(QTrapAnalysis.class, "dataFormat");
@@ -68,6 +70,12 @@ public class CacheManager {
 		xstream.omitField(TimsTOFAnalysis.class, "associatedFiles");
 		xstream.omitField(TimsTOFAnalysis.class, "allAcqFiles");
 		xstream.omitField(TimsTOFAnalysis.class, "zipFile");
+
+		xstream.omitField(TimsTOFAnalysisV2.class, "dataFormat");
+		xstream.omitField(TimsTOFAnalysisV2.class, "associatedFiles");
+		xstream.omitField(TimsTOFAnalysisV2.class, "allAcqFiles");
+		xstream.omitField(TimsTOFAnalysisV2.class, "isInitialised");
+		xstream.omitField(TimsTOFAnalysisV2.class, "zipFile");
 
 		xstream.omitField(MLAnalysis.class, "dataFormat");
 		xstream.omitField(MLAnalysis.class, "associatedFiles");

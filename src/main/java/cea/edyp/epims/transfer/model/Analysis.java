@@ -143,21 +143,30 @@ public interface Analysis {
       
    /**
     * Return the analysis file, which could be a directory.
-    * 
-    * @return
+    * This File may be different from the read File on disk. It is the one that
+    * will be transferred on repository. It may be a zip, a new directory or file
+    * where cleaning has been done
+    *
+    *
     */
    File getFile();
 
-   /**
+    /**
+     * Return the analysis file, which could be a directory.
+     * This file represents the original file, from where data where read
+     * and, potentially, from which "transferable" file has been created
+     * The "clean" method will suppress this file !
+     */
+    File getSourceFile();
+
+  /**
     * Must return true if there is a temporary zip file to delete
-    * @return
     */
    boolean removeTemporaryZipFile();
-   
+
    /**
     * Return the analysis file name.
     * 
-    * @return
     */
    String getFileName();
    
@@ -165,15 +174,13 @@ public interface Analysis {
     * Return the path to the directory on ePims system where the analysis file associated
     * to this Analysis should be saved. This path is relative to ePims root.
     * 
-    * @return
     */
    String getDestination();
    
    /**
     * set the directory destination path on ePims system where the analysis file associated
     * to this Analysis should be saved. The path should be relative to ePims root.
-    * 
-    * @return
+    *
     */
    void setDestination(String destinationDir);
    

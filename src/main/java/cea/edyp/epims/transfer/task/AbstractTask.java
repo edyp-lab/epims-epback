@@ -30,7 +30,6 @@ public abstract class AbstractTask {
 
     public static String getServerURL() {
         Preferences preferences = EPBackPreferences.root();
-        String server = preferences.get(PreferencesKeys.CONNECT_SERVER_KEY, PreferencesKeys.DEFAULT_SERVER_URL );
-        return server;
+      return preferences.get(PreferencesKeys.CONNECT_SERVER_KEY, PreferencesKeys.DEFAULT_SERVER_URL );
     }
 }

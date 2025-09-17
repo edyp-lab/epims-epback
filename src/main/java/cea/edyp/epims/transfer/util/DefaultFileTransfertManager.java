@@ -33,10 +33,15 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 	public void copyOnly(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws BackupException {
 		//TODO VD : REMOVE copied file in case of error 
   	try {
-  	  File analysisFile = a.getFile();
+			File analysisFile = a.getFile();
+			if(analysisFile == null) {
+				throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
+			}
+
+			logger.debug("Copy File for Analysis "+a.getName()+": "+analysisFile.getAbsolutePath());
   		long start = System.currentTimeMillis();
-//  		a.getDestination();
   		File destination = new File(a.getDestination(), a.getFileName());
+			logger.debug("Analysis File destination= "+destination.getAbsolutePath());
 
   		boolean skipCopy = false;
   		if(destination.exists()){
@@ -51,8 +56,7 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
   			}
   		}
       
-  		if(analysisFile == null || ! analysisFile.exists()){
-        skipCopy = true;
+  		if(! analysisFile.exists()){
 				String warnMsg ="File for analysis "+a.getName()+" can't be find/created ! Can't copy acquisition";
         logger.warn(warnMsg);
 				fileLogger.warn(warnMsg);
@@ -84,8 +88,10 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
   			}	
   		}
   	} catch (FileNotFoundException e) {
+			e.printStackTrace();
        throw new BackupException("impossible de trouver le fichier pour l'analyse "+a.getName(), e);
     } catch (IOException e) {
+			e.printStackTrace();
        throw new BackupException("impossible d'ecrire le fichier de l'analyse "+a.getName(),e);
     }
 		
@@ -96,9 +102,15 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
   	try {
   		
       File analysisFile = a.getFile();
+			if(analysisFile == null) {
+				throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
+			}
+
+			logger.debug("Move File for Analysis "+a.getName()+": "+analysisFile.getAbsolutePath());
   		long start = System.currentTimeMillis();
   		File destination = new File(a.getDestination(), a.getFileName());
-  		      
+			logger.debug("Analysis File destination= "+destination.getAbsolutePath());
+
   		boolean skipCopy = false;
   		if(destination.exists()){
   			if(allowManyAcquisitionInOneFile){
@@ -108,7 +120,7 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
   				logger.warn("File for Analysis "+a.getName()+" already exist ! Can't copy acquisition ");
   				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
   			}
-        if(analysisFile == null || ! analysisFile.exists()){
+        if(! analysisFile.exists()){
 					logger.warn("File for analysis "+a.getName()+" can't be find/created ! Can't copy acquisition");
           throw new BackupException("Problem on analysisFile "+analysisFile+" for analysis "+a.getName()+". The file can't be reached or is null");
         }
@@ -164,21 +176,21 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 	public void clean(Analysis a) throws BackupException {
     logger.info(" Suppression de "+a.getName());
     long start = System.currentTimeMillis();
-    File analysisSrc = a.getFile();
+    File analysisSrc = a.getSourceFile(); // Clean original analysis file
     boolean delresult = deleteFile(analysisSrc);
     long end = System.currentTimeMillis();
     long duration = (end-start)/1000;
     if(delresult){
       String msg = RSCS.getString("clean.success");
-      Object[] args = {a.getFileName(), duration};
+      Object[] args = {analysisSrc.getName(), duration};
       msg = MessageFormat.format(msg, args );
       fileLogger.info(msg);
     } else{
       String msg = RSCS.getString("clean.error");
-      Object[] args = {a.getFileName()};
+      Object[] args = {analysisSrc.getName()};
       msg = MessageFormat.format(msg, args );
       fileLogger.info(msg);
-			throw new BackupException("Error cleaning analysisFile "+a.getFileName()+" for analysis "+a.getName()+". The file can't be deleted. It may be locked");
+			throw new BackupException("Error cleaning analysisFile "+analysisSrc.getName()+" for analysis "+a.getName()+". The file can't be deleted. It may be locked");
     }
     
     File [] associatedFiles = a.getAssociatedFiles();

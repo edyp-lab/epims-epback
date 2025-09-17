@@ -44,7 +44,7 @@ public class FileUtils {
 		try {
 	    
 		    Long start = System.currentTimeMillis();
-		    logger.debug("******** Create ZIP "+fileName);
+		    logger.debug("******** Create ZIP "+destFile.getAbsolutePath()+" With "+srcFiles.size()+" files");
 		    zipOutput = new ZipOutputStream(new FileOutputStream(destFile));
 		
 		    // Create a buffer for reading the files
@@ -175,14 +175,16 @@ public class FileUtils {
    *
    * @deprecated use org.apache.commons.io.FileUtils.listFiles
    */
+  @Deprecated
   public static void getFilesFromDirectory(List<File> files, File dir){
 	  //Stop condition
 	  if(dir.isFile()){
 		  files.add(dir);
 	  }else{
 		  //for each file.dir in the dir apply the same function
-		  for(int i=0; i<dir.listFiles().length; i++){
-			  getFilesFromDirectory(files, dir.listFiles()[i]);
+      File[] dirFiles =  dir.listFiles();
+		  for(int i = 0; dirFiles != null && i< dirFiles.length; i++){
+			  getFilesFromDirectory(files, dirFiles[i]);
 		  }
 	  }
   }

@@ -62,7 +62,7 @@ public class ZipFileTransfertManager extends DefaultFileTransfertManager {
 			}
 
 			if (!skipCopy) {
-				logger.debug(" Copy only " + a.getName() + " to " + destination.getAbsolutePath());
+				logger.debug(" Copy only in zip " + a.getName() + " to " + destination.getAbsolutePath());
 				boolean copySucess = false;
 				if( destination.createNewFile())
 					copySucess = FileUtils.copyFilesToOneZip(destination, ma.getAllAcquisitionFile(),a.getFile(), ma.keepRelativePath());
@@ -97,6 +97,7 @@ public class ZipFileTransfertManager extends DefaultFileTransfertManager {
 
 			}
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 			String msg = RSCS.getString("copy.error");
 			Object[] args = { a.getFileName() };
 			msg = MessageFormat.format(msg, args);
@@ -104,6 +105,7 @@ public class ZipFileTransfertManager extends DefaultFileTransfertManager {
 
 			throw new BackupException("impossible de trouver le fichier pour l'analyse " + a.getName(), e);
 		} catch (IOException e) {
+			e.printStackTrace();
 			String msg = RSCS.getString("copy.error");
 			Object[] args = { a.getFileName() };
 			msg = MessageFormat.format(msg, args);

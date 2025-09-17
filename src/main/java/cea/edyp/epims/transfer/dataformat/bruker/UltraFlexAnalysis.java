@@ -51,7 +51,7 @@ public class UltraFlexAnalysis extends AbstractAnalysis implements PropertyChang
 
 
   //An ultraFlex analysis could have 1 to 4 directories (according to replicates)
-  private File[] dataFileList;
+  private final File[] dataFileList;
   //attribut to indicate if the zip has run
   private String dataFileState;
 

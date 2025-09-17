@@ -8,6 +8,7 @@ package cea.edyp.epims.transfer.model;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import cea.edyp.epims.transfer.dataformat.nems.NemsAnalysis;
 import org.perf4j.slf4j.Slf4JStopWatch;
 import org.slf4j.Logger;
 import org.perf4j.StopWatch;
@@ -33,11 +34,8 @@ public class AnalysisOperationMgr {
      if(parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE)
        copy(a);
      else {
-         if (a.removeTemporaryZipFile()) {
-             // Nems special case: zip is already suppressed and source files must not be suppressed
-         } else {
-             parameters.getDataFormat().getFileTransfertManager().clean(a);
-         }
+       if(!(a instanceof NemsAnalysis))// Nems special case: zip is already suppressed and source files must not be suppressed
+         parameters.getDataFormat().getFileTransfertManager().clean(a);
      }
    }
    
@@ -48,6 +46,8 @@ public class AnalysisOperationMgr {
     stopWatch.lap("analysis.transfert.verify");
     if (parameters.removeFilesAfterCopy() || a.removeTemporaryZipFile()) {
         parameters.getDataFormat().getFileTransfertManager().move(a, parameters.getEPimsDataProvider());
+        // FIXME !! Warning: if removeFilesAfterCopy && removeTemporaryZipFile : Should remove temp file -> move OK
+        // but also original analysis file : should call parameters.getDataFormat().getFileTransfertManager().clean(a); ??
     }
     else {
         parameters.getDataFormat().getFileTransfertManager().copyOnly(a, parameters.getEPimsDataProvider());

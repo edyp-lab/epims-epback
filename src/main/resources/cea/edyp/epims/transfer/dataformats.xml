@@ -33,5 +33,10 @@
 		   <name>timsTOF Bruker</name>
 		   <class>cea.edyp.epims.transfer.dataformat.bruker.TimsTOFFormat</class>
 	   </dataformat>
+	   <dataformat>
+		   <name>timsTOF Bruker V2</name>
+		   <class>cea.edyp.epims.transfer.dataformat.bruker.TimsTOFFormatV2</class>
+	   </dataformat>
+
 	</dataformats>
 </backpims>

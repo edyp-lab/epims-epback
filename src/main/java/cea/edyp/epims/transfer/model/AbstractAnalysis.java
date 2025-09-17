@@ -151,6 +151,11 @@ abstract public class AbstractAnalysis implements  Analysis {
     this.duration = duration;
   }
 
+  // By default, source and final analysis file are the same
+  @Override
+  public File getSourceFile() {
+    return getFile();
+  }
   @Override
   abstract public void setDataFormat(DataFormat dataFormat);
 

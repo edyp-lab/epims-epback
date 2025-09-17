@@ -221,7 +221,12 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
      }
    }
 
-    @Override
+  @Override
+  public File getSourceFile() {
+    return analysisFile;
+  }
+
+  @Override
     public boolean removeTemporaryZipFile() {
         return false;
     }
@@ -317,7 +322,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
 	 * The update consist in searching of the pattern: DESC_SPOT_TAG[a spot label]-[a spot label]
 	 * If is find, it will replace the last spot label by the one given in parameter
 	 * If is not, it add the string DESC_SPOT_TAG+startSpotLabel+"-"+currentEndSpotLabel to the description
-	 * @param String spotLabel The new label to add to the description
+	 * @param spotLabel The new label to add to the description
 	 */
 	public void addSpotDescription(String spotLabel){
 	  String newSpotDescription;
@@ -345,7 +350,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
 	
 	/**
 	 * This function can add a information concerning the acquisition type (whether MS or MSMS) into the description
-	 * @param boolean: if true add "MS" to the description else add "MSMS"
+	 * @param isMS: if true add "MS" to the description else add "MSMS"
 	 * @author vbouquet
 	 */
 	public void addAcqTypeDescription(boolean isMS){
