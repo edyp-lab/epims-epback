@@ -90,7 +90,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
    
    public Maldi4800Analysis(File f, Maldi4800Format format) {
       analysisDescriptionFile = f;
-      dataFileList = new ArrayList<File>();
+      dataFileList = new ArrayList<>();
       dataFileList.add(analysisDescriptionFile);
       statusMask = ANALYSIS_STATUS_UNKNOWN;
       analyseType = Analysis.AnalysisType.UNKNOWN;
@@ -101,7 +101,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
    }
 
   public void setDataFormat(DataFormat format){
-  	if(Maldi4800Format.class.isInstance(format)){
+  	if(format instanceof Maldi4800Format){
   		dataFormat = (Maldi4800Format) format;
   		associatedFiles = null;
   	}
@@ -205,7 +205,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
          // Complete the ZIP file
          zipOutput.close();
        } catch (IOException e) {
-         logger.error("Error while compacting file into a zip. Trace : "+e);
+         logger.error("Error while compacting file into a zip. Trace : {}", e.getMessage());
          dataFileState = RSCS.getString("datafile.state.error");
          return null;
        }
@@ -244,7 +244,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
    }
    
    private void setAssociatedFiles(){
-  	 associatedFiles = new ArrayList<File>();
+  	 associatedFiles = new ArrayList<>();
    }
 
    public String getAssociatedFileType(File associatedFile) {
@@ -398,7 +398,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
     size = 0;
     
     if(dataFileList == null)
-      dataFileList = new ArrayList<File>();
+      dataFileList = new ArrayList<>();
     dataFileList.add(dataFile);
   }
   
@@ -415,7 +415,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
   public void addJobWideInterpretMethodDescription(String jobWideInterpretMethod){
 	  if(jobWideInterpretMethod == null){
 		  description = description+" JWIM:"+null+" ";
-	  }else if(jobWideInterpretMethod.equals("")){
+	  }else if(jobWideInterpretMethod.isEmpty()){
 		  description = description+" JWIM:"+null+" ";
 	  }else{
 		  description = description+" JWIM:"+jobWideInterpretMethod+" ";
@@ -430,7 +430,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
   public void addJobRunDescription(String jobRunDescription){
 	  if(jobRunDescription == null){
 		  description = description+" JRD:"+null+" ";
-	  }else if(jobRunDescription.equals("")){
+	  }else if(jobRunDescription.isEmpty()){
 		  description = description+" JRD:"+null+" ";
 	  }else{
 		  description = description+" JRD:"+jobRunDescription+" ";
@@ -491,10 +491,7 @@ class Maldi4800Filter implements FileFilter {
       return true;
       
     String fileName = pathname.getName();
-    if(fileName.startsWith(REJECT_PREFIX))
-      return false;
-      
-    return true;
+    return !fileName.startsWith(REJECT_PREFIX);
   }
    
 }

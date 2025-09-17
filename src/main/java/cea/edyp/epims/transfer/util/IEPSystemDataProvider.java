@@ -13,7 +13,7 @@ public interface IEPSystemDataProvider {
 	 * 
 	 * @return absolute path to PIMS_ROOT
 	 */
-	public String getPimsRootPath();
+  String getPimsRootPath();
 
 	/**
 	 * Return the relative path (from PIMS_ROOT) to directory representing
@@ -22,7 +22,7 @@ public interface IEPSystemDataProvider {
 	 * @return relative path (from PIMS_ROOT) to PIMS_SYSTEM or null if
 	 *         information is not accessible
 	 */
-	public String getPimsSystemRelativePath();
+  String getPimsSystemRelativePath();
 
 	/**
 	 * Return the nomenclature name of study containing specified sample, null if
@@ -31,7 +31,7 @@ public interface IEPSystemDataProvider {
 	 * @param sampleName
 	 * @return study nomenclature to which specified sample belongs to
 	 */
-	public String getStudyNameFor(String sampleName);
+  String getStudyNameFor(String sampleName);
 
 	/**
 	 * Test if specified sample name exist in ePims system
@@ -39,7 +39,7 @@ public interface IEPSystemDataProvider {
 	 * @param sampleName
 	 * @return true if sample is defined in ePims system, false otherwise.
 	 */
-	public boolean isSampleExist(String sampleName);
+  boolean isSampleExist(String sampleName);
 
 	/**
 	 * Test if an acquisition with same name on same instrument exist in ePims
@@ -52,15 +52,15 @@ public interface IEPSystemDataProvider {
 	 * @return true if an acquisition with same name on same instrument is
 	 *         defined in ePims system, false otherwise.
 	 */
-	public boolean isAcquisitionExist(String acqName, String instrumentName);
+  boolean isAcquisitionExist(String acqName, String instrumentName);
 
 	/**
 	 * Test if specified spectrometer exist in ePims system
 	 * 
-	 * @param instrumentName
+	 * @param instrumentName name of the spectrometer to search for
 	 * @return true if instrument is defined in ePims system, false otherwise.
 	 */
-	public boolean isSpectrometerDefined(String instrumentName);
+  boolean isSpectrometerDefined(String instrumentName);
 
 	/**
 	 * Create ePims acquisition, acquisition result file and all associated file
@@ -73,7 +73,7 @@ public interface IEPSystemDataProvider {
 	 * @throws BackupException
 	 *            on error
 	 */
-	public void createAcquisitionAndFilesFor(Analysis a, String instrumentName) throws BackupException;
+  void createAcquisitionAndFilesFor(Analysis a, String instrumentName) throws BackupException;
 
 	/**
 	 * Get analysis associated file destination directory on ePims System If
@@ -89,7 +89,7 @@ public interface IEPSystemDataProvider {
 	 * @throws BackupException
 	 *            if an error occurs while getting information
 	 */
-	public File getAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException;
+  File getAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException;
 
 	/**
 	 * Get destination directory for specified analysis. if research analysis =>
@@ -102,8 +102,8 @@ public interface IEPSystemDataProvider {
 	 * @throws BackupException
 	 *            if an error occurs while getting information
 	 */
-	public File getDestinationDir(Analysis a, BackupParameters param) throws BackupException;
+  File getDestinationDir(Analysis a, BackupParameters param) throws BackupException;
 
-	public int getAnalysisStatus(Analysis analysis, BackupParameters params);
+	int getAnalysisStatus(Analysis analysis, BackupParameters params);
 
 }

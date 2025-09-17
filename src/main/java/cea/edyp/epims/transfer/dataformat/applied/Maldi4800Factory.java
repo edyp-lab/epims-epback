@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 public class Maldi4800Factory extends AbstractCacheFactory {
 	
-	private static Logger logger = LoggerFactory.getLogger(Maldi4800Factory.class);
+	private static final Logger logger = LoggerFactory.getLogger(Maldi4800Factory.class);
 	
 	public List<Analysis> createAnalysis(File file) {
 	  Maldi4800XMLParser maldiXmlParser = new Maldi4800XMLParser();
@@ -25,9 +25,7 @@ public class Maldi4800Factory extends AbstractCacheFactory {
 	  
 	  //because Java doesn't support a List<subclass> as a List<superclass>
 	  //we have to recreate a List<Analysis> from the List<Maldi4800Analysis>
-	  List<Analysis> analList = new ArrayList<Analysis>();
-	  analList.addAll(maldiAnalList);
-	  return analList; 
+    return new ArrayList<>(maldiAnalList);
 	}
 
 	@Override

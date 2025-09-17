@@ -15,7 +15,7 @@ import java.io.FilenameFilter;
  */
 public class ExtensionFileFilterName implements FilenameFilter {
 
-  private String[] extensions;
+  private final String[] extensions;
 
   public ExtensionFileFilterName(String[] ext) {
     extensions = ext;
@@ -26,15 +26,12 @@ public class ExtensionFileFilterName implements FilenameFilter {
     if(dotIndex == -1)
       return false;
     String extension = name.substring(dotIndex+1);
-    if (extension != null) {
-      return isAcceptable(extension);
-    }
-    return false;
+    return isAcceptable(extension);
   }
 
   public boolean isAcceptable(String extension) {
-    for (int i = 0; i < extensions.length; i++) {
-      if (extension.equals(extensions[i]))
+    for (String s : extensions) {
+      if (extension.equals(s))
         return true;
     }
     return false;

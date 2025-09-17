@@ -38,16 +38,16 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 				throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
 			}
 
-			logger.debug("Copy File for Analysis "+a.getName()+": "+analysisFile.getAbsolutePath());
+      logger.debug("Copy File for Analysis {}: {}", a.getName(), analysisFile.getAbsolutePath());
   		long start = System.currentTimeMillis();
   		File destination = new File(a.getDestination(), a.getFileName());
-			logger.debug("Analysis File destination= "+destination.getAbsolutePath());
+      logger.debug("Analysis File destination= {}", destination.getAbsolutePath());
 
   		boolean skipCopy = false;
   		if(destination.exists()){
   			if(allowManyAcquisitionInOneFile){
   				skipCopy = true;
-  				logger.info("File for Analysis "+a.getName()+" already exist");
+          logger.info("File for Analysis {} already exist", a.getName());
   			} else {
 					String warnMsg ="File for Analysis "+a.getName()+" already exist ! Can't copy acquisition ";
   				logger.warn(warnMsg);
@@ -64,7 +64,7 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
       }
        
   		if(! skipCopy){
-  			logger.debug(" Copy only "+analysisFile+" to "+destination.getAbsolutePath());
+        logger.debug(" Copy only {} to {}", analysisFile, destination.getAbsolutePath());
   			FileUtils.secureCopy(analysisFile, destination, a.getContentFilter());
   			long end = System.currentTimeMillis();
   			long duration = (end-start)/1000;
@@ -106,29 +106,29 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 				throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
 			}
 
-			logger.debug("Move File for Analysis "+a.getName()+": "+analysisFile.getAbsolutePath());
+      logger.debug("Move File for Analysis {}: {}", a.getName(), analysisFile.getAbsolutePath());
   		long start = System.currentTimeMillis();
   		File destination = new File(a.getDestination(), a.getFileName());
-			logger.debug("Analysis File destination= "+destination.getAbsolutePath());
+      logger.debug("Analysis File destination= {}", destination.getAbsolutePath());
 
   		boolean skipCopy = false;
   		if(destination.exists()){
   			if(allowManyAcquisitionInOneFile){
   				skipCopy = true;
-  				logger.info("File for Analysis "+a.getName()+" already exist");
+          logger.info("File for Analysis {} already exist", a.getName());
   			} else {
-  				logger.warn("File for Analysis "+a.getName()+" already exist ! Can't copy acquisition ");
+          logger.warn("File for Analysis {} already exist ! Can't copy acquisition ", a.getName());
   				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
   			}
         if(! analysisFile.exists()){
-					logger.warn("File for analysis "+a.getName()+" can't be find/created ! Can't copy acquisition");
+          logger.warn("File for analysis {} can't be find/created ! Can't copy acquisition", a.getName());
           throw new BackupException("Problem on analysisFile "+analysisFile+" for analysis "+a.getName()+". The file can't be reached or is null");
         }
   		}
       
   		if(! skipCopy){
            
-  			ArrayList<File> filesToDel = new ArrayList<File>();
+  			ArrayList<File> filesToDel = new ArrayList<>();
   			FileUtils.secureCopy(analysisFile, destination, a.getContentFilter());         
   			long end = System.currentTimeMillis();
   			long duration = (end-start)/1000;
@@ -174,7 +174,7 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 
 	
 	public void clean(Analysis a) throws BackupException {
-    logger.info(" Suppression de "+a.getName());
+    logger.info(" Suppression de {}", a.getName());
     long start = System.currentTimeMillis();
     File analysisSrc = a.getSourceFile(); // Clean original analysis file
     boolean delresult = deleteFile(analysisSrc);
@@ -219,7 +219,7 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
   	for(int i=0; i< files.size(); i++){
   		File f = files.get(i);
   		allDeletable = allDeletable && checkDeletable(f);
-  		logger.debug(" Result check File "+f.getName()+" deletable "+allDeletable);
+      logger.debug(" Result check File {} deletable {}", f.getName(), allDeletable);
   	}
      
   	if(!allDeletable){
@@ -230,7 +230,7 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 
   	boolean succes = true;
   	for(int i=0; i< files.size(); i++){
-  		logger.debug(" Delete file "+files.get(i).getName());
+      logger.debug(" Delete file {}", files.get(i).getName());
   		succes = succes && deleteFile(files.get(i));
   	}
      
@@ -241,9 +241,11 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
   	boolean result= true; 
     if(file.isDirectory()){
       File[] files = file.listFiles();
-      for(int i=0; i<files.length; i++){
-        result = result && deleteFile(files[i]);
-      }
+			if(files!=null) {
+				for (int i = 0; i < files.length; i++) {
+					result = result && deleteFile(files[i]);
+				}
+			}
     }
           
     result = result && file.delete();
@@ -254,9 +256,11 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
     boolean deletable = true;
     if(f.isDirectory()){
       File[] files = f.listFiles();
-      for(int i=0; i<files.length; i++){
-        deletable = deletable && checkDeletable(files[i]);
-      }
+			if (files!=null) {
+				for (int i = 0; i < files.length; i++) {
+					deletable = deletable && checkDeletable(files[i]);
+				}
+			}
     }else
       deletable = f.canWrite();
     return deletable;

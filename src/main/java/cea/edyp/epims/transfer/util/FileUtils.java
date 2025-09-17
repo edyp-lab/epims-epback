@@ -31,51 +31,49 @@ import org.slf4j.LoggerFactory;
  */ 
 public class FileUtils {
 
-  private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
   public static boolean copyFilesToOneZip(File destFile, List<File> srcFiles){
     return FileUtils.copyFilesToOneZip(destFile, srcFiles, null, false);
   }
 
 	public static boolean copyFilesToOneZip(File destFile, List<File> srcFiles, File srcParent, boolean keepRelativePath){
-		File currentFile;
 		ZipOutputStream zipOutput;
 		String fileName = destFile.getName();
 		try {
 	    
 		    Long start = System.currentTimeMillis();
-		    logger.debug("******** Create ZIP "+destFile.getAbsolutePath()+" With "+srcFiles.size()+" files");
+      logger.debug("******** Create ZIP {} With {} files", destFile.getAbsolutePath(), srcFiles.size());
 		    zipOutput = new ZipOutputStream(new FileOutputStream(destFile));
 		
 		    // Create a buffer for reading the files
 		    byte[] buf = new byte[2048];    
 		      
 		    // Compress the files
-		    for(int j=0; j<srcFiles.size(); j++) {
-		    	currentFile = srcFiles.get(j);    
-		    	FileInputStream inputStream = new FileInputStream(currentFile);
-		    	logger.info("File to add to zip : "+currentFile.getName());
-          String zipEntry =currentFile.getName();
-          if(keepRelativePath)
-            zipEntry = srcParent!=null ? srcParent.toURI().relativize(currentFile.toURI()).getPath() : destFile.toURI().relativize(currentFile.toURI()).getPath();
-		    	// Add ZIP entry to output stream.
-		    	zipOutput.putNextEntry(new ZipEntry(zipEntry));
-		    
-		    	// Transfer bytes from the file to the ZIP file
-		    	int len;
-		    	while ((len = inputStream.read(buf)) > 0) {
-		    		zipOutput.write(buf, 0, len);
-		    	}
-		    
-		    	// Complete the entry
-		    	zipOutput.closeEntry();
-		    	inputStream.close();
-		    }//END of for all files
+      for (File currentFile : srcFiles) {
+        FileInputStream inputStream = new FileInputStream(currentFile);
+        logger.info("File to add to zip : {}", currentFile.getName());
+        String zipEntry = currentFile.getName();
+        if (keepRelativePath)
+          zipEntry = srcParent != null ? srcParent.toURI().relativize(currentFile.toURI()).getPath() : destFile.toURI().relativize(currentFile.toURI()).getPath();
+        // Add ZIP entry to output stream.
+        zipOutput.putNextEntry(new ZipEntry(zipEntry));
+
+        // Transfer bytes from the file to the ZIP file
+        int len;
+        while ((len = inputStream.read(buf)) > 0) {
+          zipOutput.write(buf, 0, len);
+        }
+
+        // Complete the entry
+        zipOutput.closeEntry();
+        inputStream.close();
+      }//END of for all files
 		      
 		    // Complete the ZIP file
 		    zipOutput.close();
 		    Long stop = System.currentTimeMillis();
-		    logger.debug("******** STOP Create ZIP "+fileName+" duration (ms) " +(stop-start));
+      logger.debug("******** STOP Create ZIP {} duration (ms) {}", fileName, stop - start);
 		    		    
 		    ZipInputStream zis = new ZipInputStream(Files.newInputStream(destFile.toPath()));
 		    int nbrEntries  =0;
@@ -90,12 +88,12 @@ public class FileUtils {
           throw new IOException("Erreur de création du zip "+fileName);
        }
         Long stop2 = System.currentTimeMillis();
-        logger.debug("******** STOP VERIFY ZIP "+fileName+" duration (ms) "+(stop2-stop));
+      logger.debug("******** STOP VERIFY ZIP {} duration (ms) {}", fileName, stop2 - stop);
 
 	    } catch (IOException e) {
 	    	if(destFile.exists())
 	    		destFile.delete();
-	    	logger.error("Error while compacting file into a zip. Trace : "+e);
+      logger.error("Error while compacting file into a zip. Trace : {}", String.valueOf(e));
 	    	return false;
 	    }
 			destFile.setLastModified(srcFiles.get(0).lastModified());   
@@ -108,13 +106,13 @@ public class FileUtils {
       if (src.isDirectory()) {
          dest.mkdir();
          File[] content = src.listFiles();
-         for (int i = 0; i < content.length; i++) {
-            File f = content[i];
-            File d = new File(dest, f.getName());
-            logger.debug(" copy file "+f.getName());
-            secureCopy(f, d);
+         if(content != null) {
+           for (File f : content) {
+             File d = new File(dest, f.getName());
+             logger.debug(" copy file {}", f.getName());
+             secureCopy(f, d);
+           }
          }
-
       } else {
         doSecureCopy(src,dest);
       }
@@ -124,13 +122,13 @@ public class FileUtils {
       if (src.isDirectory()&& filter.accept(src) ) {
          dest.mkdir();
          File[] content = src.listFiles(filter);
-         for (int i = 0; i < content.length; i++) {
-            File f = content[i];
-            File d = new File(dest, f.getName());
-            logger.debug(" copy file "+f.getName());
-            secureCopy(f, d, filter);
+         if(content != null) {
+           for (File f : content) {
+             File d = new File(dest, f.getName());
+             logger.debug(" copy file {}", f.getName());
+             secureCopy(f, d, filter);
+           }
          }
-
       } else if(filter.accept(src)) {
         doSecureCopy(src, dest);
       }
@@ -162,6 +160,8 @@ public class FileUtils {
    }
 
   public static String getExtension(File f) {
+    if(f == null || f.getName().isEmpty() )
+      return null;
      String ext = FilenameUtils.getExtension(f.getName());
      return ext.toLowerCase();
   }

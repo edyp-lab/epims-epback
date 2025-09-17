@@ -25,7 +25,7 @@ public class WiffScanAnalysis extends  QTrapAnalysis implements MultiFilesAnalys
   
   public WiffScanAnalysis(File f, WiffScanFormat format) {
   	super(f, format);
-  	allAcqFiles = new ArrayList<File>(0);
+  	allAcqFiles = new ArrayList<>(0);
   	allAcqFiles.add(f);
 	}
   

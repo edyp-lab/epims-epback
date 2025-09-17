@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -48,19 +47,15 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	 * WS request that slows down eP-Back, the map keep the relation
 	 * sample-AcquPath
 	 */
-	private final Map<String, String> sampleNameToAcquPath = new HashMap<String, String>();
+	private final Map<String, String> sampleNameToAcquPath = new HashMap<>();
 
 	public WSSystemDataProvider() throws InstantiationException {
 		// Get Properties
-		String wsURL = null;
-		ePimsRootPath = null;
+		ePimsRootPath = null; //FIXME : add to class where properties are read from
 
 		try {
 			ResourceBundle defaultBundle = new PropertyResourceBundle(new FileInputStream("./conf/eP-Back.properties"));
-			wsURL = defaultBundle.getString("webservices.url");
 			ePimsRootPath = defaultBundle.getString("epims.root"); //JPM.TODO
-		} catch (MissingResourceException mre) {
-			throw new InstantiationException(RSCS.getString("webservices.error"));
 		} catch (Exception e) {
 			throw new InstantiationException(RSCS.getString("webservices.error"));
 		}
@@ -243,7 +238,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	 */
 	public File getAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException {
 		File destination = null;
-		Boolean dirCreationSucceed;
+		boolean dirCreationSucceed;
 		if (Analysis.SPECTRA_FILETYPE.equals(fileType)) {
 			// Only valid for research analysis
 			if (!a.getType().equals(Analysis.AnalysisType.RESEARCH)) {
@@ -262,12 +257,17 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 			StudyPathJson studyPathJson = AcquisitionServices.getStudyPathJson(a.getSample());
 
 			try {
-				File studyFullPath = new File(getPimsRootPath(), studyPathJson.getPath());
+				File studyFullPath = studyPathJson != null ? new File(getPimsRootPath(),studyPathJson.getPath()): null;
 
-				if (studyFullPath.exists()) {
-					destination = new File(studyFullPath, SystemServices.getSpectraRelativePath());
+				if (studyFullPath != null && studyFullPath.exists() ) {
+					String spectraRelativePath = SystemServices.getSpectraRelativePath();
+					destination = spectraRelativePath !=null ? new File(studyFullPath, SystemServices.getSpectraRelativePath()) : null;
 
 					// Destination dir not exist => it must be created
+					if(destination == null ){
+						String msg =" No folder specified for SPECTRA !! Contact your administrator ";
+						throw new BackupException(msg);
+					}
 					if (!destination.exists()) {
 						dirCreationSucceed = destination.mkdirs();
 
@@ -279,7 +279,10 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 						}
 					}
 
-				} else { // Study full path doesn't exists
+				} else {
+					if (studyFullPath==null)
+						throw new BackupException("Can't define Study Path ");
+						// Study's full path doesn't exist
 					String msg = RSCS.getString("study.dir.notexist");
 					Object[] args = { studyFullPath.getAbsolutePath() };
 					throw new BackupException(MessageFormat.format(msg, args));
@@ -305,17 +308,17 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 		
 		StopWatch stopWatch = new Slf4JStopWatch("ePims getDestinationDir", analysis.getName());
 		String tempAcqPath = null;
-		File destination = null;
+		File destination;
 
 		AcquisitionFileMessageJson acqFileMsg = new AcquisitionFileMessageJson();
 
 		InstrumentJson instrDescriptor = AcquisitionServices.getInstrumentJson(param.getInstrumentName());
-
+		Integer instrId = instrDescriptor != null ? instrDescriptor.getId() : -1;
 		AcquisitionFileDescriptorJson acqFileDesc = createAcquisitionFileDescriptor(analysis);
 
 		ProtocolApplicationJson protocolApplicationJson = acqFileDesc.getAcquisition();
 		AcquisitionJson acquisitionJson = protocolApplicationJson.getAcquisitionJson();
-		acquisitionJson.setInstrumentId(instrDescriptor.getId());
+		acquisitionJson.setInstrumentId(instrId);
 		acquisitionJson.setInstrumentName(param.getInstrumentName());
 
 		acqFileMsg.setAcquisitionFileDescriptor(acqFileDesc);
@@ -333,7 +336,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 		if (tempAcqPath == null) {
 
 			if (analysis.getType() == Analysis.AnalysisType.RESEARCH)
-				logger.debug(analysis.getSample() + " not found in the cache");
+        logger.debug("{} not found in the cache", analysis.getSample());
 
 			// So we must request threw WS to get the sample name and then add this
 			// result in the hash map
@@ -344,7 +347,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 				//Object[] args = { epce2.getMessage() };
 				throw new BackupException(MessageFormat.format(msg, ""));
 			} else {
-				logger.debug(" Get Destination for " + analysis.getName() + " => " + acqPath);
+        logger.debug(" Get Destination for {} => {}", analysis.getName(), acqPath);
 				destination = new File(getPimsRootPath(), acqPath);
 				// add this result in the HashMap
 				sampleNameToAcquPath.put(analysis.getSample(), acqPath);
@@ -353,7 +356,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 		} else {// we found the sampleName in the map so take the acqPath
 					// associated
-			logger.debug(" Get Destination from the hashMap " + analysis.getName() + " => " + tempAcqPath);
+      logger.debug(" Get Destination from the hashMap {} => {}", analysis.getName(), tempAcqPath);
 			destination = new File(getPimsRootPath(), tempAcqPath);
 			stopWatch.lap("ePims getDestinationDir.from Cache");
 		}
@@ -373,7 +376,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	 */
 	public int getAnalysisStatus(Analysis analysis, BackupParameters params) {
 
-		logger.info("request analysis status for sample "+analysis.getName());
+    logger.info("request analysis status for sample {}", analysis.getName());
 		StopWatch stopWatch = new Slf4JStopWatch("ePims getAnalysisStatus", analysis.getName());
 
 		if(analysis.getStatus() == Analysis.ANALYSIS_STATUS_NOT_READABLE)
@@ -395,7 +398,8 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 				StudyPathJson stdDescriptor = AcquisitionServices.getStudyPathJson(analysis.getSample());
 
-				if (!stdDescriptor.isRunningStatus())
+        assert stdDescriptor != null;
+        if (!stdDescriptor.isRunningStatus())
 					result = result | Analysis.ANALYSIS_STUDY_CLOSED_MASK;
 			} // END Sample valid name
 

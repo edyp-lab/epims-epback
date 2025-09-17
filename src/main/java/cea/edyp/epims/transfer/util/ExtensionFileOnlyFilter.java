@@ -15,7 +15,7 @@ import java.io.FileFilter;
  */
 public class ExtensionFileOnlyFilter implements FileFilter {
 
-  private String[] extensions;
+  private final String[] extensions;
 
   public ExtensionFileOnlyFilter(String[] ext) {
     extensions = ext;
@@ -33,8 +33,8 @@ public class ExtensionFileOnlyFilter implements FileFilter {
   }
 
   public boolean isAcceptable(String extension) {
-    for (int i = 0; i < extensions.length; i++) {
-      if (extension.equals(extensions[i]))
+    for (String s : extensions) {
+      if (extension.equals(s))
         return true;
     }
     return false;
