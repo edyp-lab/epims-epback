@@ -26,7 +26,7 @@
         </encoder>
     </appender>
 
-  <logger name="cea.edyp.epims" level="DEBUG">
+  <logger name="fr.edyp.epims" level="DEBUG">
   </logger>
 
   <root level="info">

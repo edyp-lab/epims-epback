@@ -3,7 +3,7 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
-   <groupId>cea.edyp.epims</groupId>
+   <groupId>fr.edyp.epims</groupId>
    <artifactId>eP-Back</artifactId>
    <packaging>jar</packaging>
    <name>eP-Back</name>
@@ -272,7 +272,7 @@
                      <addClasspath>true</addClasspath>
                      <classpathPrefix>lib/</classpathPrefix>
 
-                     <mainClass>cea.edyp.epims.transfer.gui.BackPimsApp</mainClass>
+                     <mainClass>fr.edyp.epims.transfer.gui.BackPimsApp</mainClass>
                      <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                      <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                      <useUniqueVersions>false</useUniqueVersions>

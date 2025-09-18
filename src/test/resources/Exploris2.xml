@@ -2,7 +2,7 @@
   <entry>
     <string>C:\Temp\Vero\epims_instrum_data\hf1\HF1_023192.raw</string>
     <list>
-      <cea.edyp.epims.transfer.dataformat.thermo.LTQAnalysis>
+      <fr.edyp.epims.transfer.dataformat.thermo.LTQAnalysis>
         <analysisFile>C:\Temp\Vero\epims_instrum_data\hf1\HF1_023192.raw</analysisFile>
         <destinationPath>C:\Temp\Vero\pims_root\repository\b\ProFI\WP4\130711TMO\samples\data\RAW</destinationPath>
         <analyseType>RESEARCH</analyseType>
@@ -12,7 +12,7 @@
         <acqDate>2024-03-07 01:28:06.604 UTC</acqDate>
         <duration>0.0</duration>
         <status>0</status>
-      </cea.edyp.epims.transfer.dataformat.thermo.LTQAnalysis>
+      </fr.edyp.epims.transfer.dataformat.thermo.LTQAnalysis>
     </list>
   </entry>
 </map>
