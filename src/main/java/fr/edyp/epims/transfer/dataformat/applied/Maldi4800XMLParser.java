@@ -470,7 +470,7 @@ public class Maldi4800XMLParser extends DefaultHandler {
    * index of each ch:0123456789012345678
    * 
    * @return Date the date extract from the String passed in argument
-   * @param The String representing the attribute xxxxDT extract from the spotset XML
+   * @param dateTimeAttribute The String representing the attribute xxxxDT extract from the spotset XML
    */
   private Date getDateFromAttribute(String dateTimeAttribute){
     if(dateTimeAttribute == null || dateTimeAttribute.equals("")){

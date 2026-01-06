@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.*;
 
 import javax.swing.*;
@@ -39,7 +40,9 @@ import org.slf4j.LoggerFactory;
  */
 public class BackPimsApp extends JFrame implements Backup {
 
+	@Serial
 	private static final long serialVersionUID = -4003323048675629115L;
+
 	private static final Logger logger = LoggerFactory.getLogger(BackPimsApp.class);
 	private static final ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
 
