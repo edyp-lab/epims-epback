@@ -156,6 +156,7 @@ abstract public class AbstractAnalysis implements  Analysis {
   public File getSourceFile() {
     return getFile();
   }
+
   @Override
   abstract public void setDataFormat(DataFormat dataFormat);
 

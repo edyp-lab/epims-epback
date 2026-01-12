@@ -28,11 +28,11 @@ public interface DataFormat {
    public Analysis[] getAnalysis(File dir);
    
    /**
-    * Return the IFileTransfertManager appropriated for this
+    * Return the IFileTransferManager appropriated for this
     * DataFormat.
     * 
     */
-   public IFileTransfertManager getFileTransfertManager();
+   public IFileTransferManager getFileTransfertManager();
    
    
    /**

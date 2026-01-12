@@ -21,12 +21,12 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fr.edyp.epims.transfer.log.LogTextPanel;
+import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
 import org.slf4j.Logger;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.IFileTransfertManager;
-import fr.edyp.epims.transfer.util.DefaultFileTransfertManager;
+import fr.edyp.epims.transfer.model.IFileTransferManager;
 import fr.edyp.epims.transfer.util.ExtensionFileOnlyFilter;
 import org.slf4j.LoggerFactory;
 
@@ -78,8 +78,8 @@ public class LTQFormat extends JPanel implements DataFormat {
 	// DATAFORMAT methods
 	// //////////////////
 
-	public IFileTransfertManager getFileTransfertManager() {
-		return new DefaultFileTransfertManager(false);
+	public IFileTransferManager getFileTransfertManager() {
+		return new DefaultFileTransferManager();
 	}
 
 	public Analysis[] getAnalysis(File dir) {

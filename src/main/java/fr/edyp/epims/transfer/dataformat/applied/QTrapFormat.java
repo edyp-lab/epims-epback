@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,24 +18,25 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import fr.edyp.epims.transfer.model.IFileTransferManager;
+import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.IFileTransfertManager;
-import fr.edyp.epims.transfer.util.DefaultFileTransfertManager;
 import fr.edyp.epims.transfer.util.ExtensionFileFilterName;
 
 public class QTrapFormat extends JPanel implements DataFormat {
 
+	@Serial
 	private static final long serialVersionUID = 1112220274553999409L;
-	private static Log logger = LogFactory.getLog(QTrapFormat.class);
-	private static ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
+	private static final Log logger = LogFactory.getLog(QTrapFormat.class);
+	private static final ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
 
 	private static final String ANALYSIS_DIR = "DATA";
-	// Protected attributs that could be redefined / used in sub classes
+	// Protected attributes that could be redefined / used in sub classes
 	protected FilenameFilter dataFilter;
 	protected static final String ANALYSIS_FILE_EXT = "wiff";
 	protected static final String DESCRIPTION_PROP = "Description";
@@ -69,14 +71,14 @@ public class QTrapFormat extends JPanel implements DataFormat {
 	// //////////////////
 	// DATAFORMAT methods
 	// //////////////////
-	public IFileTransfertManager getFileTransfertManager() {
-		return new DefaultFileTransfertManager(false);
+	public IFileTransferManager getFileTransfertManager() {
+		return new DefaultFileTransferManager();
 	}
 
 	public Analysis[] getAnalysis(File dir) {
 
 		logger.info("QTrapFormat : reading directory " + dir.getAbsolutePath());
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 
 		// -- Two directories hierarchy is allowed
 		// 1. directory is the entry of a unique project
@@ -86,6 +88,9 @@ public class QTrapFormat extends JPanel implements DataFormat {
 		// 1. directory is the entry of a unique project
 		boolean isUniqueProject = false;
 		File[] subDirs = dir.listFiles();
+		if(subDirs == null)
+			return new Analysis[0];
+
 		for (int nbrSubDirs = 0; nbrSubDirs < subDirs.length; nbrSubDirs++) {
 			File nextSubDir = subDirs[nbrSubDirs];
 			if (!nextSubDir.isDirectory())
@@ -108,13 +113,15 @@ public class QTrapFormat extends JPanel implements DataFormat {
 
 				// Search in next Project's directories for ANALYSIS_DIR directory
 				File[] subProjectsDirs = projectDir.listFiles((FileFilter) DirectoryFileFilter.INSTANCE);
-				for (int nbrSubDirs = 0; nbrSubDirs < subProjectsDirs.length; nbrSubDirs++) {
-					File nextProjectDir = subProjectsDirs[nbrSubDirs];
-					if (nextProjectDir.isDirectory() && nextProjectDir.getName().equalsIgnoreCase(ANALYSIS_DIR)) {
-						File[] analysisFile = nextProjectDir.listFiles(dataFilter);
-						files.addAll(Arrays.asList(analysisFile));
-					}
-				} // End search for ANALYSIS_DIR in one project dir
+				if(subProjectsDirs != null) {
+					for (int nbrSubDirs = 0; nbrSubDirs < subProjectsDirs.length; nbrSubDirs++) {
+						File nextProjectDir = subProjectsDirs[nbrSubDirs];
+						if (nextProjectDir.isDirectory() && nextProjectDir.getName().equalsIgnoreCase(ANALYSIS_DIR)) {
+							File[] analysisFile = nextProjectDir.listFiles(dataFilter);
+							files.addAll(Arrays.asList(analysisFile));
+						}
+					} // End search for ANALYSIS_DIR in one project dir
+				}
 			}
 		} // End case 2.
 

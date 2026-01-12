@@ -15,18 +15,16 @@ import org.slf4j.Logger;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.BackupException;
-import fr.edyp.epims.transfer.model.IFileTransfertManager;
+import fr.edyp.epims.transfer.model.IFileTransferManager;
 import org.slf4j.LoggerFactory;
 
-public class DefaultFileTransfertManager implements IFileTransfertManager {
+public class DefaultFileTransferManager implements IFileTransferManager {
 
-	protected static final Logger logger = LoggerFactory.getLogger(DefaultFileTransfertManager.class);
+	protected static final Logger logger = LoggerFactory.getLogger(DefaultFileTransferManager.class);
 	protected static final Logger fileLogger = LoggerFactory.getLogger(LogTextPanel.LOGGER_NAME);
-	protected boolean allowManyAcquisitionInOneFile;
 	protected static ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
 	
-	public DefaultFileTransfertManager(boolean allowManyAcqsInOneFile ){
-		allowManyAcquisitionInOneFile = allowManyAcqsInOneFile;  
+	public DefaultFileTransferManager(){
 	}
 	
 	
@@ -45,15 +43,10 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 
   		boolean skipCopy = false;
   		if(destination.exists()){
-  			if(allowManyAcquisitionInOneFile){
-  				skipCopy = true;
-          logger.info("File for Analysis {} already exist", a.getName());
-  			} else {
-					String warnMsg ="File for Analysis "+a.getName()+" already exist ! Can't copy acquisition ";
-  				logger.warn(warnMsg);
-					fileLogger.warn(warnMsg);
-  				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
-  			}
+				String warnMsg ="File for Analysis "+a.getName()+" already exist ! Can't copy acquisition ";
+				logger.warn(warnMsg);
+				fileLogger.warn(warnMsg);
+				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
   		}
       
   		if(! analysisFile.exists()){
@@ -113,19 +106,15 @@ public class DefaultFileTransfertManager implements IFileTransfertManager {
 
   		boolean skipCopy = false;
   		if(destination.exists()){
-  			if(allowManyAcquisitionInOneFile){
-  				skipCopy = true;
-          logger.info("File for Analysis {} already exist", a.getName());
-  			} else {
           logger.warn("File for Analysis {} already exist ! Can't copy acquisition ", a.getName());
   				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
-  			}
-        if(! analysisFile.exists()){
-          logger.warn("File for analysis {} can't be find/created ! Can't copy acquisition", a.getName());
-          throw new BackupException("Problem on analysisFile "+analysisFile+" for analysis "+a.getName()+". The file can't be reached or is null");
-        }
   		}
-      
+
+			if(! analysisFile.exists()){
+				logger.warn("File for analysis {} can't be find/created ! Can't copy acquisition", a.getName());
+				throw new BackupException("Problem on analysisFile "+analysisFile+" for analysis "+a.getName()+". The file can't be reached or is null");
+			}
+
   		if(! skipCopy){
            
   			ArrayList<File> filesToDel = new ArrayList<>();

@@ -14,12 +14,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
 import org.slf4j.Logger;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.IFileTransfertManager;
-import fr.edyp.epims.transfer.util.DefaultFileTransfertManager;
+import fr.edyp.epims.transfer.model.IFileTransferManager;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -107,8 +107,8 @@ public class UltraFlexFormat extends JPanel implements DataFormat {
         // DATAFORMAT methods
         ////////////////////
 	
-	public IFileTransfertManager getFileTransfertManager() {
-		return new DefaultFileTransfertManager(false );
+	public IFileTransferManager getFileTransfertManager() {
+		return new DefaultFileTransferManager( );
 	}
         
     /**

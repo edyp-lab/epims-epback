@@ -34,7 +34,7 @@ public class AnalysisOperationMgr {
      if(parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE)
        copy(a);
      else {
-       if(!(a instanceof NemsAnalysis))// Nems special case: zip is already suppressed and source files must not be suppressed
+       if(!(a instanceof NemsAnalysis))// Nems special case: zip is already suppressed, and source files must not be suppressed
          parameters.getDataFormat().getFileTransfertManager().clean(a);
      }
    }
@@ -90,7 +90,7 @@ public class AnalysisOperationMgr {
   
   private void createPimsObjects(Analysis a) throws BackupException{
 
-  	logger.debug(" createPimsObjects "+a.getName());    
+    logger.debug(" createPimsObjects {}", a.getName());
     
   	String spectroName = parameters.getInstrumentName();  	   
   	parameters.getEPimsDataProvider().createAcquisitionAndFilesFor(a, spectroName);

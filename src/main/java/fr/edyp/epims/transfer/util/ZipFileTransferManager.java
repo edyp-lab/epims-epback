@@ -14,18 +14,17 @@ import fr.edyp.epims.transfer.model.BackupException;
 import fr.edyp.epims.transfer.model.MultiFilesAnalysis;
 
 /***
- * IFileTransfertManager for MultiFilesAnalysis which create a Zip in
+ * IFileTransferManager for MultiFilesAnalysis which create a Zip in
  * destination directory.
  * 
  * @author VD225637
  * 
  */
 
-public class ZipFileTransfertManager extends DefaultFileTransfertManager {
+public class ZipFileTransferManager extends DefaultFileTransferManager {
 
-	public ZipFileTransfertManager(boolean allowManyAcqsInOneFile) {
-		super(allowManyAcqsInOneFile);
-
+	public ZipFileTransferManager() {
+		super();
 	}
 
 	@Override
@@ -45,13 +44,8 @@ public class ZipFileTransfertManager extends DefaultFileTransfertManager {
 
 			boolean skipCopy = false;
 			if (destination.exists()) {
-				if (allowManyAcquisitionInOneFile) {
-					skipCopy = true;
-          logger.info("File for Analysis {} already exist", a.getName());
-				} else {
           logger.warn("File for Analysis {} already exist ! Can't copy acquisition ", a.getName());
 					throw new BackupException("Analysis " + a.getName() + " already exist on PIMS-ROOT");
-				}
 			}
 
 			for (File nextFile : ma.getAllAcquisitionFile()) {
@@ -133,13 +127,8 @@ public class ZipFileTransfertManager extends DefaultFileTransfertManager {
 
 			boolean skipCopy = false;
 			if (destination.exists()) {
-				if (allowManyAcquisitionInOneFile) {
-					skipCopy = true;
-          logger.info("File for Analysis {} already exist", a.getName());
-				} else {
-          logger.warn("File for Analysis {} already exist ! Can't copy acquisition ", a.getName());
-					throw new BackupException("Analysis " + a.getName() + " already exist on PIMS-ROOT");
-				}
+				logger.warn("File for Analysis {} already exist ! Can't copy acquisition ", a.getName());
+				throw new BackupException("Analysis " + a.getName() + " already exist on PIMS-ROOT");
 			}
 
 			for (File nextFile : ma.getAllAcquisitionFile()) {

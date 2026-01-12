@@ -2,7 +2,7 @@ package fr.edyp.epims.transfer.model;
 
 import fr.edyp.epims.transfer.util.IEPSystemDataProvider;
 
-public interface IFileTransfertManager {
+public interface IFileTransferManager {
 
 	
 	/**

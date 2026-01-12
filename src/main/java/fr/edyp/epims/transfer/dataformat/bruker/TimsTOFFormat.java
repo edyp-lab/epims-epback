@@ -3,8 +3,8 @@ package fr.edyp.epims.transfer.dataformat.bruker;
 import fr.edyp.epims.transfer.log.LogTextPanel;
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.IFileTransfertManager;
-import fr.edyp.epims.transfer.util.ZipFileTransfertManager;
+import fr.edyp.epims.transfer.model.IFileTransferManager;
+import fr.edyp.epims.transfer.util.ZipFileTransferManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +48,8 @@ public class TimsTOFFormat extends JPanel implements DataFormat {
   }
 
   @Override
-  public IFileTransfertManager getFileTransfertManager() {
-    return new ZipFileTransfertManager(false );
+  public IFileTransferManager getFileTransfertManager() {
+    return new ZipFileTransferManager( );
   }
 
   @Override

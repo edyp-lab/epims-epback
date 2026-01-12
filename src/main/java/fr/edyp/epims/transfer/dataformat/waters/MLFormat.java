@@ -33,8 +33,8 @@ import org.slf4j.Logger;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.IFileTransfertManager;
-import fr.edyp.epims.transfer.util.DefaultFileTransfertManager;
+import fr.edyp.epims.transfer.model.IFileTransferManager;
+import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
 import fr.edyp.epims.transfer.util.ExtensionFileFilter;
 import org.slf4j.LoggerFactory;
 
@@ -198,8 +198,8 @@ public class MLFormat extends JPanel implements DataFormat {
    ////////////////////
    // DATAFORMAT methods
    ////////////////////	
-	public IFileTransfertManager getFileTransfertManager() {
-		return new DefaultFileTransfertManager(false );
+	public IFileTransferManager getFileTransfertManager() {
+		return new DefaultFileTransferManager( );
 	}
 
 	public Analysis[] getAnalysis(File dir) {
