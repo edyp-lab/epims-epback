@@ -4,7 +4,10 @@ import fr.edyp.epims.transfer.log.LogTextPanel;
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
 import fr.edyp.epims.transfer.model.IFileTransferManager;
+import fr.edyp.epims.transfer.preferences.EPBackPreferences;
+import fr.edyp.epims.transfer.preferences.PreferencesKeys;
 import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
+import fr.edyp.epims.transfer.util.FTPFileTransferManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +22,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class NemsFormat extends JPanel implements DataFormat {
 
@@ -58,7 +62,12 @@ public class NemsFormat extends JPanel implements DataFormat {
 
     @Override
     public IFileTransferManager getFileTransfertManager() {
-        return new DefaultFileTransferManager();
+        Preferences preferences = EPBackPreferences.root();
+        String transferMode = preferences.get(PreferencesKeys.TRANSFER_MODE,PreferencesKeys.DEFAULT_TRANSFER_MODE);
+        if(transferMode.equals(PreferencesKeys.DEFAULT_TRANSFER_MODE))
+            return new DefaultFileTransferManager( );
+        else
+            return new FTPFileTransferManager( );
     }
 
     @Override

@@ -4,7 +4,7 @@ import fr.edyp.epims.transfer.log.LogTextPanel;
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
 import fr.edyp.epims.transfer.model.IFileTransferManager;
-import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
+import fr.edyp.epims.transfer.util.ZipFileTransferManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,21 +16,21 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class TimsTOFFormatV2 extends JPanel implements DataFormat {
+public class TimsTOFFormatZip extends JPanel implements DataFormat {
 
   private static final long serialVersionUID = 1L;
-  private final static Logger logger = LoggerFactory.getLogger(TimsTOFFormatV2.class);
+  private final static Logger logger = LoggerFactory.getLogger(TimsTOFFormatZip.class);
   private final static Logger fileLogger = LoggerFactory.getLogger(LogTextPanel.LOGGER_NAME);
   private final static ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
-  private final TimsTOFFactoryV2 analysisFactory;
+  private final TimsTOFFactoryZip analysisFactory;
   private final FileFilter dataFilter;
 
 //  private static final String[] FORMAT_PROPERTIES = { /*USER_PROP, ACQ_TYPE, NB_SHOOTS, NB_ACQ_PER_REP, AUTOX_METHOD_PROP, NB_REPLICAT_PROP, ION_PARENT_MASS */};
 
 
-  public TimsTOFFormatV2(){
-    analysisFactory = new TimsTOFFactoryV2();
-    dataFilter = new TimsTOFFormatV2.TimsTOFDirFilter();
+  public TimsTOFFormatZip(){
+    analysisFactory = new TimsTOFFactoryZip();
+    dataFilter = new TimsTOFFormatZip.TimsTOFFileFilter();
   }
 
   @Override
@@ -49,7 +49,7 @@ public class TimsTOFFormatV2 extends JPanel implements DataFormat {
 
   @Override
   public IFileTransferManager getFileTransfertManager() {
-    return new DefaultFileTransferManager( );
+    return new ZipFileTransferManager( );
   }
 
   @Override
@@ -77,7 +77,7 @@ public class TimsTOFFormatV2 extends JPanel implements DataFormat {
     return this;
   }
 
- private static class TimsTOFDirFilter implements FileFilter {
+ public static class TimsTOFFileFilter implements FileFilter {
 
     @Override
     public boolean accept(File pathname) {
@@ -100,15 +100,6 @@ public class TimsTOFFormatV2 extends JPanel implements DataFormat {
       }
 
       return  nbFound==3;
-    }
-
-  }
-
-  public static class TimsTOFFileFilter implements FileFilter {
-
-    @Override
-    public boolean accept(File pathname) {
-      return true;
     }
 
   }

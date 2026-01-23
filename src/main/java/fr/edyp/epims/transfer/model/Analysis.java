@@ -172,7 +172,7 @@ public interface Analysis {
    
    /**
     * Return the path to the directory on ePims system where the analysis file associated
-    * to this Analysis should be saved. This path is relative to ePims root.
+    * to this Analysis should be saved. This path is an absolute path including to ePims root.
     * 
     */
    String getDestination();
@@ -183,8 +183,23 @@ public interface Analysis {
     *
     */
    void setDestination(String destinationDir);
-   
-   /**
+
+  /**
+   * Return the path to the directory on ePims system where the analysis file associated
+   * to this Analysis should be saved. This path is relative to ePims root.
+   *
+   */
+  String getRelativeDestination();
+
+  /**
+   * set the relative directory destination path, from ePims root, on ePims system where the analysis file associated
+   * to this Analysis should be saved.
+   * The path should be relative to ePims root.
+   *
+   */
+  void setRelativeDestination(String destinationDir);
+
+  /**
     * Return the contentFilter to get only valid files for this analysis.
     *  
     * @return a FileFilter to get only valid files from directory of this analysis.

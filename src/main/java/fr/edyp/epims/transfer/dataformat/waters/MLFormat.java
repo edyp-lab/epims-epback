@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,6 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import fr.edyp.epims.transfer.log.LogTextPanel;
+import fr.edyp.epims.transfer.preferences.EPBackPreferences;
+import fr.edyp.epims.transfer.preferences.PreferencesKeys;
+import fr.edyp.epims.transfer.util.FTPFileTransferManager;
 import org.slf4j.Logger;
 
 import fr.edyp.epims.transfer.model.Analysis;
@@ -198,9 +202,14 @@ public class MLFormat extends JPanel implements DataFormat {
    ////////////////////
    // DATAFORMAT methods
    ////////////////////	
-	public IFileTransferManager getFileTransfertManager() {
-		return new DefaultFileTransferManager( );
-	}
+   public IFileTransferManager getFileTransfertManager() {
+     Preferences preferences = EPBackPreferences.root();
+     String transferMode = preferences.get(PreferencesKeys.TRANSFER_MODE,PreferencesKeys.DEFAULT_TRANSFER_MODE);
+     if(transferMode.equals(PreferencesKeys.DEFAULT_TRANSFER_MODE))
+       return new DefaultFileTransferManager( );
+     else
+       return new FTPFileTransferManager( );
+   }
 
 	public Analysis[] getAnalysis(File dir) {
     logger.info("reading directory "+dir.getAbsolutePath());

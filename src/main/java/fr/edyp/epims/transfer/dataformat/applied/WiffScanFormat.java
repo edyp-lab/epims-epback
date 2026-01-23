@@ -6,9 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import fr.edyp.epims.transfer.model.Analysis;
-import fr.edyp.epims.transfer.model.IFileTransferManager;
 import fr.edyp.epims.transfer.util.ExtensionFileFilterName;
-import fr.edyp.epims.transfer.util.ZipFileTransferManager;
 
 public class WiffScanFormat  extends QTrapFormat {
   
@@ -32,10 +30,10 @@ public class WiffScanFormat  extends QTrapFormat {
   ////////////////////
   // DATAFORMAT methods
   ////////////////////
-	@Override
-	public IFileTransferManager getFileTransfertManager() {
-		return new ZipFileTransferManager( );
-	}
+//	@Override
+//	public IFileTransferManager getFileTransfertManager() {
+//		return new ZipFileTransferManager( );
+//	}
      
   public JComponent getConfigurator() {
     return this;

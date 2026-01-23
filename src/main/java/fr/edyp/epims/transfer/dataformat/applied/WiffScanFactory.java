@@ -24,7 +24,7 @@ public class WiffScanFactory extends QTrapFactory {
 
 	public List<Analysis> createAnalysis(File file) {
 		
-		List<Analysis> analysis = new ArrayList<Analysis>();
+		List<Analysis> analysis = new ArrayList<>();
 		
 		if(file != null && validAnalysisFile(file.getAbsolutePath()) ){
 			logger.info("- WiffScanFactory createAnalysis");					

@@ -12,10 +12,10 @@ import java.util.List;
 public class TimsTOFAnalysisTest extends TestCase {
   private static final Logger logger = LoggerFactory.getLogger(TimsTOFAnalysisTest.class);
 
-  private TimsTOFFactory tofFactory;
+  private TimsTOFFactoryZip tofFactory;
 
   protected void setUp() throws Exception {
-    tofFactory = new TimsTOFFactory();
+    tofFactory = new TimsTOFFactoryZip();
   }
 
   public void testReadAnalysis(){

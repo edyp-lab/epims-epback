@@ -47,6 +47,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
    private File analysisDescriptionFile;
    private File analysisFile;
    private String analysisDestination;
+  private String analysisRelativeDestination;
    private Analysis.AnalysisType analyseType;
    private String sample;
    private String description;
@@ -296,7 +297,17 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
 		this.analysisDestination = destinationDir;
 	}
 
-	public void propertyChange(PropertyChangeEvent evt) {
+  @Override
+  public String getRelativeDestination() {
+    return this.analysisRelativeDestination;
+  }
+
+  @Override
+  public void setRelativeDestination(String destinationDir) {
+    this.analysisRelativeDestination = destinationDir;
+  }
+
+  public void propertyChange(PropertyChangeEvent evt) {
 		this.associatedFiles = null;
 		if(evt.getNewValue() != null)
 			setAssociatedFiles(); 

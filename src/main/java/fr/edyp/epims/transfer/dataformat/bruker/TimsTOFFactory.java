@@ -11,7 +11,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,9 +18,17 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class TimsTOFFactory extends AbstractCacheFactory  {
 
@@ -54,7 +61,7 @@ public class TimsTOFFactory extends AbstractCacheFactory  {
       throw new IllegalArgumentException("Invalid timsTOF File specified");
     }
 
-    List<Analysis> analysisList = new ArrayList<Analysis>();
+    List<Analysis> analysisList = new ArrayList<>();
 
     long lastModified = file.lastModified();
     Date date = new Date(lastModified);
@@ -64,7 +71,6 @@ public class TimsTOFFactory extends AbstractCacheFactory  {
     analysis.setDuration(0.0f);
     analysis.setOperator("No-operator-found");
     analysis.setSample("No-Sample-found");
-    analysis.setEstimatedSize(0L);
     readAndSetDataForAnalysis(analysis);
     analysisList.add(analysis);
     return analysisList;
@@ -72,7 +78,7 @@ public class TimsTOFFactory extends AbstractCacheFactory  {
 
   private void readAndSetDataForAnalysis(TimsTOFAnalysis a) {
     try {
-      File dir = a.getParentDirFile();
+      File dir = a.getParentDirFile(); //Timstoff .d folder
       File[] splFile = dir.listFiles((FileFilter) new NameFileFilter(SAMPLEXML_FILENAME));
       if (splFile.length > 0) {
         FileInputStream fis = new FileInputStream(splFile[0]);

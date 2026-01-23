@@ -1,258 +1,58 @@
 package fr.edyp.epims.transfer.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import fr.edyp.epims.transfer.log.LogTextPanel;
-import org.slf4j.Logger;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.BackupException;
-import fr.edyp.epims.transfer.model.IFileTransferManager;
-import org.slf4j.LoggerFactory;
 
-public class DefaultFileTransferManager implements IFileTransferManager {
+public class DefaultFileTransferManager extends AbstractFileTransfertManager {
 
-	protected static final Logger logger = LoggerFactory.getLogger(DefaultFileTransferManager.class);
-	protected static final Logger fileLogger = LoggerFactory.getLogger(LogTextPanel.LOGGER_NAME);
-	protected static ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
-	
 	public DefaultFileTransferManager(){
+		super();
 	}
-	
-	
-	public void copyOnly(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws BackupException {
-		//TODO VD : REMOVE copied file in case of error 
-  	try {
-			File analysisFile = a.getFile();
-			if(analysisFile == null) {
-				throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
-			}
 
-      logger.debug("Copy File for Analysis {}: {}", a.getName(), analysisFile.getAbsolutePath());
-  		long start = System.currentTimeMillis();
-  		File destination = new File(a.getDestination(), a.getFileName());
-      logger.debug("Analysis File destination= {}", destination.getAbsolutePath());
+	// ---- AbstractFileTransfertManager methods -----
+	@Override
+	protected boolean destinationExist(String destPath) {
+		File f = new File(destPath);
+		return f.exists();
+	}
 
-  		boolean skipCopy = false;
-  		if(destination.exists()){
-				String warnMsg ="File for Analysis "+a.getName()+" already exist ! Can't copy acquisition ";
-				logger.warn(warnMsg);
-				fileLogger.warn(warnMsg);
-				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
-  		}
-      
-  		if(! analysisFile.exists()){
-				String warnMsg ="File for analysis "+a.getName()+" can't be find/created ! Can't copy acquisition";
-        logger.warn(warnMsg);
-				fileLogger.warn(warnMsg);
-        throw new BackupException("Problem on analysisFile "+analysisFile+" for analysis "+a.getName()+". The file can't be reached or is null");
-      }
-       
-  		if(! skipCopy){
-        logger.debug(" Copy only {} to {}", analysisFile, destination.getAbsolutePath());
-  			FileUtils.secureCopy(analysisFile, destination, a.getContentFilter());
-  			long end = System.currentTimeMillis();
-  			long duration = (end-start)/1000;
-  			String msg = RSCS.getString("copy.success");
-  			Object[] args = {a.getFileName(), destination.getAbsolutePath(), duration};
-  			msg = MessageFormat.format(msg, args );
-  			fileLogger.info(msg);
-       
-  			File [] associatedFiles = a.getAssociatedFiles();
-  			for (int i = 0; i < associatedFiles.length; i++) {
-  				start = System.currentTimeMillis();
-  				destination = ePimsDataProvider.getAssociatedFileDestinationDir(a, associatedFiles[i], a.getAssociatedFileType(associatedFiles[i]));
-  				destination =  new File(destination, associatedFiles[i].getName());  	  		
-  				FileUtils.secureCopy(associatedFiles[i], destination);
-  				end = System.currentTimeMillis();
-  				duration = (end-start)/1000;
-  				String assMsg = RSCS.getString("copy.success");
-  				Object[] assArgs = {associatedFiles[i].getName(), destination.getAbsolutePath(), duration};
-      		 assMsg = MessageFormat.format(assMsg, assArgs );
-      		 fileLogger.info(assMsg);
-  			}	
-  		}
-  	} catch (FileNotFoundException e) {
-			e.printStackTrace();
-       throw new BackupException("impossible de trouver le fichier pour l'analyse "+a.getName(), e);
-    } catch (IOException e) {
-			e.printStackTrace();
-       throw new BackupException("impossible d'ecrire le fichier de l'analyse "+a.getName(),e);
+	@Override
+	protected String getDestinationPath(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws IOException {
+		File destination = new File(a.getDestination(), a.getFileName());
+		return destination.getAbsolutePath();
+	}
+
+	@Override
+	protected String getAssociatedDataDestinationPath(Analysis a, File associatedFile, String fileType, IEPSystemDataProvider ePimsDataProvider) throws IOException {
+    try {
+      File assocFile = ePimsDataProvider.getAssociatedFileDestinationDir(a, associatedFile, a.getAssociatedFileType(associatedFile));
+			assocFile = new File(assocFile, associatedFile.getName());
+			return assocFile.getAbsolutePath();
+		} catch (BackupException ex) {
+      throw new RuntimeException(ex);
     }
-		
-	}
-
-	
-	public void move(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws BackupException {
-  	try {
-  		
-      File analysisFile = a.getFile();
-			if(analysisFile == null) {
-				throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
-			}
-
-      logger.debug("Move File for Analysis {}: {}", a.getName(), analysisFile.getAbsolutePath());
-  		long start = System.currentTimeMillis();
-  		File destination = new File(a.getDestination(), a.getFileName());
-      logger.debug("Analysis File destination= {}", destination.getAbsolutePath());
-
-  		boolean skipCopy = false;
-  		if(destination.exists()){
-          logger.warn("File for Analysis {} already exist ! Can't copy acquisition ", a.getName());
-  				throw new BackupException("Analysis "+a.getName()+" already exist on PIMS-ROOT");
-  		}
-
-			if(! analysisFile.exists()){
-				logger.warn("File for analysis {} can't be find/created ! Can't copy acquisition", a.getName());
-				throw new BackupException("Problem on analysisFile "+analysisFile+" for analysis "+a.getName()+". The file can't be reached or is null");
-			}
-
-  		if(! skipCopy){
-           
-  			ArrayList<File> filesToDel = new ArrayList<>();
-  			FileUtils.secureCopy(analysisFile, destination, a.getContentFilter());         
-  			long end = System.currentTimeMillis();
-  			long duration = (end-start)/1000;
-      	String msg = RSCS.getString("copy.success");
-      	Object[] args = {a.getFileName(), destination.getAbsolutePath(), duration};
-      	msg = MessageFormat.format(msg, args );
-      	fileLogger.info(msg);
-      
-      	filesToDel.add(analysisFile);
-       
-      	File [] associatedFiles = a.getAssociatedFiles();
-      	for (int i = 0; i < associatedFiles.length; i++) {
-      		start = System.currentTimeMillis();
-      		destination = ePimsDataProvider.getAssociatedFileDestinationDir(a, associatedFiles[i], a.getAssociatedFileType(associatedFiles[i]));
-      		destination =  new File(destination, associatedFiles[i].getName());  	  	
-      		FileUtils.secureCopy(associatedFiles[i], destination);
-      		end = System.currentTimeMillis();
-      		duration = (end-start)/1000;
-      		String assMsg = RSCS.getString("copy.success");
-      		Object[] assArgs = {associatedFiles[i].getName(), destination.getAbsolutePath(), duration};
-      		assMsg = MessageFormat.format(assMsg, assArgs );
-      		fileLogger.info(assMsg);
-      		filesToDel.add(associatedFiles[i]);
-      	}
-      
-      	boolean result = delete(filesToDel);
-      	if(!result){
-      		String delMsg = RSCS.getString("delete.error");
-      		Object[] delArgs = {a.getName()};
-      		delMsg = MessageFormat.format(delMsg,delArgs );       
-      		logger.debug(delMsg);
-      		fileLogger.info(delMsg);
-      	}
-  		}
-  	} catch (FileNotFoundException e) {
-      throw new BackupException("impossible de trouver le fichier pour l'analyse "+a.getName(), e);
-    } catch (IOException e) {
-      throw new BackupException("impossible d'ecrire le fichier de l'analyse "+a.getName(),e);
-    }
-
-		
-	}
-
-	
-	public void clean(Analysis a) throws BackupException {
-    logger.info(" Suppression de {}", a.getName());
-    long start = System.currentTimeMillis();
-    File analysisSrc = a.getSourceFile(); // Clean original analysis file
-    boolean delresult = deleteFile(analysisSrc);
-    long end = System.currentTimeMillis();
-    long duration = (end-start)/1000;
-    if(delresult){
-      String msg = RSCS.getString("clean.success");
-      Object[] args = {analysisSrc.getName(), duration};
-      msg = MessageFormat.format(msg, args );
-      fileLogger.info(msg);
-    } else{
-      String msg = RSCS.getString("clean.error");
-      Object[] args = {analysisSrc.getName()};
-      msg = MessageFormat.format(msg, args );
-      fileLogger.info(msg);
-			throw new BackupException("Error cleaning analysisFile "+analysisSrc.getName()+" for analysis "+a.getName()+". The file can't be deleted. It may be locked");
-    }
-    
-    File [] associatedFiles = a.getAssociatedFiles();
-		if(associatedFiles.length >0) {
-			start = System.currentTimeMillis();
-			delresult = delete(Arrays.asList(associatedFiles));
-			end = System.currentTimeMillis();
-			duration = (end - start) / 1000;
-			if (delresult) {
-				String msg = RSCS.getString("clean.success");
-				Object[] args = {associatedFiles.length+" file(s) associated to "+a.getName(), duration};
-				msg = MessageFormat.format(msg, args);
-				fileLogger.info(msg);
-			} else {
-				String msg = RSCS.getString("clean.error");
-				Object[] args = {associatedFiles.length+" file(s) associated to "+a.getName()};
-				msg = MessageFormat.format(msg, args);
-				fileLogger.info(msg);
-			}
-		}
-	}
-
-
-  private boolean delete(List<File> files){
-  	boolean allDeletable = true;
-  	for(int i=0; i< files.size(); i++){
-  		File f = files.get(i);
-  		allDeletable = allDeletable && checkDeletable(f);
-      logger.debug(" Result check File {} deletable {}", f.getName(), allDeletable);
-  	}
-     
-  	if(!allDeletable){
-  		return false;
-  	}	
-  	
-  	logger.debug(" Start DELETE ");
-
-  	boolean succes = true;
-  	for(int i=0; i< files.size(); i++){
-      logger.debug(" Delete file {}", files.get(i).getName());
-  		succes = succes && deleteFile(files.get(i));
-  	}
-     
-  	return succes;
   }
-   
-  private boolean deleteFile(File file){
-  	boolean result= true; 
-    if(file.isDirectory()){
-      File[] files = file.listFiles();
-			if(files!=null) {
-				for (int i = 0; i < files.length; i++) {
-					result = result && deleteFile(files[i]);
-				}
-			}
-    }
-          
-    result = result && file.delete();
-    return result;
-  }
-   
-  private boolean checkDeletable(File f){
-    boolean deletable = true;
-    if(f.isDirectory()){
-      File[] files = f.listFiles();
-			if (files!=null) {
-				for (int i = 0; i < files.length; i++) {
-					deletable = deletable && checkDeletable(files[i]);
-				}
-			}
-    }else
-      deletable = f.canWrite();
-    return deletable;
-  }	
-	
+
+	@Override
+	protected List<File> getAnalysisFilesToDelete(Analysis a) {
+		return List.of(a.getSourceFile());
+	}
+
+	@Override
+	protected void doAnalysisCopy(Analysis analysis, String destPath) throws IOException {
+		FileUtils.secureCopy(analysis.getFile(), new File(destPath), analysis.getContentFilter());
+	}
+
+	@Override
+	protected void doAssociatedDataCopy(File src, String destPath) throws IOException {
+		FileUtils.secureCopy(src, new File(destPath));
+	}
+
+	protected void afterCopy() {
+
+	}
 }

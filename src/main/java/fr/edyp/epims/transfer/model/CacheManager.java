@@ -10,7 +10,7 @@ import java.util.Map;
 
 import fr.edyp.epims.transfer.dataformat.applied.QTrapAnalysis;
 import fr.edyp.epims.transfer.dataformat.bruker.TimsTOFAnalysis;
-import fr.edyp.epims.transfer.dataformat.bruker.TimsTOFAnalysisV2;
+import fr.edyp.epims.transfer.dataformat.bruker.TimsTOFAnalysisZip;
 import fr.edyp.epims.transfer.dataformat.nems.NemsAnalysis;
 import fr.edyp.epims.transfer.dataformat.thermo.LTQAnalysis;
 import org.perf4j.slf4j.Slf4JStopWatch;
@@ -36,9 +36,9 @@ public class CacheManager {
 	private final XStream xstream;
 	
 	private CacheManager(){
-		analysisPerConfig = new HashMap<String, Map<String, List<Analysis>>>();
+		analysisPerConfig = new HashMap<>();
 		xstream = new XStream(new DomDriver());
-//		xstream.registerConverter(new AnalysisConverter());
+
 		initializeXStream();
 	}
 	
@@ -51,8 +51,8 @@ public class CacheManager {
 		typeClasses[4] = UltraFlexAnalysis.class;
 		typeClasses[5] = WiffScanAnalysis.class;
 		typeClasses[6] = NemsAnalysis.class;
-		typeClasses[7] = TimsTOFAnalysis.class;
-		typeClasses[8] = TimsTOFAnalysisV2.class;
+		typeClasses[7] = TimsTOFAnalysisZip.class;
+		typeClasses[8] = TimsTOFAnalysis.class;
 		xstream.allowTypes(typeClasses);
 
 		xstream.omitField(QTrapAnalysis.class, "dataFormat");
@@ -66,16 +66,16 @@ public class CacheManager {
 		xstream.aliasField("destinationPath", fr.edyp.epims.transfer.dataformat.thermo.LTQAnalysis.class,"analysisDestination");
 		xstream.aliasField("user", fr.edyp.epims.transfer.dataformat.thermo.LTQAnalysis.class,"operator");
 
+		xstream.omitField(TimsTOFAnalysisZip.class, "dataFormat");
+		xstream.omitField(TimsTOFAnalysisZip.class, "associatedFiles");
+		xstream.omitField(TimsTOFAnalysisZip.class, "allAcqFiles");
+		xstream.omitField(TimsTOFAnalysisZip.class, "zipFile");
+
 		xstream.omitField(TimsTOFAnalysis.class, "dataFormat");
 		xstream.omitField(TimsTOFAnalysis.class, "associatedFiles");
 		xstream.omitField(TimsTOFAnalysis.class, "allAcqFiles");
+		xstream.omitField(TimsTOFAnalysis.class, "isInitialised");
 		xstream.omitField(TimsTOFAnalysis.class, "zipFile");
-
-		xstream.omitField(TimsTOFAnalysisV2.class, "dataFormat");
-		xstream.omitField(TimsTOFAnalysisV2.class, "associatedFiles");
-		xstream.omitField(TimsTOFAnalysisV2.class, "allAcqFiles");
-		xstream.omitField(TimsTOFAnalysisV2.class, "isInitialised");
-		xstream.omitField(TimsTOFAnalysisV2.class, "zipFile");
 
 		xstream.omitField(MLAnalysis.class, "dataFormat");
 		xstream.omitField(MLAnalysis.class, "associatedFiles");
@@ -92,10 +92,11 @@ public class CacheManager {
 		xstream.omitField(NemsAnalysis.class, "dataFormat");
 		xstream.omitField(NemsAnalysis.class, "associatedFiles");
 		xstream.omitField(NemsAnalysis.class, "msetArrayList");
-		xstream.omitField(NemsAnalysis.class, "files");
-		xstream.omitField(NemsAnalysis.class, "statusMask");//test ?!
-		xstream.omitField(NemsAnalysis.class, "fileSize");
+		xstream.omitField(NemsAnalysis.class, "allAcqFiles");
+//		xstream.omitField(NemsAnalysis.class, "statusMask");//test ?!
+//		xstream.omitField(NemsAnalysis.class, "fileSize");
 		xstream.omitField(NemsAnalysis.class, "nemsFilter");
+		xstream.omitField(NemsAnalysis.class, "zipFile");
 		xstream.aliasField("analysisDirectoryFile", fr.edyp.epims.transfer.dataformat.nems.NemsAnalysis.class,"analysisFile");
 		xstream.aliasField("destinationPath", fr.edyp.epims.transfer.dataformat.nems.NemsAnalysis.class,"analysisDestination");
 
@@ -151,25 +152,24 @@ public class CacheManager {
 	}
 	
 	/**
-	 * Return all the analysis associated to the specified file. The 
+	 * Return all the analysis associated with the specified file. The
 	 * file absolute path should be specified. 
 	 *    
-	 * @param acqFileAbsolutePath String representation of the absolute path of the Analysis file
-	 * @return all analysis associated to specified file
+	 * @param acqFileAbsolutePath String representation of the absolute path where to get Analysis from
+	 * @return all analysis associated with a specified file
 	 */
 	public Analysis[] getAnalysis(String acqFileAbsolutePath) {
 		List<Analysis> all = currentAnalysisMap.get(acqFileAbsolutePath);
 		if(all == null)
 			return null;
-		return all.toArray(new Analysis[all.size()]);
+		return all.toArray(new Analysis[0]);
 	}
 	
 	/**
-	 * Set specified File Absolute Path / Analysis Map  for current configuration. This will 
+	 * Set specified File Absolute Path / Analysis Map for current configuration. This will
 	 * replace all previously saved analysis. 
 	 *    
 	 * @param analysisPerFile String representation of the absolute path of the file associated to Analysis
-	 * @return all analysis associated to specified file
 	 */
 	public void setAnalysis(Map<String, List<Analysis>> analysisPerFile) {
 		currentAnalysisMap.clear();
@@ -197,16 +197,16 @@ public class CacheManager {
 
 	}
 	
-	/**
-	 * Remove all the analysis associated to specified file. The 
-	 * file absolute path should be specified. 
-	 * 
-	 * @param acqFileAbsolutePath Absolute path of acquisition file to remove from cache.
-	 */
-	public void removeAnalysis(String acqFileAbsolutePath) {
-		currentAnalysisMap.remove(acqFileAbsolutePath);
-	}
-		
+//	/**
+//	 * Remove all the analysis associated to specified file. The
+//	 * file absolute path should be specified.
+//	 *
+//	 * @param acqFileAbsolutePath Absolute path of acquisition file to remove from cache.
+//	 */
+//	public void removeAnalysis(String acqFileAbsolutePath) {
+//		currentAnalysisMap.remove(acqFileAbsolutePath);
+//	}
+
 	public void save(String cfg) throws IOException{
 		
 		File f = new File(cfg+".xml");
@@ -223,7 +223,7 @@ public class CacheManager {
 //				}
 //			}
 		} catch (IOException e) {
-			logger.debug("IOE "+e.getMessage());
+      logger.debug("IOE {}", e.getMessage());
 			e.printStackTrace();
 			throw e;
 		}		

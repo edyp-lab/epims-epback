@@ -102,6 +102,13 @@ public class DecoratedAnalysis implements Analysis {
 		analysis.setDestination(destinationDir);
 	}
 
+	public String getRelativeDestination() {
+		return analysis.getRelativeDestination();
+	}
+	public void setRelativeDestination(String destinationDir) {
+		analysis.setRelativeDestination(destinationDir);
+	}
+
 	public FileFilter getContentFilter() {
 		return analysis.getContentFilter();
 	}

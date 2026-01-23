@@ -43,8 +43,8 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	private String ePimsRootPath;
 
 	/**
-	 * Map used in function getDestinationDir, in order to reduce the number of
-	 * WS request that slows down eP-Back, the map keep the relation
+	 * Map used in function getDestinationDir, to reduce the number of
+	 * WS requests that slows down eP-Back, the map keep the relation
 	 * sample-AcquPath
 	 */
 	private final Map<String, String> sampleNameToAcquPath = new HashMap<>();
@@ -177,7 +177,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	}
 
 	/**
-	 * Create an AcquisitionFileDescriptor with the informations of the given
+	 * Create an AcquisitionFileDescriptor with the information of the given
 	 * Analysis. BEWARE : this AcquisitionFileDescriptor will not have an
 	 * instrumentDescriptor!
 	 * 
@@ -296,6 +296,50 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 		return destination;
 	}
 
+	@Override
+	public String getRelativeAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException {
+		String assocAnalysePath = "";
+		if (Analysis.SPECTRA_FILETYPE.equals(fileType)) {
+			// Only valid for research analysis
+			if (!a.getType().equals(Analysis.AnalysisType.RESEARCH)) {
+				String msg = RSCS.getString("analysis.invalid.associated.file.type");
+				Object[] args = { a.getName() };
+				throw new BackupException(MessageFormat.format(msg, args));
+			}
+
+			SampleJson splDescr = AcquisitionServices.getSampleJson(a.getSample());
+			if (splDescr == null) {
+				String msg = RSCS.getString("analysis.invalid.sample.description");
+				Object[] args = { a.getName() };
+				throw new BackupException(MessageFormat.format(msg, args));
+			}
+
+			StudyPathJson studyPathJson = AcquisitionServices.getStudyPathJson(a.getSample());
+
+			try {
+
+				if (studyPathJson != null ) {
+					String spectraRelativePath = SystemServices.getSpectraRelativePath();
+					assocAnalysePath = spectraRelativePath !=null ?  studyPathJson+"/" +spectraRelativePath : null;
+
+					// Destination dir not exist => it must be created
+					if(assocAnalysePath == null ){
+						String msg =" No folder specified for SPECTRA !! Contact your administrator ";
+						throw new BackupException(msg);
+					}
+
+				} else {
+						throw new BackupException("Can't define Study Path ");
+				}
+			} catch (BackupException epce2) {
+				String msg = RSCS.getString("epims.getinfo.error");
+				Object[] args = { epce2.getMessage() };
+				throw new BackupException(MessageFormat.format(msg, args));
+			}
+		}
+		return assocAnalysePath;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -328,8 +372,8 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 			splDescr.setName(analysis.getSample());
 			acqFileMsg.setSampleDescriptor(splDescr);
 
-			// Try to get temporarily the acqPath from the research sample (if it's
-			// not a research sample the path must be retrieve from the server)
+			// Try to get temporary the acqPath from the research sample (if it's
+			// not a research sample the path must be retrieved from the server)
 			tempAcqPath = sampleNameToAcquPath.get(analysis.getSample());
 		}
 
@@ -349,6 +393,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 			} else {
         logger.debug(" Get Destination for {} => {}", analysis.getName(), acqPath);
 				destination = new File(getPimsRootPath(), acqPath);
+				tempAcqPath = acqPath;
 				// add this result in the HashMap
 				sampleNameToAcquPath.put(analysis.getSample(), acqPath);
 				stopWatch.lap("ePims getDestinationDir.from WS");
@@ -362,9 +407,70 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 		}
 
 		analysis.setDestination(destination.getAbsolutePath());
+		analysis.setRelativeDestination(tempAcqPath);
 		stopWatch.stop();
 		return destination;
 	}
+
+//	@Override
+//	public String getRelativeDestinationDir(Analysis analysis, BackupParameters param) throws BackupException {
+//
+//		StopWatch stopWatch = new Slf4JStopWatch("ePims getRelativeDestinationDir", analysis.getName());
+//		String tempAcqPath = null;
+//		String acqPath="";
+//
+//		AcquisitionFileMessageJson acqFileMsg = new AcquisitionFileMessageJson();
+//
+//		InstrumentJson instrDescriptor = AcquisitionServices.getInstrumentJson(param.getInstrumentName());
+//		Integer instrId = instrDescriptor != null ? instrDescriptor.getId() : -1;
+//		AcquisitionFileDescriptorJson acqFileDesc = createAcquisitionFileDescriptor(analysis);
+//
+//		ProtocolApplicationJson protocolApplicationJson = acqFileDesc.getAcquisition();
+//		AcquisitionJson acquisitionJson = protocolApplicationJson.getAcquisitionJson();
+//		acquisitionJson.setInstrumentId(instrId);
+//		acquisitionJson.setInstrumentName(param.getInstrumentName());
+//
+//		acqFileMsg.setAcquisitionFileDescriptor(acqFileDesc);
+//
+//		if (analysis.getType() == Analysis.AnalysisType.RESEARCH) {
+//			SampleJson splDescr = new SampleJson();
+//			splDescr.setName(analysis.getSample());
+//			acqFileMsg.setSampleDescriptor(splDescr);
+//
+//			// Try to get temporary the acqPath from the research sample (if it's
+//			// not a research sample the path must be retrieved from the server)
+//			tempAcqPath = sampleNameToAcquPath.get(analysis.getSample());
+//		}
+//
+//		if (tempAcqPath == null) {
+//
+//			if (analysis.getType() == Analysis.AnalysisType.RESEARCH)
+//				logger.debug("{} not found in the cache", analysis.getSample());
+//
+//			// So we must request threw WS to get the sample name and then add this
+//			// result in the hash map
+//
+//			acqPath = AcquisitionServices.getAcquisitionDestinationPath(acqFileMsg);
+//			if (acqPath == null) {
+//				String msg = RSCS.getString("epims.getinfo.error");
+//				//Object[] args = { epce2.getMessage() };
+//				throw new BackupException(MessageFormat.format(msg, ""));
+//			} else {
+//				logger.debug(" Get Destination for {} => {}", analysis.getName(), acqPath);
+//				sampleNameToAcquPath.put(analysis.getSample(), acqPath);
+//				stopWatch.lap("ePims getDestinationDir.from WS");
+//			}
+//
+//		} else {// we found the sampleName in the map so take the acqPath
+//			// associated
+//			logger.debug(" Get Destination from the hashMap {} => {}", analysis.getName(), tempAcqPath);
+//			stopWatch.lap("ePims getDestinationDir.from Cache");
+//		}
+//
+////		analysis.setDestination(destination.getAbsolutePath());
+//		stopWatch.stop();
+//		return acqPath;
+//	}
 
 	/*
 	 * (non-Javadoc)

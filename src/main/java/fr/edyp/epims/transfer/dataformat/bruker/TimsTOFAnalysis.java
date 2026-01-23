@@ -2,7 +2,6 @@ package fr.edyp.epims.transfer.dataformat.bruker;
 
 import fr.edyp.epims.transfer.model.AbstractAnalysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.MultiFilesAnalysis;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -11,14 +10,15 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimsTOFAnalysis extends AbstractAnalysis  implements MultiFilesAnalysis {
+public class TimsTOFAnalysis extends AbstractAnalysis  {
 
   private TimsTOFFormat dataFormat;
 
   private final File dirFile;
-  private List<File> allAcqFiles;
+  private List<File> allAcqFiles = new ArrayList<>();
   private File zipFile = null;
-
+  private final String zipFileName;
+  private boolean isInitialised = false;
 
   public TimsTOFAnalysis(File f, TimsTOFFormat format){
     dirFile = f;
@@ -26,6 +26,7 @@ public class TimsTOFAnalysis extends AbstractAnalysis  implements MultiFilesAnal
     dataFormat = format;
     status = ANALYSIS_STATUS_UNKNOWN;
     setName(FilenameUtils.getBaseName(dirFile.getName()));
+    zipFileName = dirFile.getName()+".zip";
     determineType();
     try {
       initFile();
@@ -40,8 +41,35 @@ public class TimsTOFAnalysis extends AbstractAnalysis  implements MultiFilesAnal
 
   @Override
   public File getFile() {
-      return analysisFile;
+    if(zipFile == null ) {
+      try {
+        if(!isInitialised)
+          initFile();
+        if (!allAcqFiles.isEmpty()) {
+          zipFile = new File(dirFile.getParentFile(),dirFile.getName()+".zip");
+          boolean zipCreateSucess = fr.edyp.epims.transfer.util.FileUtils.copyFilesToOneZip(zipFile, allAcqFiles, dirFile, true);
+          if(zipCreateSucess) {
+            estimatedSize = zipFile.length();
+          } else {
+            zipFile = null;
+          }
+        }
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return zipFile;
   }
+
+  public File getSourceFile() {
+    return dirFile;
+  }
+
+  @Override //Zip file should be removed
+  public boolean removeTemporaryZipFile() {
+    return true;
+  }
+
 
   private void initFile()  {
 
@@ -51,29 +79,16 @@ public class TimsTOFAnalysis extends AbstractAnalysis  implements MultiFilesAnal
       for (File nextF : allAcqFiles){
         estimatedSize += nextF.length();
       }
-      zipFile = new File(dirFile.getParentFile(),dirFile.getName()+".zip");
     }
-  }
-
-  public List<File> getAllAcquisitionFile(){
-    if(allAcqFiles ==null) {
-      initFile();
-    }
-    return allAcqFiles;
-  }
-
-  public boolean keepRelativePath(){
-    return true;
+    isInitialised = true;
   }
 
   @Override
   public String getFileName() {
-    if(zipFile == null)
-      return analysisFile.getName();
-    else
-      return zipFile.getName();
+   return zipFileName;
   }
 
+  // Use to accept File from getFile() : zipFile
   @Override
   public FileFilter getContentFilter() {
     return new TimsTOFFormat.TimsTOFFileFilter();
@@ -91,13 +106,8 @@ public class TimsTOFAnalysis extends AbstractAnalysis  implements MultiFilesAnal
 
   @Override
   public void setDataFormat(DataFormat dataFormat) {
-    if(dataFormat instanceof TimsTOFFormat )
+    if(dataFormat instanceof TimsTOFFormat)
         this.dataFormat = (TimsTOFFormat) dataFormat;
-  }
-
-  public void setDestination(String destinationDir) {
-    super.setDestination(destinationDir);
-    zipFile = new File(destinationDir,analysisFile.getName()+".zip");
   }
 
 }

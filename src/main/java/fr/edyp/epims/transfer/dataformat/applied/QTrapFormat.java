@@ -13,13 +13,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fr.edyp.epims.transfer.model.IFileTransferManager;
+import fr.edyp.epims.transfer.preferences.EPBackPreferences;
+import fr.edyp.epims.transfer.preferences.PreferencesKeys;
 import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
+import fr.edyp.epims.transfer.util.FTPFileTransferManager;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,7 +76,12 @@ public class QTrapFormat extends JPanel implements DataFormat {
 	// DATAFORMAT methods
 	// //////////////////
 	public IFileTransferManager getFileTransfertManager() {
-		return new DefaultFileTransferManager();
+		Preferences preferences = EPBackPreferences.root();
+		String transferMode = preferences.get(PreferencesKeys.TRANSFER_MODE,PreferencesKeys.DEFAULT_TRANSFER_MODE);
+		if(transferMode.equals(PreferencesKeys.DEFAULT_TRANSFER_MODE))
+			return new DefaultFileTransferManager( );
+		else
+			return new FTPFileTransferManager( );
 	}
 
 	public Analysis[] getAnalysis(File dir) {

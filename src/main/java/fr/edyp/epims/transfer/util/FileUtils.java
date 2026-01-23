@@ -188,5 +188,59 @@ public class FileUtils {
 		  }
 	  }
   }
-  
+
+  public static boolean checkDeletable(File f){
+    boolean deletable = true;
+    if(f.isDirectory()){
+      File[] files = f.listFiles();
+      if (files!=null) {
+        for (int i = 0; i < files.length; i++) {
+          deletable = deletable && checkDeletable(files[i]);
+        }
+      }
+    }else
+      deletable = f.canWrite();
+    return deletable;
+  }
+
+
+  public static boolean deleteAllFilesOrNone(List<File> files){
+    boolean allDeletable = true;
+    for(int i=0; i< files.size(); i++){
+      File f = files.get(i);
+      allDeletable = allDeletable && checkDeletable(f);
+      logger.debug(" Result check File {} deletable {}", f.getName(), allDeletable);
+    }
+
+    if(!allDeletable){
+      return false;
+    }
+
+    logger.debug(" Start DELETE ");
+
+    boolean succes = true;
+    for(int i=0; i< files.size(); i++){
+      logger.debug(" Delete file {}", files.get(i).getName());
+      succes = succes && deleteFileOrDir(files.get(i));
+    }
+
+    return succes;
+  }
+
+  public static boolean deleteFileOrDir(File file){
+    boolean result= true;
+    if(file.isDirectory()){
+      File[] files = file.listFiles();
+      if(files!=null) {
+        for (int i = 0; i < files.length; i++) {
+          result = result && deleteFileOrDir(files[i]);
+        }
+      }
+    }
+
+    result = result && file.delete();
+    return result;
+  }
+
+
 }

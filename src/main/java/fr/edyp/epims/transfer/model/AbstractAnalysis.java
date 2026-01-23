@@ -21,6 +21,7 @@ abstract public class AbstractAnalysis implements  Analysis {
   protected String sample;
   protected File analysisFile;   //and the fileName included
   protected String analysisDestination;
+  protected String analysisRelativeDestinationPath;
   protected Analysis.AnalysisType analyseType;
   protected int status;
   protected Date acqDate;
@@ -88,7 +89,17 @@ abstract public class AbstractAnalysis implements  Analysis {
 
   @Override
   public void setDestination(String destinationDir) {
-    this.analysisDestination= destinationDir;
+    this.analysisDestination = destinationDir;
+  }
+
+  @Override
+  public String getRelativeDestination() {
+    return this.analysisRelativeDestinationPath;
+  }
+
+  @Override
+  public void setRelativeDestination(String destinationDir) {
+    this.analysisRelativeDestinationPath = destinationDir;
   }
 
   @Override

@@ -9,11 +9,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class NemsAnalysis extends AbstractAnalysis {
-    private static String ANALYSIS_FILE_EXT = "zip";
-    private ArrayList<NemsFactory.Mset> msetArrayList;
-    private NemsFormat dataFormat;
 
-    private ArrayList<File> files;
+    private static final String ANALYSIS_FILE_EXT = "zip";
+    private final ArrayList<NemsFactory.Mset> msetArrayList;
+    private NemsFormat dataFormat;
+    private File zipFile = null;
+    private final String zipFileName;
+    private ArrayList<File> allAcqFiles;
 
     private final NemsFilter nemsFilter = new NemsFilter();
 
@@ -24,23 +26,37 @@ public class NemsAnalysis extends AbstractAnalysis {
         dataFormat = format;
         this.sample = sample;
         name = sample+"_"+f.getName();
+        zipFileName = name+ANALYSIS_FILE_EXT;
         determineType();
         this.msetArrayList = msetArrayList;
 
-        files = new ArrayList<>();
-        listFiles(analysisFile, files, msetArrayList);
+        allAcqFiles = new ArrayList<>();
+        listFiles(analysisFile, allAcqFiles, msetArrayList);
 
     }
 
     @Override
     public File getFile() {
-        try {
-            File z = zipDir(name + ".zip", analysisFile, msetArrayList);
-            estimatedSize = z.length();
-            return z;
-        } catch (Exception e) {
-            return null;
+        if(zipFile == null) {
+            try {
+                if (!allAcqFiles.isEmpty()) {
+                    zipFile = new File(analysisFile.getParentFile(), zipFileName);
+                    //                zipFile = zipDir(name + ".zip", analysisFile, msetArrayList);
+                    boolean zipCreateSucess = fr.edyp.epims.transfer.util.FileUtils.copyFilesToOneZip(zipFile, allAcqFiles, analysisFile.getParentFile(), true);
+                    if (zipCreateSucess)
+                        estimatedSize = zipFile.length();
+                    else
+                        zipFile = null;
+                }
+            } catch (Exception e) {
+                return null;
+            }
         }
+        return zipFile;
+    }
+
+    public File getSourceFile() {
+        return analysisFile;
     }
 
     @Override
@@ -51,7 +67,6 @@ public class NemsAnalysis extends AbstractAnalysis {
 
     private void listFiles(File dirObj, ArrayList<File> fileList, ArrayList<NemsFactory.Mset> msetArrayList) {
         File[] files = dirObj.listFiles();
-
 
         for (File file : files) {
             if (file.isDirectory()) {
@@ -81,67 +96,67 @@ public class NemsAnalysis extends AbstractAnalysis {
         }
     }
 
-    private File zipDir(String zipFileName, File dirObj, ArrayList<NemsFactory.Mset> msetArrayList) throws Exception {
-
-        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
-
-        addDirectoryToZip(dirObj, dirObj, out, msetArrayList);
-
-        out.close();
-        return new File(zipFileName);
-    }
-
-    private void addDirectoryToZip(File parentDir, File dirObj, ZipOutputStream out, ArrayList<NemsFactory.Mset> msetArrayList) throws IOException {
-        File[] files = dirObj.listFiles();
-
-
-        for (File file : files) {
-            if (file.isDirectory()) {
-                String name = file.getName();
-
-                if (name.equals("Unlocked")) {
-                    addDirectoryToZip(parentDir, file, out, null);
-                    continue;
-                }
-
-                if (msetArrayList != null) {
-                    for (NemsFactory.Mset mset : msetArrayList) {
-                        if (mset.msetFile.getName().equals(name)) {
-                            addDirectoryToZip(parentDir, file, out, null);
-                            break;
-                        }
-                    }
-                } else {
-                    addDirectoryToZip(parentDir, file, out, null);
-                }
-
-                continue;
-            }
-
-            String name = file.getName();
-            if (!name.startsWith(sample) && name.endsWith(".properties")) {
-                continue; // other sample.properties are not added to the zip file
-            }
-
-            FileInputStream in = new FileInputStream(file.getAbsolutePath());
-
-            String relativePath = parentDir.toURI().relativize(file.toURI()).getPath();
-            ZipEntry zipEntry  = new ZipEntry(relativePath);
-
-            out.putNextEntry(zipEntry);
-            int len;
-            while ((len = in.read(tmpBuf)) > 0) {
-                out.write(tmpBuf, 0, len);
-            }
-            out.closeEntry();
-            in.close();
-        }
-    }
-    private static final byte[] tmpBuf = new byte[1024];
+//    private File zipDir(String zipFileName, File dirObj, ArrayList<NemsFactory.Mset> msetArrayList) throws Exception {
+//
+//        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
+//
+//        addDirectoryToZip(dirObj, dirObj, out, msetArrayList);
+//
+//        out.close();
+//        return new File(zipFileName);
+//    }
+//
+//    private void addDirectoryToZip(File parentDir, File dirObj, ZipOutputStream out, ArrayList<NemsFactory.Mset> msetArrayList) throws IOException {
+//        File[] files = dirObj.listFiles();
+//
+//
+//        for (File file : files) {
+//            if (file.isDirectory()) {
+//                String name = file.getName();
+//
+//                if (name.equals("Unlocked")) {
+//                    addDirectoryToZip(parentDir, file, out, null);
+//                    continue;
+//                }
+//
+//                if (msetArrayList != null) {
+//                    for (NemsFactory.Mset mset : msetArrayList) {
+//                        if (mset.msetFile.getName().equals(name)) {
+//                            addDirectoryToZip(parentDir, file, out, null);
+//                            break;
+//                        }
+//                    }
+//                } else {
+//                    addDirectoryToZip(parentDir, file, out, null);
+//                }
+//
+//                continue;
+//            }
+//
+//            String name = file.getName();
+//            if (!name.startsWith(sample) && name.endsWith(".properties")) {
+//                continue; // other sample.properties are not added to the zip file
+//            }
+//
+//            FileInputStream in = new FileInputStream(file.getAbsolutePath());
+//
+//            String relativePath = parentDir.toURI().relativize(file.toURI()).getPath();
+//            ZipEntry zipEntry  = new ZipEntry(relativePath);
+//
+//            out.putNextEntry(zipEntry);
+//            int len;
+//            while ((len = in.read(tmpBuf)) > 0) {
+//                out.write(tmpBuf, 0, len);
+//            }
+//            out.closeEntry();
+//            in.close();
+//        }
+//    }
+//    private static final byte[] tmpBuf = new byte[1024];
 
     @Override
     public String getFileName(){
-        return name+"."+ ANALYSIS_FILE_EXT;
+        return zipFileName;
     }
 
     @Override

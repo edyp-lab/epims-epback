@@ -4,7 +4,10 @@ import fr.edyp.epims.transfer.log.LogTextPanel;
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
 import fr.edyp.epims.transfer.model.IFileTransferManager;
-import fr.edyp.epims.transfer.util.ZipFileTransferManager;
+import fr.edyp.epims.transfer.preferences.EPBackPreferences;
+import fr.edyp.epims.transfer.preferences.PreferencesKeys;
+import fr.edyp.epims.transfer.util.DefaultFileTransferManager;
+import fr.edyp.epims.transfer.util.FTPFileTransferManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class TimsTOFFormat extends JPanel implements DataFormat {
 
@@ -30,7 +34,7 @@ public class TimsTOFFormat extends JPanel implements DataFormat {
 
   public TimsTOFFormat(){
     analysisFactory = new TimsTOFFactory();
-    dataFilter = new TimsTOFFormat.TimsTOFFileFilter();
+    dataFilter = new TimsTOFFormat.TimsTOFDirFilter();
   }
 
   @Override
@@ -49,7 +53,12 @@ public class TimsTOFFormat extends JPanel implements DataFormat {
 
   @Override
   public IFileTransferManager getFileTransfertManager() {
-    return new ZipFileTransferManager( );
+    Preferences preferences = EPBackPreferences.root();
+    String transferMode = preferences.get(PreferencesKeys.TRANSFER_MODE,PreferencesKeys.DEFAULT_TRANSFER_MODE);
+    if(transferMode.equals(PreferencesKeys.DEFAULT_TRANSFER_MODE))
+      return new DefaultFileTransferManager( );
+    else
+      return new FTPFileTransferManager( );
   }
 
   @Override
@@ -77,7 +86,7 @@ public class TimsTOFFormat extends JPanel implements DataFormat {
     return this;
   }
 
- public static class TimsTOFFileFilter implements FileFilter {
+ private static class TimsTOFDirFilter implements FileFilter {
 
     @Override
     public boolean accept(File pathname) {
@@ -100,6 +109,15 @@ public class TimsTOFFormat extends JPanel implements DataFormat {
       }
 
       return  nbFound==3;
+    }
+
+  }
+
+  public static class TimsTOFFileFilter implements FileFilter {
+
+    @Override
+    public boolean accept(File pathname) {
+      return true;
     }
 
   }

@@ -11,6 +11,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,21 +19,13 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class TimsTOFFactoryV2 extends AbstractCacheFactory  {
+public class TimsTOFFactoryZip extends AbstractCacheFactory  {
 
-  private static final Logger logger = LoggerFactory.getLogger(TimsTOFFactoryV2.class);
+  private static final Logger logger = LoggerFactory.getLogger(TimsTOFFactoryZip.class);
   private static final Logger mainLogger = LoggerFactory.getLogger(LogTextPanel.LOGGER_NAME);
 
   private static final ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
@@ -46,7 +39,7 @@ public class TimsTOFFactoryV2 extends AbstractCacheFactory  {
    * Create one analysis from timsTOF analysis directory.
    * Only one analysis from each .d folder
    * @param file folder to read analysis from. Only 1 analysis will be created
-   * @return a List of 1 TimsTOFAnalysis
+   * @return a List of 1 TimsTOFAnalysisZip
    */
   @Override
   public List<Analysis> createAnalysis(File file) {
@@ -61,24 +54,25 @@ public class TimsTOFFactoryV2 extends AbstractCacheFactory  {
       throw new IllegalArgumentException("Invalid timsTOF File specified");
     }
 
-    List<Analysis> analysisList = new ArrayList<>();
+    List<Analysis> analysisList = new ArrayList<Analysis>();
 
     long lastModified = file.lastModified();
     Date date = new Date(lastModified);
-    TimsTOFAnalysisV2 analysis = new TimsTOFAnalysisV2(file, (TimsTOFFormatV2) format);
+    TimsTOFAnalysisZip analysis = new TimsTOFAnalysisZip(file, (TimsTOFFormatZip) format);
     analysis.setDate(date);
     analysis.setDescription("");
     analysis.setDuration(0.0f);
     analysis.setOperator("No-operator-found");
     analysis.setSample("No-Sample-found");
+    analysis.setEstimatedSize(0L);
     readAndSetDataForAnalysis(analysis);
     analysisList.add(analysis);
     return analysisList;
   }
 
-  private void readAndSetDataForAnalysis(TimsTOFAnalysisV2 a) {
+  private void readAndSetDataForAnalysis(TimsTOFAnalysisZip a) {
     try {
-      File dir = a.getParentDirFile(); //Timstoff .d folder
+      File dir = a.getParentDirFile();
       File[] splFile = dir.listFiles((FileFilter) new NameFileFilter(SAMPLEXML_FILENAME));
       if (splFile.length > 0) {
         FileInputStream fis = new FileInputStream(splFile[0]);

@@ -16,7 +16,7 @@ public interface IEPSystemDataProvider {
   String getPimsRootPath();
 
 	/**
-	 * Return the relative path (from PIMS_ROOT) to directory representing
+	 * Return the relative path (from PIMS_ROOT) to the directory representing
 	 * PIMS_SYSTEM
 	 * 
 	 * @return relative path (from PIMS_ROOT) to PIMS_SYSTEM or null if
@@ -26,45 +26,44 @@ public interface IEPSystemDataProvider {
 
 	/**
 	 * Return the nomenclature name of study containing specified sample, null if
-	 * does not exist
+	 * it does not exist
 	 * 
-	 * @param sampleName
-	 * @return study nomenclature to which specified sample belongs to
+	 * @param sampleName Get study nomenclature which defines the specified sample
+	 * @return study nomenclature to which the specified sample belongs to
 	 */
   String getStudyNameFor(String sampleName);
 
 	/**
-	 * Test if specified sample name exist in ePims system
+	 * Test if specified sample name exists in ePims
 	 * 
-	 * @param sampleName
-	 * @return true if sample is defined in ePims system, false otherwise.
+	 * @param sampleName sample name to search for
+	 * @return true if the sample is defined in ePims, false otherwise.
 	 */
   boolean isSampleExist(String sampleName);
 
 	/**
-	 * Test if an acquisition with same name on same instrument exist in ePims
-	 * system
+	 * Test if an acquisition with same name and on same instrument exists in ePims
 	 * 
 	 * @param acqName
 	 *           : name of the acquisition to search for
 	 * @param instrumentName
 	 *           name of the instrument where were done the acquisition
-	 * @return true if an acquisition with same name on same instrument is
-	 *         defined in ePims system, false otherwise.
+	 * @return true if an acquisition with same name and on same instrument is
+	 *         defined in ePims, false otherwise.
 	 */
   boolean isAcquisitionExist(String acqName, String instrumentName);
 
 	/**
-	 * Test if specified spectrometer exist in ePims system
+	 * Test if the specified spectrometer exists in ePims
 	 * 
 	 * @param instrumentName name of the spectrometer to search for
-	 * @return true if instrument is defined in ePims system, false otherwise.
+	 * @return true if an instrument with specific name is defined in ePims, false otherwise.
 	 */
   boolean isSpectrometerDefined(String instrumentName);
 
 	/**
 	 * Create ePims acquisition, acquisition result file and all associated file
-	 * from specified Analysis object
+	 * from a specified Analysis object
 	 * 
 	 * @param a
 	 *            analysis to create ePims object for
@@ -76,12 +75,13 @@ public interface IEPSystemDataProvider {
   void createAcquisitionAndFilesFor(Analysis a, String instrumentName) throws BackupException;
 
 	/**
-	 * Get analysis associated file destination directory on ePims System If
-	 * associated file is SPECTRA => destination = 'path to study'/path to
+	 * Get analysis associated file destination directory in ePims. The file path is defined on ePims
+	 * using the Pims Root Path, an absolute path is used.
+	 * If the associated file is of type SPECTRA => destination = 'path to study'/path to
 	 * spectra under study (depending on ePims configuration)
 	 * 
 	 * @param a
-	 *           Analysis to get destination file for associated file
+	 *           Analysis to get the destination file for an associated file
 	 * @param f
 	 *           associated file
 	 * @param fileType
@@ -92,17 +92,50 @@ public interface IEPSystemDataProvider {
   File getAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException;
 
 	/**
-	 * Get destination directory for specified analysis. if research analysis =>
-	 * 'path to study'/'path to raws file' under study (depending on ePims
-	 * configuration) if shared (blank or control) => path to shared path for
-	 * specified analysis properties (date, type, instrument ...)
+	 * Get the destination directory for specified analysis. The directory path is defined on ePims
+	 * using the Pims Root Path, an absolute path is used.
+	 * If the analysis is of type research => 'path to study'/'path to raws file' under study
+	 * (depending on ePims configuration)
+	 * If it is a shared analysis (blank or control) => 'path to shared path' for specified analysis
+	 * properties (date, type, instrument ...)
 	 * 
 	 * @param a
-	 *           Analysis to get destination file for
+	 *           Analysis to get the destination path for
 	 * @throws BackupException
 	 *            if an error occurs while getting information
 	 */
   File getDestinationDir(Analysis a, BackupParameters param) throws BackupException;
+
+	/**
+	 * Get analysis associated file destination path relative to the Pims Root Path.
+	 *
+	 * If the associated file is of type SPECTRA => destination = 'path to study'/path to
+	 * spectra under study (depending on ePims configuration)
+	 *
+	 * @param a
+	 *           Analysis to get the destination file for an associated file
+	 * @param f
+	 *           associated file
+	 * @param fileType
+	 *           Associated File type
+	 * @throws BackupException
+	 *            if an error occurs while getting information
+	 */
+	String getRelativeAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException;
+
+//	/**
+//	 * Get the destination directory path for specified analysis relative to the Pims Root Path.
+//	 * If the analysis is of type research => 'path to study'/'path to raws file' under study
+//	 * (depending on ePims configuration)
+//	 * If it is a shared analysis (blank or control) => 'path to shared path' for specified analysis
+//	 * properties (date, type, instrument ...)
+//	 *
+//	 * @param a
+//	 *           Analysis to get the relative destination path for
+//	 * @throws BackupException
+//	 *            if an error occurs while getting information
+//	 */
+//	String getRelativeDestinationDir(Analysis a, BackupParameters param) throws BackupException;
 
 	int getAnalysisStatus(Analysis analysis, BackupParameters params);
 

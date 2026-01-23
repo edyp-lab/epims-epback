@@ -69,6 +69,27 @@ public class FakeDataProvider implements IEPSystemDataProvider {
 		return destination;
 	}
 
+	@Override
+	public String getRelativeAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException {
+		return getRelativeDestinationDir(a, null)+File.pathSeparator+"Others";
+	}
+
+//	@Override
+	public String getRelativeDestinationDir(Analysis a, BackupParameters param) throws BackupException {
+		StopWatch stopWatch = new Slf4JStopWatch("fake getRelativeDestinationDir", a.getName());
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
+		}
+		String destination = getStudyNameFor(a.getSample());
+
+//		a.setDestination(destination);
+		stopWatch.stop();
+		return destination;
+	}
+
 	public int getAnalysisStatus(Analysis analysis, BackupParameters params) {
 		StopWatch stopWatch = new Slf4JStopWatch("fake getAnalysisStatus", analysis.getName());
 		try {

@@ -34,8 +34,8 @@
 		   <class>fr.edyp.epims.transfer.dataformat.bruker.TimsTOFFormat</class>
 	   </dataformat>
 	   <dataformat>
-		   <name>timsTOF Bruker V2</name>
-		   <class>fr.edyp.epims.transfer.dataformat.bruker.TimsTOFFormatV2</class>
+		   <name>timsTOF Bruker ZIP</name>
+		   <class>fr.edyp.epims.transfer.dataformat.bruker.TimsTOFFormatZip</class>
 	   </dataformat>
 
 	</dataformats>

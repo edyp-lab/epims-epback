@@ -12,49 +12,71 @@ import java.util.List;
 
 import fr.edyp.epims.transfer.model.DataFormat;
 import fr.edyp.epims.transfer.model.MultiFilesAnalysis;
+import org.apache.commons.io.FileUtils;
 
 /** 
  *  s
  * 
  * @author CB205360
  */
-public class WiffScanAnalysis extends  QTrapAnalysis implements MultiFilesAnalysis {
+public class WiffScanAnalysis extends  QTrapAnalysis /*implements MultiFilesAnalysis*/ {
 
   private List<File> allAcqFiles;
-  private File zipFile = null;
+  private String zipFilename = null;
+	private File zipFile = null;
   
   public WiffScanAnalysis(File f, WiffScanFormat format) {
   	super(f, format);
-  	allAcqFiles = new ArrayList<>(0);
-  	allAcqFiles.add(f);
+		initZipFile(List.of(f));
 	}
   
   public WiffScanAnalysis(List<File> f, WiffScanFormat format) {
   	this(f.get(0), format);
-  	allAcqFiles = f;
-  	if(f.size() > 1){
-	  	estimatedSize = 0;
-	  	for (File nextF : allAcqFiles){
-				estimatedSize += nextF.length();
-	  	}
-	  	zipFile = new File(analysisFile.getParentFile(),analysisFile.getName()+".zip");
-  	}
+  	initZipFile(f);
+		zipFilename =analysisFile.getName()+".zip";
   }
-  
-  public File getFile() {
-  	if(zipFile == null)
+
+	private void initZipFile(List<File> f)  {
+		allAcqFiles = f;
+		if(!allAcqFiles.isEmpty()){
+			estimatedSize = 0;
+			for (File nextF : allAcqFiles){
+				estimatedSize += nextF.length();
+			}
+		}
+
+	}
+
+	public File getFile() {
+  	if(zipFilename == null)
   		return super.getFile();
-  	else
-  		return zipFile;
+  	else {
+			if(zipFile == null ) {
+				try {
+					if (!allAcqFiles.isEmpty()) {
+						zipFile = new File(analysisFile.getParentFile(),zipFilename);
+						boolean zipCreateSucess = fr.edyp.epims.transfer.util.FileUtils.copyFilesToOneZip(zipFile, allAcqFiles, analysisFile.getParentFile(), true);
+						if(zipCreateSucess) {
+							estimatedSize = zipFile.length();
+						} else {
+							zipFile = null;
+						}
+					}
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return zipFile;
+		}
   }
 
   public String getFileName(){
   	if(zipFile == null && analysisFile==null)
   		return "INVALID FILE";
-  	else if(zipFile == null)
+  	else if(zipFilename == null)
   		return analysisFile.getName();
   	else 
-  		return zipFile.getName();
+  		return zipFilename;
   }
   
   protected void init(QTrapFormat format){
@@ -73,17 +95,17 @@ public class WiffScanAnalysis extends  QTrapAnalysis implements MultiFilesAnalys
   		dataFormat = (WiffScanFormat)format;  
   }
   
-	public void setDestination(String destinationDir) {
-		super.setDestination(destinationDir);
-		zipFile = new File(destinationDir,analysisFile.getName()+".zip");	
-	}
+//	public void setDestination(String destinationDir) {
+//		super.setDestination(destinationDir);
+//		zipFile = new File(destinationDir,analysisFile.getName()+".zip");
+//	}
 	
 
-	public List<File> getAllAcquisitionFile() {	
-		return allAcqFiles;
-	}
-
-	public boolean keepRelativePath(){
-		return false;
-	}
+//	public List<File> getAllAcquisitionFile() {
+//		return allAcqFiles;
+//	}
+//
+//	public boolean keepRelativePath(){
+//		return false;
+//	}
 }
