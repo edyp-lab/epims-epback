@@ -3,7 +3,6 @@ package fr.edyp.epims.transfer.log;
 import fr.edyp.epims.transfer.model.BackupParameters;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
-import ch.qos.logback.core.FileAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class LogTextPanel extends JPanel implements PropertyChangeListener {
   private static final Logger logger = LoggerFactory.getLogger(LogTextPanel.class);
   private static final Logger fileLogger = LoggerFactory.getLogger(LOGGER_NAME);
 
-  private FileAppender logFileAppender;
+  private ServerLogAppender logFileAppender;
   private File logFile;
   private final BackupParameters parameters;
 
@@ -67,11 +66,10 @@ public class LogTextPanel extends JPanel implements PropertyChangeListener {
     ple.setPattern("%date{dd/MM/yy HH:mm:ss} %msg%n");
     ple.start();
 
-    logFileAppender = new FileAppender<>();
+    logFileAppender = new ServerLogAppender();
     logFileAppender.setEncoder(ple);
     logFileAppender.setContext(lc);
-    logFileAppender.setFile(logFile.getAbsolutePath());
-    logFileAppender.setAppend(true);
+    logFileAppender.setInstrumentName(parameters.getInstrumentName());
     logFileAppender.start();
 
     lc.getLogger(LOGGER_NAME).addAppender(logFileAppender);
