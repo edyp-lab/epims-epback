@@ -237,7 +237,7 @@ public class AnalysisTableModel extends AbstractTableModel {
 	}
 
 	private void updateAnalysisDestinationPath(DecoratedAnalysis analysis) {
-		File dest;
+		String dest;
 		try {
 			dest = parameters.getEPimsDataProvider().getDestinationDir(analysis, parameters);
 		} catch (BackupException e) {
@@ -248,7 +248,7 @@ public class AnalysisTableModel extends AbstractTableModel {
 			analysis.setDisplayedDestinationPath(RSCS.getString("file.invalid.dest.path"));
 		} else {
 			// display destination path
-			analysis.setDisplayedDestinationPath(dest.getAbsolutePath());
+			analysis.setDisplayedDestinationPath(dest);
 		} // End Destination found
 		analysis.setDestination(analysis.getDisplayedDestinationPath());
 

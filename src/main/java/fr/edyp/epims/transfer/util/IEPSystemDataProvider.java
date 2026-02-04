@@ -8,6 +8,8 @@ import fr.edyp.epims.transfer.model.BackupParameters;
 
 public interface IEPSystemDataProvider {
 
+	Boolean isPimsRootLocal();
+
 	/**
 	 * Return the Path location for PIMS_ROOT
 	 * 
@@ -77,6 +79,7 @@ public interface IEPSystemDataProvider {
 	/**
 	 * Get analysis associated file destination directory in ePims. The file path is defined on ePims
 	 * using the Pims Root Path, an absolute path is used.
+	 * If ePims Root is not local an Exception will be thrown
 	 * If the associated file is of type SPECTRA => destination = 'path to study'/path to
 	 * spectra under study (depending on ePims configuration)
 	 * 
@@ -92,8 +95,10 @@ public interface IEPSystemDataProvider {
   File getAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException;
 
 	/**
-	 * Get the destination directory for specified analysis. The directory path is defined on ePims
-	 * using the Pims Root Path, an absolute path is used.
+	 * Get the destination directory for specified analysis.
+	 * If ePims Root is local the directory path is defined on ePims using the Pims Root Path, an absolute path is used
+	 * and is saved with its associated relative path in the Analysis object.
+	 * If the ePims Root is not local only relative path will be saved in the Analysis object.
 	 * If the analysis is of type research => 'path to study'/'path to raws file' under study
 	 * (depending on ePims configuration)
 	 * If it is a shared analysis (blank or control) => 'path to shared path' for specified analysis
@@ -101,10 +106,11 @@ public interface IEPSystemDataProvider {
 	 * 
 	 * @param a
 	 *           Analysis to get the destination path for
+	 * @return destination directory path (absolute or relative depending on ePims Root)
 	 * @throws BackupException
 	 *            if an error occurs while getting information
 	 */
-  File getDestinationDir(Analysis a, BackupParameters param) throws BackupException;
+  String getDestinationDir(Analysis a, BackupParameters param) throws BackupException;
 
 	/**
 	 * Get analysis associated file destination path relative to the Pims Root Path.

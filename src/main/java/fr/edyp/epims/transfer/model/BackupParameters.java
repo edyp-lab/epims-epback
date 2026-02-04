@@ -101,25 +101,28 @@ public class BackupParameters implements PropertyChangeListener {
 	private static final Logger logger = LoggerFactory.getLogger(BackupParameters.class);
 	
 	private File sourcePath;
-	private File destinationRootPath;
+	private final String destinationRootPath;
 	private int transferMode;
 	private boolean removeFilesAfterCopy;
-	private File logFile;
 	private InstrumentConfiguration instrumentConfiguration;
 	private DataFormat dataFormat;
-	private IEPSystemDataProvider dataProvider;
+	private final IEPSystemDataProvider dataProvider;
 	private boolean xferRunning;
    
-	private PropertyChangeSupport propertiesSupport;
+	private final PropertyChangeSupport propertiesSupport;
 	private List<Analysis> analyses;
 
 
 	public BackupParameters() throws InstantiationException {
 		propertiesSupport = new PropertyChangeSupport(this);
 		dataProvider = new WSSystemDataProvider();
-//		dataProvider = new FakeDataProvider();
-		
-		destinationRootPath = new File(dataProvider.getPimsRootPath());
+//	dataProvider = new FakeDataProvider();
+
+		String dataRoot = dataProvider.getPimsRootPath();
+		if(dataProvider.isPimsRootLocal())
+			destinationRootPath = new File(dataRoot).getAbsolutePath();
+		else
+			destinationRootPath = dataRoot;
 		analyses = null;
 		xferRunning = false;
 	}
@@ -134,18 +137,13 @@ public class BackupParameters implements PropertyChangeListener {
 	public void setInstrumentConfiguration(InstrumentConfiguration configuration) {
 		InstrumentConfiguration prevInstrumentConfig = instrumentConfiguration;
 		this.instrumentConfiguration = configuration;
-		StringBuffer logFileBuffer = new StringBuffer(dataProvider.getPimsRootPath());
-		logFileBuffer.append(File.separator);
-		logFileBuffer.append(dataProvider.getPimsSystemRelativePath());
-		File prevLogFile = logFile;
-		logFile = new File(logFileBuffer.toString(), instrumentConfiguration.getName() + ".log");
 		DataFormat prevDF = dataFormat;
 		dataFormat = DataFormatFactory.getDataFormat(instrumentConfiguration.getFormat());
 		sourcePath = new File(instrumentConfiguration.getSourcePath());
 		analyses = null;
-		logger.debug("Selected instrument : "+instrumentConfiguration.getName());
+    logger.debug("Selected instrument : {}", instrumentConfiguration.getName());
 		propertiesSupport.firePropertyChange(INSTRUMENT_CONFIGURATION_PROPERTY, prevInstrumentConfig, instrumentConfiguration);
-		propertiesSupport.firePropertyChange(LOG_FILE_PARAMETER, prevLogFile, logFile);
+		propertiesSupport.firePropertyChange(LOG_FILE_PARAMETER, prevInstrumentConfig!= null ? prevInstrumentConfig.getName() : "", instrumentConfiguration.getName());
 		dataFormat.addPropertyChangeListener(this);
 		propertiesSupport.firePropertyChange(DATA_FORMAT_PARAMETER, prevDF, dataFormat);
 	}
@@ -154,29 +152,27 @@ public class BackupParameters implements PropertyChangeListener {
 	public void loadAnalysesFromSourcePath() {
 		if (sourcePath.exists() && sourcePath.isDirectory() && sourcePath.canRead()) {
 			StopWatch stopWatch = new Slf4JStopWatch("analyses from SourcePath");
-			logger.info("Loading Analysis from "+sourcePath.getAbsolutePath()+" for instrument "+instrumentConfiguration.getName());
+      logger.info("Loading Analysis from {} for instrument {}", sourcePath.getAbsolutePath(), instrumentConfiguration.getName());
 			analyses = Arrays.asList(getDataFormat().getAnalysis(sourcePath));
 			stopWatch.stop();
-			logger.info("Loading Analysis done : "+analyses.size()+" analyses created");
+      logger.info("Loading Analysis done : {} analyses created", analyses.size());
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {				
 					public void run() {
 						propertiesSupport.firePropertyChange(ANALYSES_PROPERTY, null, analyses.toArray());
 					}
 				});
-			} catch (InvocationTargetException e) {
-				logger.error("property change event not fired", e);
-			} catch (InterruptedException e) {
+			} catch (InvocationTargetException | InterruptedException e) {
 				logger.error("property change event not fired", e);
 			}
-		}
+    }
 	}
 
 	
 	public void updateAnalysesFromSourcePath() {
 		if (sourcePath.exists() && sourcePath.isDirectory() && sourcePath.canRead()) {
 			StopWatch stopWatch = new Slf4JStopWatch("analyses from SourcePath");
-			logger.info(" - Updating Analysis from "+sourcePath.getAbsolutePath()+" for instrument "+instrumentConfiguration.getName());
+      logger.info(" - Updating Analysis from {} for instrument {}", sourcePath.getAbsolutePath(), instrumentConfiguration.getName());
 			List<Analysis> newAnalyses = Arrays.asList(getDataFormat().getAnalysis(sourcePath));
 			List<Analysis> invalidAnalyses = new ArrayList<>();
 			for(Analysis nextA : analyses){
@@ -191,7 +187,7 @@ public class BackupParameters implements PropertyChangeListener {
 			}
 			analyses = newAnalyses;
 			stopWatch.stop();
-			logger.info("Updating Analysis done : "+analyses.size()+" analyses found");
+      logger.info("Updating Analysis done : {} analyses found", analyses.size());
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {				
 					public void run() {
@@ -211,7 +207,7 @@ public class BackupParameters implements PropertyChangeListener {
 
 
 	public Analysis[] getAnalyses() {
-		return analyses.toArray(new Analysis[analyses.size()]);
+		return analyses.toArray(new Analysis[0]);
 	}
 	
 	/**
@@ -272,7 +268,7 @@ public class BackupParameters implements PropertyChangeListener {
 		return sourcePath;
 	}
 
-	public File getDestinationRootPath() {
+	public String getDestinationRootPathName() {
 		return destinationRootPath;
 	}
 
@@ -336,15 +332,6 @@ public class BackupParameters implements PropertyChangeListener {
 	 */
 	public DataFormat getDataFormat() {
 		return dataFormat;
-	}
-
-	/**
-	 * Returns the log file.
-	 * 
-	 * @return
-	 */
-	public File getLogFile() {
-		return logFile;
 	}
 
 	/**

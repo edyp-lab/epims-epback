@@ -117,7 +117,6 @@ public class MLRawInfo {
 	}
 	
 	public static long getAnalysisSize(MLAnalysis analysis) {
-		// TODO Auto-generated method stub
 
 		int count = 1;
     File[] files = getFunctionFiles(analysis, count);

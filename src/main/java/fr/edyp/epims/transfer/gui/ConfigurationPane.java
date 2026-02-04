@@ -56,7 +56,7 @@ public class ConfigurationPane extends JPanel implements PropertyChangeListener 
 
 	private void updateValues() {
 		sourcePathTF.setText(parameters.getSourcePath().getAbsolutePath());
-		destPathTF.setText(parameters.getDestinationRootPath().getAbsolutePath());
+		destPathTF.setText(parameters.getDestinationRootPathName());
 	}
 
 	private JComponent buildPanel() {

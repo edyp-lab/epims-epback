@@ -22,6 +22,7 @@ public class Resources extends ListResourceBundle {
 	private static final Object[][] _content = {     
       {"epback.properties", "eP-Back"},
       {"webservices.error", "Impossible d'accéder aux Web Services d'ePims"},
+      {"epims.root.webservices.error", "Pas de ePims Root de defini pour un transfert \"direct\""},
       {"error.panel.title", "eP-Back Error"},
       {"app.title", "eP-Back"},
       {"app.getConf.title", "eP-Back - Configuration"},
@@ -139,6 +140,7 @@ public class Resources extends ListResourceBundle {
       {"sample.invalid", "Echantillon non spécifié ou invalid"},
       
       //Operation error messages
+      {"not.local.root", "Le répertoire ePims root n'est pas local, utiliser une autre methode de transfert"},
       {"acq.creation.error", "Une erreur est survenue lors de la sauvegarde de l acquisition {0} dans ePIMS : {1}"},
       {"study.dir.notexist", "Le dossier de l'étude ou les transferts doivent s'effectuer n'existe pas : {0}"},
       {"analysis.invalid.associated.file.type", "Le type de fichier associé à l'analyse {0} est invalide"},

@@ -7,6 +7,7 @@ package fr.edyp.epims.transfer.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import java.util.ResourceBundle;
 import fr.edyp.epims.json.*;
 import fr.edyp.epims.json.AcquisitionFileDescriptorJson;
 import fr.edyp.epims.json.AcquisitionFileMessageJson;
+import fr.edyp.epims.transfer.preferences.EPBackPreferences;
+import fr.edyp.epims.transfer.preferences.PreferencesKeys;
 import fr.edyp.epims.transfer.task.AcquisitionServices;
 import fr.edyp.epims.transfer.task.SystemServices;
 import org.perf4j.slf4j.Slf4JStopWatch;
@@ -28,12 +31,10 @@ import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.BackupException;
 import fr.edyp.epims.transfer.model.BackupParameters;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 
 /**
  * @author VDUPIERR
- * 
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class WSSystemDataProvider implements IEPSystemDataProvider {
 
@@ -41,6 +42,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	private static final Logger logger = LoggerFactory.getLogger(WSSystemDataProvider.class);
 
 	private String ePimsRootPath;
+	private Boolean isRootLocal;
 
 	/**
 	 * Map used in function getDestinationDir, to reduce the number of
@@ -51,11 +53,17 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	public WSSystemDataProvider() throws InstantiationException {
 		// Get Properties
-		ePimsRootPath = null; //FIXME : add to class where properties are read from
+		ePimsRootPath = null;
 
 		try {
-			ResourceBundle defaultBundle = new PropertyResourceBundle(new FileInputStream("./conf/eP-Back.properties"));
-			ePimsRootPath = defaultBundle.getString("epims.root"); //JPM.TODO
+			ePimsRootPath = EPBackPreferences.root().get(PreferencesKeys.SERVER_ROOT_KEY,"<FTP>");
+			String transferMode = EPBackPreferences.root().get(PreferencesKeys.TRANSFER_MODE,PreferencesKeys.DEFAULT_TRANSFER_MODE);
+			isRootLocal = transferMode.equals(PreferencesKeys.DIRECT_TRANSFER_MODE);
+			if(ePimsRootPath.equals("<FTP>") && isRootLocal) {
+				ePimsRootPath = null;
+				throw new InstantiationException(RSCS.getString("epims.root.webservices.error"));
+			}
+
 		} catch (Exception e) {
 			throw new InstantiationException(RSCS.getString("webservices.error"));
 		}
@@ -64,16 +72,21 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see fr.edyp.epims.transfer.util.IEPSystemDataProvider#getPimsRootPath()
 	 */
 	public String getPimsRootPath() {
 		return ePimsRootPath;
 	}
 
+	@Override
+	public Boolean isPimsRootLocal() {
+		return isRootLocal;
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * fr.edyp.epims.transfer.util.IEPSystemDataProvider#getPimsSystemRelativePath
 	 * ()
@@ -84,7 +97,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * fr.edyp.epims.transfer.util.IEPSystemDataProvider#getStudyNameFor(java
 	 * .lang.String)
@@ -101,7 +114,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * fr.edyp.epims.transfer.util.IEPSystemDataProvider#isSampleExist(java.lang
 	 * .String)
@@ -124,7 +137,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * fr.edyp.epims.transfer.util.IEPSystemDataProvider#isSpectrometerDefined
 	 * (java.lang.String)
@@ -136,7 +149,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see fr.edyp.epims.transfer.util.IEPSystemDataProvider#
 	 * createAcquisitionAndFilesFor (fr.edyp.epims.transfer.model.Analysis,
 	 * java.lang.String)
@@ -180,7 +193,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	 * Create an AcquisitionFileDescriptor with the information of the given
 	 * Analysis. BEWARE : this AcquisitionFileDescriptor will not have an
 	 * instrumentDescriptor!
-	 * 
+	 *
 	 * @return : AcquisitionFileDescriptor
 	 * @param : Analysis on which the AcquisitionFileDescriptor will be created
 	 */
@@ -230,7 +243,7 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see fr.edyp.epims.transfer.util.IEPSystemDataProvider#
 	 * getAssociatedFileDestinationFile(fr.edyp.epims.transfer.model.Analysis,
 	 * java.io.File, java.lang.String,
@@ -239,6 +252,11 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	public File getAssociatedFileDestinationDir(Analysis a, File f, String fileType) throws BackupException {
 		File destination = null;
 		boolean dirCreationSucceed;
+		if(!isRootLocal){
+			String msg = RSCS.getString("not.local.root");
+			throw new BackupException(msg);
+		}
+
 		if (Analysis.SPECTRA_FILETYPE.equals(fileType)) {
 			// Only valid for research analysis
 			if (!a.getType().equals(Analysis.AnalysisType.RESEARCH)) {
@@ -342,17 +360,17 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * fr.edyp.epims.transfer.util.IEPSystemDataProvider#getDestinationFile(cea
 	 * .edyp.epims.transfer.model.Analysis,
 	 * fr.edyp.epims.transfer.model.BackupParameters)
 	 */
-	public File getDestinationDir(Analysis analysis, BackupParameters param) throws BackupException {
-		
+	public String getDestinationDir(Analysis analysis, BackupParameters param) throws BackupException {
+
 		StopWatch stopWatch = new Slf4JStopWatch("ePims getDestinationDir", analysis.getName());
 		String tempAcqPath = null;
-		File destination;
+		String destination;
 
 		AcquisitionFileMessageJson acqFileMsg = new AcquisitionFileMessageJson();
 
@@ -391,8 +409,9 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 				//Object[] args = { epce2.getMessage() };
 				throw new BackupException(MessageFormat.format(msg, ""));
 			} else {
+
         logger.debug(" Get Destination for {} => {}", analysis.getName(), acqPath);
-				destination = new File(getPimsRootPath(), acqPath);
+				destination = getDestLocalFile(analysis.getName(), acqPath);
 				tempAcqPath = acqPath;
 				// add this result in the HashMap
 				sampleNameToAcquPath.put(analysis.getSample(), acqPath);
@@ -402,13 +421,34 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 		} else {// we found the sampleName in the map so take the acqPath
 					// associated
       logger.debug(" Get Destination from the hashMap {} => {}", analysis.getName(), tempAcqPath);
-			destination = new File(getPimsRootPath(), tempAcqPath);
+			destination = getDestLocalFile(analysis.getName(), tempAcqPath); // new File(getPimsRootPath(), tempAcqPath);
 			stopWatch.lap("ePims getDestinationDir.from Cache");
 		}
 
-		analysis.setDestination(destination.getAbsolutePath());
+		analysis.setDestination(destination);
 		analysis.setRelativeDestination(tempAcqPath);
 		stopWatch.stop();
+		return destination;
+	}
+
+	@Nullable
+	private String getDestLocalFile(String analyseName, String acqPath) throws BackupException {
+		String destination;
+		if(isRootLocal){
+			File targetFile;
+			try {
+				File baseFile = new File(getPimsRootPath());
+				targetFile = new File(baseFile, acqPath).getCanonicalFile();
+				if (!targetFile.getPath().startsWith(baseFile.getCanonicalPath())) {
+					throw new BackupException("Invalid file path for analysis " + analyseName );
+				}
+			} catch (IOException e){
+				throw new BackupException("Invalid file path for analysis " + analyseName , e);
+			}
+			destination = targetFile.getAbsolutePath();
+		} else {
+			destination = acqPath;//new File(acqPath);
+		}
 		return destination;
 	}
 

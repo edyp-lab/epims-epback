@@ -22,7 +22,6 @@ import java.util.Date;
  * 
  * @author CB205360
  */
-//TODO Use AbstractAnalysis
 public class QTrapAnalysis extends AbstractAnalysis {
 
   private static final String SPECTRA_DIR = "mgf";

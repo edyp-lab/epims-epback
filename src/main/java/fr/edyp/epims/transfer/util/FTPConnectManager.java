@@ -1,7 +1,9 @@
 package fr.edyp.epims.transfer.util;
 
+import fr.edyp.epims.json.FtpConfigurationJson;
 import fr.edyp.epims.transfer.preferences.EPBackPreferences;
 import fr.edyp.epims.transfer.preferences.PreferencesKeys;
+import fr.edyp.epims.transfer.task.SystemServices;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
@@ -16,8 +18,36 @@ public class FTPConnectManager {
   private SFTPClient m_ftpClient = null;
   private SSHClient m_sshClient = null;
 
-  public FTPConnectManager() {
+  private String host;
+  private int port;
+  private String login;
+  private String passwd;
+  private String ftpRootPath;
 
+  private Preferences preferences;
+  FtpConfigurationJson ftpConfigurationJson;
+
+
+  public FTPConnectManager() {
+    initFTPSettings();
+  }
+
+  private void initFTPSettings() {
+
+    ftpConfigurationJson  = SystemServices.getFTPSettings();
+    preferences = EPBackPreferences.root();
+
+    if(ftpConfigurationJson == null) {
+      logger.warn("Unable to load FTP settings from Server. Use preference specified values");
+      ftpConfigurationJson = new FtpConfigurationJson();
+      ftpConfigurationJson.setPort(22); //set as default value
+    }
+
+    host = preferences.get(PreferencesKeys.FTP_HOST,ftpConfigurationJson.getHost());
+    port = preferences.getInt(PreferencesKeys.FTP_PORT,ftpConfigurationJson.getPort());
+    login = preferences.get(PreferencesKeys.FTP_LOGIN,ftpConfigurationJson.getLogin());
+    passwd = preferences.get(PreferencesKeys.FTP_PSWD,ftpConfigurationJson.getPassword());
+    ftpRootPath = ftpConfigurationJson.getStartPath();
   }
 
 
@@ -42,14 +72,12 @@ public class FTPConnectManager {
     m_ftpClient = null;
   }
 
-  private boolean isConnected() {
-    return m_ftpClient != null && m_sshClient.isConnected();
+  private boolean isNotConnected() {
+    return m_ftpClient == null || !m_sshClient.isConnected();
   }
 
   private boolean connectFTPClient() {
-    Preferences preferences = EPBackPreferences.root();
-    String host = preferences.get(PreferencesKeys.FTP_HOST,PreferencesKeys.DEFAULT_FTP_HOST);
-    int port = preferences.getInt(PreferencesKeys.FTP_PORT,PreferencesKeys.DEFAULT_FTP_PORT);
+
     logger.info("Connect to FTP server {}:{}",host,port);
     m_sshClient = null;
     m_ftpClient = null;
@@ -58,19 +86,16 @@ public class FTPConnectManager {
       m_sshClient.addHostKeyVerifier(new PromiscuousVerifier()); // Do not check who is behind the server.
       m_sshClient.connect(host,port);
       String authMode = preferences.get(PreferencesKeys.FTP_AUTHENTICATE_MODE, PreferencesKeys.FTP_PASSWORD_AUTH_MODE);
-      String login = preferences.get(PreferencesKeys.FTP_LOGIN,"");
       if(authMode.equals(PreferencesKeys.FTP_PASSWORD_AUTH_MODE)) {
-        String psswd = preferences.get(PreferencesKeys.FTP_PSWD,"");
-        m_sshClient.authPassword(login, psswd);
+        m_sshClient.authPassword(login, passwd);
       } else {
-        String keyPath =  preferences.get(PreferencesKeys.FTP_KEY_PATH,PreferencesKeys.DEFAULT_FTP_KEY_PATH);
+        String keyPath = preferences.get(PreferencesKeys.FTP_KEY_PATH,PreferencesKeys.DEFAULT_FTP_KEY_PATH);
         m_sshClient.authPublickey(login, keyPath);
       }
       m_ftpClient = m_sshClient.newSFTPClient();
       logger.debug("SFTP -- Created SFTP Client ");
       return true;
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       closeConnection();
       return false;
@@ -78,30 +103,32 @@ public class FTPConnectManager {
 
   }
 
-  public void download(File sourceFile, String destination) throws IOException {
+  public void upload(File sourceFile, String destination) throws IOException {
     try {
-      if(!isConnected()) {
+      if(isNotConnected()) {
         boolean result = connectFTPClient();
         if(!result) {
           throw new IOException("Unable to connect to FTP server");
         }
       }
-      m_ftpClient.getFileTransfer().download(sourceFile.getAbsolutePath(), destination);
+      String finalDestPath = ftpRootPath +"/"+ destination;
+      m_ftpClient.getFileTransfer().upload(sourceFile.getAbsolutePath(), finalDestPath);
     } catch (Exception e) {
       closeConnection();
-      throw new IOException("Unable to download file "+sourceFile.getAbsolutePath()+" to "+destination,e);
+      throw new IOException("Unable to upload file "+sourceFile.getAbsolutePath()+" to "+destination,e);
     }
   }
 
   public boolean fileExist(String destination) throws IOException {
     try {
-      if(!isConnected()) {
+      if(isNotConnected()) {
         boolean result = connectFTPClient();
         if(!result) {
           throw new IOException("Unable to connect to FTP server");
         }
       }
-      m_ftpClient.stat(destination);
+      String finalDestPath = ftpRootPath +"/"+ destination;
+      m_ftpClient.stat(finalDestPath);
       return true;
     } catch (net.schmizz.sshj.sftp.SFTPException e) {
       if (e.getStatusCode() == net.schmizz.sshj.sftp.Response.StatusCode.NO_SUCH_FILE) {
@@ -114,5 +141,4 @@ public class FTPConnectManager {
       throw new IOException("Unable to test ftp file "+destination, e);
     }
   }
-
 }

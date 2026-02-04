@@ -26,7 +26,6 @@ public class StringReader {
 			s = convert(s);
 			System.out.println(s);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return s;
@@ -50,7 +49,6 @@ public class StringReader {
 			s = convert(s);
 //			System.out.println(s);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return s;

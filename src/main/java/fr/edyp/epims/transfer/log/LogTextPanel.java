@@ -22,18 +22,20 @@ public class LogTextPanel extends JPanel implements PropertyChangeListener {
 
   public static final String LOGGER_NAME = "eP-BackLogger";
   private static final Logger logger = LoggerFactory.getLogger(LogTextPanel.class);
-  private static final Logger fileLogger = LoggerFactory.getLogger(LOGGER_NAME);
 
+  private static final Logger fileLogger = LoggerFactory.getLogger(LOGGER_NAME);
   private ServerLogAppender logFileAppender;
-  private File logFile;
+
+  //private File logFile;
+  private String currentLoggedInstrumName ;
   private final BackupParameters parameters;
 
   public LogTextPanel(BackupParameters params) {
     constructComponents();
     parameters = params;
     parameters.addPropertyChangeListener(this);
-    if(params.getLogFile()!=null)
-      updateLogFile(params.getLogFile());
+    if(params.getInstrumentName() !=null)
+      updateLogFile(params.getInstrumentName());
   }
 
   private void constructComponents() {
@@ -49,18 +51,18 @@ public class LogTextPanel extends JPanel implements PropertyChangeListener {
     appender.start();
   }
 
-  private void updateLogFile(File newLogFile) {
+  private void updateLogFile(String newInstrumentName) {
     LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
 
     if (logFileAppender != null) {
-      Object[] args = { logFile.getName() };
+      Object[] args = { currentLoggedInstrumName };
       String msg = RSCS.getString("log.end");
       msg = MessageFormat.format(msg, args);
       fileLogger.info("----"+msg);
       lc.getLogger(LOGGER_NAME).detachAppender(logFileAppender);
     }
 
-    logFile = newLogFile;
+    currentLoggedInstrumName = newInstrumentName;
     PatternLayoutEncoder ple = new PatternLayoutEncoder();
     ple.setContext(lc);
     ple.setPattern("%date{dd/MM/yy HH:mm:ss} %msg%n");
@@ -69,11 +71,11 @@ public class LogTextPanel extends JPanel implements PropertyChangeListener {
     logFileAppender = new ServerLogAppender();
     logFileAppender.setEncoder(ple);
     logFileAppender.setContext(lc);
-    logFileAppender.setInstrumentName(parameters.getInstrumentName());
+    logFileAppender.setInstrumentName(newInstrumentName);
     logFileAppender.start();
 
     lc.getLogger(LOGGER_NAME).addAppender(logFileAppender);
-    Object[] args = { logFile.getName() };
+    Object[] args = { newInstrumentName };
     String msg = RSCS.getString("log.start");
     msg = MessageFormat.format(msg, args);
     logger.info(msg);
@@ -83,7 +85,7 @@ public class LogTextPanel extends JPanel implements PropertyChangeListener {
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     if (evt.getPropertyName().equals(BackupParameters.LOG_FILE_PARAMETER)) {
-      updateLogFile(parameters.getLogFile());
+      updateLogFile(parameters.getInstrumentName());
     } /*else if (evt.getPropertyName() == BackupParameters.INSTRUMENT_CONFIGURATION_PROPERTY) {
       clearLog();
     }*/

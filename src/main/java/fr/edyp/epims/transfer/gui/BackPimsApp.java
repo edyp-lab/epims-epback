@@ -66,11 +66,16 @@ public class BackPimsApp extends JFrame implements Backup {
 			instrumentsConfig = InstrumentConfiguration.readInstrumentsXMLConfiguration();
 			parameters = new BackupParameters();
 		} catch (ConfigurationException ce) {
-			JOptionPane.showMessageDialog(this, RSCS.getString("getConf.instrument.error.msg"), RSCS.getString("getConf.instrument.error.title"),
+			String msg = RSCS.getString("getConf.instrument.error.msg") +"\n L'application va se fermer";
+			JOptionPane.showMessageDialog(this, msg, RSCS.getString("getConf.instrument.error.title"),
 					JOptionPane.ERROR_MESSAGE);
-			logger.debug(RSCS.getString("getConf.instrument.error.msg") + " : " + InstrumentConfiguration.INSTRUMENT_CONFIGURATION_FILEPATH);
+			msg = msg+": "+ InstrumentConfiguration.INSTRUMENT_CONFIGURATION_FILEPATH;
+			logger.debug(msg);
+			System.exit(1);
 		} catch (InstantiationException ie) {
-			JOptionPane.showMessageDialog(this, ie.getMessage(), RSCS.getString("error.panel.title"), JOptionPane.ERROR_MESSAGE);
+			String msg =  ie.getMessage() +"\n L'application va se fermer";
+			JOptionPane.showMessageDialog(this, msg, RSCS.getString("error.panel.title"), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 
 		String instrumentLabel = chooseInstrumentConfig();

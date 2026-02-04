@@ -16,12 +16,13 @@ public class FTPFileTransferManager extends DefaultFileTransferManager {
     m_ftpConnection = new FTPConnectManager();
   }
 
-
+  @Override
   protected String getDestinationPath(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws IOException {
     String path =  a.getRelativeDestination();
     return path+"/"+a.getFileName();
   }
 
+  @Override
   protected boolean destinationExist(String destPath) {
     try {
       return m_ftpConnection.fileExist(destPath);
@@ -30,6 +31,7 @@ public class FTPFileTransferManager extends DefaultFileTransferManager {
     }
   }
 
+  @Override
   protected String getAssociatedDataDestinationPath(Analysis a, File f, String fileType, IEPSystemDataProvider ePimsDataProvider) throws IOException {
     try {
       String path = ePimsDataProvider.getRelativeAssociatedFileDestinationDir(a, f, fileType);
@@ -41,11 +43,11 @@ public class FTPFileTransferManager extends DefaultFileTransferManager {
   }
 
   protected void doAnalysisCopy(Analysis a, String destPath) throws IOException {
-    m_ftpConnection.download(a.getFile(), destPath);
+    m_ftpConnection.upload(a.getFile(), destPath);
   }
 
   protected void doAssociatedDataCopy(File src, String destPath) throws IOException {
-    m_ftpConnection.download(src, destPath);
+    m_ftpConnection.upload(src, destPath);
   }
 
   protected void afterCopy() {

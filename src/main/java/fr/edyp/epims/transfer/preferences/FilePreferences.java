@@ -1,6 +1,5 @@
 package fr.edyp.epims.transfer.preferences;
 
-import fr.edyp.epims.transfer.model.InstrumentConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +17,8 @@ public class FilePreferences extends AbstractPreferences {
     private static final Logger log = LoggerFactory.getLogger(FilePreferences.class);
 
 
-    private Map<String, String> root;
-    private Map<String, FilePreferences> children;
+    private final Map<String, String> root;
+    private final Map<String, FilePreferences> children;
     private boolean isRemoved = false;
 
     private File m_file = null;

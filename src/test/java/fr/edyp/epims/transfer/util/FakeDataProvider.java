@@ -16,6 +16,11 @@ public class FakeDataProvider implements IEPSystemDataProvider {
 		return "d:/tmp/epims_root/a/";
 	}
 
+	@Override
+	public Boolean isPimsRootLocal() {
+		return true;
+	}
+
 	public String getPimsSystemRelativePath() {
 		return "system";
 	}
@@ -37,7 +42,6 @@ public class FakeDataProvider implements IEPSystemDataProvider {
 	}
 
 	public void createAcquisitionAndFilesFor(Analysis a, String instrumentName) throws BackupException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -45,7 +49,7 @@ public class FakeDataProvider implements IEPSystemDataProvider {
 		return new File(getDestinationDir(a, null), "Others");
 	}
 
-	public File getDestinationDir(Analysis a, BackupParameters param) throws BackupException {
+	public String getDestinationDir(Analysis a, BackupParameters param) throws BackupException {
 		StopWatch stopWatch = new Slf4JStopWatch("fake getDestinationDir", a.getName());
 		try {
 			Thread.sleep(300);
@@ -66,7 +70,7 @@ public class FakeDataProvider implements IEPSystemDataProvider {
 		}
 		a.setDestination(destination.getAbsolutePath());
 		stopWatch.stop();
-		return destination;
+		return destination.getAbsolutePath();
 	}
 
 	@Override
@@ -95,7 +99,6 @@ public class FakeDataProvider implements IEPSystemDataProvider {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		stopWatch.stop();
