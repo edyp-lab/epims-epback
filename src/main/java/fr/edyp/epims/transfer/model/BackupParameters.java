@@ -135,6 +135,7 @@ public class BackupParameters implements PropertyChangeListener {
 	}
 
 	public void setInstrumentConfiguration(InstrumentConfiguration configuration) {
+		//VDS TODO : Verify new instrument config is valid ! For instance if DataFormatFactory.getDataFormat returns null
 		InstrumentConfiguration prevInstrumentConfig = instrumentConfiguration;
 		this.instrumentConfiguration = configuration;
 		DataFormat prevDF = dataFormat;

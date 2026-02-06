@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import fr.edyp.epims.transfer.dataformat.nems.NemsAnalysis;
+import fr.edyp.epims.transfer.util.FileUtils;
 import org.perf4j.slf4j.Slf4JStopWatch;
 import org.slf4j.Logger;
 import org.perf4j.StopWatch;
@@ -41,13 +42,16 @@ public class AnalysisOperationMgr {
    
   public void copy(Analysis a) throws BackupException {
 	  StopWatch stopWatch = new Slf4JStopWatch("analysis.transfert");
-    logger.info(" Copie de "+a.getName());
+    logger.info(" Copie de {}", a.getName());
     verifyParameter(a);
     stopWatch.lap("analysis.transfert.verify");
-    if (parameters.removeFilesAfterCopy() || a.removeTemporaryZipFile()) {
+    if (parameters.removeFilesAfterCopy() || a.isTransferFileTempo()) {
         parameters.getDataFormat().getFileTransfertManager().move(a, parameters.getEPimsDataProvider());
-        // FIXME !! Warning: if removeFilesAfterCopy && removeTemporaryZipFile : Should remove temp file -> move OK
-        // but also original analysis file : should call parameters.getDataFormat().getFileTransfertManager().clean(a); ??
+        if(parameters.removeFilesAfterCopy() && a.isTransferFileTempo() && a.getSourceFile().exists()) {//only temporary files were moved. remove source also
+          boolean result = FileUtils.deleteFileOrDir(a.getSourceFile()); //Should not occur, option disabled. To be removed
+          if(!result)
+            logger.error("Failed to delete source file {}", a.getSourceFile().getAbsolutePath());
+        }
     }
     else {
         parameters.getDataFormat().getFileTransfertManager().copyOnly(a, parameters.getEPimsDataProvider());
@@ -61,8 +65,8 @@ public class AnalysisOperationMgr {
   }
    
      
-  private void verifyParameter(Analysis a) throws BackupException {     
-  	logger.debug(" verifyParameter for "+a.getName());
+  private void verifyParameter(Analysis a) throws BackupException {
+    logger.debug(" verifyParameter for {}", a.getName());
   	
   	if(a.getType()==Analysis.AnalysisType.RESEARCH){       		
   		if(!parameters.getEPimsDataProvider().isSampleExist(a.getSample()) || (parameters.getEPimsDataProvider().getStudyNameFor(a.getSample()) == null)){
@@ -73,7 +77,7 @@ public class AnalysisOperationMgr {
   	    
   	String instrumentName =parameters.getInstrumentName();  	
     if(!parameters.getEPimsDataProvider().isSpectrometerDefined(parameters.getInstrumentName())){
-      logger.debug(" No spectro "+ instrumentName+" => BackupExeption ");
+      logger.debug(" No spectro {} => BackupExeption ", instrumentName);
       throw new BackupException("L'instrument sur lequal a été réalisé l'analyse "+a.getName()+" n'est pas défini dans PIMS.");
     }
 

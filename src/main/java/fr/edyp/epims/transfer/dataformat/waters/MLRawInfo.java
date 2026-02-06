@@ -140,9 +140,9 @@ public class MLRawInfo {
     String funcIdxFilename = MessageFormat.format(MSMS_function_idx_file, args);
     String funcStsFilename = MessageFormat.format(MSMS_function_sts_file, args);
     
-    datFile = new File(a.getFile(), funcDatFilename);
-    idxFile = new File(a.getFile(), funcIdxFilename);
-    stsFile = new File(a.getFile(), funcStsFilename);
+    datFile = new File(a.getFileToTransfer(), funcDatFilename);
+    idxFile = new File(a.getFileToTransfer(), funcIdxFilename);
+    stsFile = new File(a.getFileToTransfer(), funcStsFilename);
     
     if ((!datFile.exists()) || (!idxFile.exists()))
        return null;

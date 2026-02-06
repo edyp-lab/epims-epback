@@ -129,8 +129,14 @@ public class UltraFlexAnalysis extends AbstractAnalysis implements PropertyChang
   // TODO faire un getFile ou les réplicats d'acquisition d'une analyse sont dans un même répertoire
   //le getFile est � la fois pour les analyses MS que MSMS sans r�pliqua
 
+
+  @Override
+  public boolean isTransferFileTempo() {
+    return true;
+  }
+
   /**
-   * This method has the role to create a unique zip file, witch will be transfered, <br>
+   * This method has the role to create a unique zip file, which will be transfered, <br>
    * with the list of files in the property dataFileList<br>
    * <br>
    * The returned file is a zip, to create it:
@@ -142,7 +148,7 @@ public class UltraFlexAnalysis extends AbstractAnalysis implements PropertyChang
    * @author vbouquet
    */
   @Override
-  public File getFile() {
+  public File getFileToTransfer() {
 
     //declare tools
     ZipOutputStream zipOutput = null;
@@ -172,14 +178,12 @@ public class UltraFlexAnalysis extends AbstractAnalysis implements PropertyChang
             String msg = RSCS.getString("datafile.not.found");
             Object[] args = {currentDir};
             fileLogger.error(MessageFormat.format(msg, args));
-            errorExists = true;
             throw new IOException(msg);
           } else if (!currentDir.isDirectory()) {
             dataFileState = RSCS.getString("datafile.state.error");
             String msg = "A element of the dataFileList is not a directory";
             Object[] args = {currentDir};
             fileLogger.error(MessageFormat.format(msg, args));
-            errorExists = true;
             throw new IOException(msg);
           } else {//currentDir is a directory
             //get its files

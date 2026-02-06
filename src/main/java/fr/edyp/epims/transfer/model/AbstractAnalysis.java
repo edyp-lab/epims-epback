@@ -78,11 +78,6 @@ abstract public class AbstractAnalysis implements  Analysis {
   }
 
   @Override
-  public boolean removeTemporaryZipFile() {
-    return false;
-  }
-
-  @Override
   public String getDestination() {
     return this.analysisDestination;
   }
@@ -165,14 +160,21 @@ abstract public class AbstractAnalysis implements  Analysis {
   // By default, source and final analysis file are the same
   @Override
   public File getSourceFile() {
-    return getFile();
+    return analysisFile;
+  }
+
+  @Override
+  public File getFileToTransfer() {
+    return analysisFile;
+  }
+
+  @Override
+  public boolean isTransferFileTempo() {
+    return false;
   }
 
   @Override
   abstract public void setDataFormat(DataFormat dataFormat);
-
-  @Override
-  abstract public File getFile();
 
   @Override
   abstract public String getFileName();

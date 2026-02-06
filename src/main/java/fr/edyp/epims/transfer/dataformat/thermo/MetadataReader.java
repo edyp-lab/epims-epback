@@ -104,9 +104,9 @@ public class MetadataReader {
         List<File> analysisFiles = new ArrayList<>(eachList.size());
         List<String> analysisFilePaths = new ArrayList<>(eachList.size());
         for (LTQAnalysis eachAnalysis : eachList) {
-          addAnalyse(eachAnalysis, eachAnalysis.getFile());
-          analysisFiles.add(eachAnalysis.getFile());
-          analysisFilePaths.add(eachAnalysis.getFile().getAbsolutePath());
+          addAnalyse(eachAnalysis, eachAnalysis.getFileToTransfer());
+          analysisFiles.add(eachAnalysis.getFileToTransfer());
+          analysisFilePaths.add(eachAnalysis.getFileToTransfer().getAbsolutePath());
           nbAnalysis++;
         }
         analysisFilesByThread.add(analysisFiles);

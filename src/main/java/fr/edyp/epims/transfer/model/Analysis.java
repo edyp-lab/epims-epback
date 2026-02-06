@@ -149,7 +149,8 @@ public interface Analysis {
     *
     *
     */
-   File getFile();
+   File getFileToTransfer();
+
 
     /**
      * Return the analysis file, which could be a directory.
@@ -159,10 +160,13 @@ public interface Analysis {
      */
     File getSourceFile();
 
-  /**
-    * Must return true if there is a temporary zip file to delete
-    */
-   boolean removeTemporaryZipFile();
+    /**
+     * Return true if the file to transfer is a temporary file
+     * that is different from the source file.
+     * By default, source and final analysis file are the same
+     * @return true if getFileToTransfer() is not the getSourceFile()
+     */
+    boolean isTransferFileTempo();
 
    /**
     * Return the analysis file name.

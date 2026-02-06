@@ -38,13 +38,8 @@ public class DefaultFileTransferManager extends AbstractFileTransfertManager {
   }
 
 	@Override
-	protected List<File> getAnalysisFilesToDelete(Analysis a) {
-		return List.of(a.getSourceFile());
-	}
-
-	@Override
 	protected void doAnalysisCopy(Analysis analysis, String destPath) throws IOException {
-		FileUtils.secureCopy(analysis.getFile(), new File(destPath), analysis.getContentFilter());
+		FileUtils.secureCopy(analysis.getFileToTransfer(), new File(destPath), analysis.getContentFilter());
 	}
 
 	@Override

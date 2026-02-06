@@ -81,14 +81,16 @@ public class DecoratedAnalysis implements Analysis {
 		return analysis.getSourceFile();
 	}
 
-	public File getFile() {
-		return analysis.getFile();
+	@Override
+	public File getFileToTransfer() {
+		return analysis.getFileToTransfer();
 	}
 
 	@Override
-	public boolean removeTemporaryZipFile() {
-		return analysis.removeTemporaryZipFile();
+	public boolean isTransferFileTempo() {
+		return analysis.isTransferFileTempo();
 	}
+
 
 	public String getFileName() {
 		return analysis.getFileName();

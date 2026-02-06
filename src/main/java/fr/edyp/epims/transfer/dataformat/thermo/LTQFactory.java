@@ -42,7 +42,7 @@ public class LTQFactory extends AbstractCacheFactory {
   public Map<String, List<Analysis>> createBatchAnalysis(List<File> files) {
     List<Analysis> filledAnalyses = createAnalysisFromList(files);
     Map<String, List<Analysis>> mappedFilledAnalyses = new HashMap<>();
-    filledAnalyses.forEach(analysis -> mappedFilledAnalyses.put(analysis.getFile().getAbsolutePath(), Collections.singletonList(analysis) ));
+    filledAnalyses.forEach(analysis -> mappedFilledAnalyses.put(analysis.getFileToTransfer().getAbsolutePath(), Collections.singletonList(analysis) ));
     return mappedFilledAnalyses;
   }
 

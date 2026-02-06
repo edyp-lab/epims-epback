@@ -1,7 +1,5 @@
 package fr.edyp.epims.transfer.dataformat.applied;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -9,55 +7,32 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import fr.edyp.epims.transfer.log.LogTextPanel;
-import org.slf4j.Logger;
+import fr.edyp.epims.transfer.model.AbstractAnalysis;
 
 import fr.edyp.epims.transfer.model.Analysis;
 import fr.edyp.epims.transfer.model.DataFormat;
-import org.slf4j.LoggerFactory;
 
 /**
- * 
+ *  Update whith code evolution but no tests done ...
+ *  If ti be used again, make some tests
  * 
  * @author DB217215
  */
-//TODO Use AbstractAnalysis & Verify Log Usage
-public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
+public class Maldi4800Analysis extends AbstractAnalysis {
 
-   @SuppressWarnings("unused")
-   private static final Logger logger = LoggerFactory.getLogger(Maldi4800Analysis.class);
-   private static final Logger logPaneLogger = LoggerFactory.getLogger(LogTextPanel.LOGGER_NAME);
-   private static final ResourceBundle RSCS = ResourceBundle.getBundle("fr.edyp.epims.transfer.gui.Resources", Locale.getDefault());
 
-   
    private static final Maldi4800Filter Filefilter = new Maldi4800Filter();
-   
-   private String name;
+
    private List<File> dataFileList;
    private String dataFileState;
    private File analysisDescriptionFile;
-   private File analysisFile;
-   private String analysisDestination;
-  private String analysisRelativeDestination;
-   private Analysis.AnalysisType analyseType;
-   private String sample;
-   private String description;
-   private String operator;
-   private Float duration;
-   private long size;
-   private Date acqDate;
    private Maldi4800Format dataFormat;
-   private int statusMask;
-   private List<File> associatedFiles;
    private String startSpotLabel;
    private String currentEndSpotLabel;
    
@@ -93,10 +68,10 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
       analysisDescriptionFile = f;
       dataFileList = new ArrayList<>();
       dataFileList.add(analysisDescriptionFile);
-      statusMask = ANALYSIS_STATUS_UNKNOWN;
+      status = ANALYSIS_STATUS_UNKNOWN;
       analyseType = Analysis.AnalysisType.UNKNOWN;
       dataFormat = format;
-      size = -1;
+      estimatedSize = -1;
       description = "";
       duration = null;
    }
@@ -107,44 +82,17 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
   		associatedFiles = null;
   	}
   }
-  
-  private void setType(){
-    if( CTRL_INST_CODE.equalsIgnoreCase(sample))
-      analyseType = Analysis.AnalysisType.CONTROL_INSTRUMENT;
-    else if(CTRL_LC_CODE.equalsIgnoreCase(sample))
-      analyseType = Analysis.AnalysisType.CONTROL_LC;
-    else if(BLANK_CODE.equalsIgnoreCase(sample))
-      analyseType = Analysis.AnalysisType.BLANK;        
-    else if(TEST_ANALYSIS_CODE.equalsIgnoreCase(sample))
-    	analyseType = Analysis.AnalysisType.TEST;
-    else if(sample == null || sample.trim()=="")
-      analyseType = Analysis.AnalysisType.UNKNOWN;
-    else 
-      analyseType = Analysis.AnalysisType.RESEARCH;     
-  }
-  
-  public String getSample(){
-    return sample;
-  }
 
-  public Analysis.AnalysisType getType(){
-    return analyseType;
-  }
-  
   public long getEstimatedSize() {
-    if(size == 0){
+    if(estimatedSize == 0){
       for (int i=0; i<dataFileList.size(); i++){
-        size += dataFileList.get(i).length();
+        estimatedSize += dataFileList.get(i).length();
       }
     }
-    return size;
+    return estimatedSize;
   }
 
-   public String getName() {
-      return name;
-   }
-
-   public File getFile() {
+  public File getFileToTransfer() {
      File currentFile;
      ZipOutputStream zipOutput;
      boolean errorExists = false;
@@ -161,8 +109,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
           		 dataFileState = RSCS.getString("datafile.state.error");
           		 String msg = RSCS.getString("datafile.not.found");
           		 Object[] args = {currentFile}; 
-          		 logPaneLogger.error(MessageFormat.format(msg, args));
-          		 errorExists = true;        		
+          		 fileLogger.error(MessageFormat.format(msg, args));
           		 throw new IOException(msg);
           	 }//else do nothing
            }
@@ -180,7 +127,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
            
            if(currentFile.exists()){
              FileInputStream inputStream = new FileInputStream(currentFile);
-             logger.info("File to add to zip : "+currentFile.getName());
+             logger.info("File to add to zip : {}", currentFile.getName());
              // Add ZIP entry to output stream.
              zipOutput.putNextEntry(new ZipEntry(currentFile.getName()));
      
@@ -198,7 +145,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
              dataFileState = RSCS.getString("datafile.state.error");
              String msg = RSCS.getString("datafile.not.found");
              Object[] args = {currentFile}; 
-             logPaneLogger.error(MessageFormat.format(msg, args));
+             fileLogger.error(MessageFormat.format(msg, args));
              errorExists = true;
            }
          }//END of for(dataFileList)
@@ -224,13 +171,16 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
 
   @Override
   public File getSourceFile() {
+     //VDS FIXME : analysisFile is not the source. Source is description File (common to multiple analyses)
+     // and dataFiles . Which should be deleted when clean is asked ?
     return analysisFile;
   }
 
+
   @Override
-    public boolean removeTemporaryZipFile() {
-        return false;
-    }
+  public boolean isTransferFileTempo() {
+    return true; //it's the zip file
+  }
 
    public String getFileName(){
      return name+"."+ANALYSIS_FILE_EXT;
@@ -243,44 +193,15 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
    public File[] getAssociatedFiles() {
       return new File[0]; 
    }
-   
-   private void setAssociatedFiles(){
-  	 associatedFiles = new ArrayList<>();
-   }
 
    public String getAssociatedFileType(File associatedFile) {
      return SPECTRA_FILETYPE;
    }
 
-   public Date getDate() {
-      return acqDate;
-   }
-   
-   public void setSample(String spl){
-     sample = spl;
-     setType();
-   }
-   
-   public int getStatus(){
-  	 return statusMask;
-   }
-   
-   public void setStatus(int status){
-     statusMask = status;
-   }   
-
-   public String getDescription() {
-      return description;
-   }
-
-   public String getOperator() {
-     return operator;
-  }
-
-   public Float getDuration() {
+  public Float getDuration() {
 	   //Check first if the duration is not null, then compare	   
 	   if(duration == null || duration<1 )
-		   return 1f;
+		   return 0f;
 	   else 
 		   return duration;
    }
@@ -289,39 +210,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
      return "Name :"+getName()+". Sample : "+sample;
    }
 
-	public String getDestination() {
-		return this.analysisDestination;
-	}
-
-	public void setDestination(String destinationDir) {
-		this.analysisDestination = destinationDir;
-	}
-
-  @Override
-  public String getRelativeDestination() {
-    return this.analysisRelativeDestination;
-  }
-
-  @Override
-  public void setRelativeDestination(String destinationDir) {
-    this.analysisRelativeDestination = destinationDir;
-  }
-
-  public void propertyChange(PropertyChangeEvent evt) {
-		this.associatedFiles = null;
-		if(evt.getNewValue() != null)
-			setAssociatedFiles(); 
-	}
-
-	public void setDate(Date date) {
-		this.acqDate = date;		
-	}
-
-	public void setDescription(String desc) {
-		this.description = desc;		
-	}
-	
-	/**
+  /**
 	 * Update the description of this analysis. It add to it the name of the maldi plate
 	 */
 	public void addPlateDescription(String plateName){
@@ -372,27 +261,6 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
 		}
 	}
 
-	public void setDuration(Float duration) {
-		this.duration = duration;		
-	}
-
-	public void setEstimatedSize(long size) {
-		this.size =size;
-		
-	}
-
-	public void setName(String name) {
-	  this.name = name;
-	}
-
-	public void setOperator(String operator) {
-		this.operator =operator;		
-	}
-
-	public void setType(AnalysisType type) {
-		this.analyseType = type;		
-	}
-
   public List<File> getDataFileList() {
     return dataFileList;
   }
@@ -406,7 +274,7 @@ public class Maldi4800Analysis implements Analysis, PropertyChangeListener {
    */
   public void addDataFile(File dataFile){
     //reset of the size of the analysis to force to recalculate it
-    size = 0;
+    estimatedSize = 0;
     
     if(dataFileList == null)
       dataFileList = new ArrayList<>();

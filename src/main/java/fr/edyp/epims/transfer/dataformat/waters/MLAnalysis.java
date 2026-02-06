@@ -54,11 +54,7 @@ public class MLAnalysis extends AbstractAnalysis implements PropertyChangeListen
      return estimatedSize;
   }
 
-   public File getFile() {
-      return analysisFile;
-   }
-
-   public String getFileName(){
+  public String getFileName(){
      return analysisFile.getName();
    }
 

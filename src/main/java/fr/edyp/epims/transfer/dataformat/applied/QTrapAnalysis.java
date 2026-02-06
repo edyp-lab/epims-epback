@@ -73,9 +73,6 @@ public class QTrapAnalysis extends AbstractAnalysis {
       analyseType = Analysis.AnalysisType.RESEARCH;
   }
 
-  public File getFile() {
-    return analysisFile;
-  }
 
   public String getFileName(){
     return analysisFile.getName();

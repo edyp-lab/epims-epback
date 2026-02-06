@@ -40,7 +40,7 @@ public class TimsTOFAnalysis extends AbstractAnalysis  {
   }
 
   @Override
-  public File getFile() {
+  public File getFileToTransfer() {
     if(zipFile == null ) {
       try {
         if(!isInitialised)
@@ -61,12 +61,8 @@ public class TimsTOFAnalysis extends AbstractAnalysis  {
     return zipFile;
   }
 
-  public File getSourceFile() {
-    return dirFile;
-  }
-
-  @Override //Zip file should be removed
-  public boolean removeTemporaryZipFile() {
+  @Override
+  public boolean isTransferFileTempo() {
     return true;
   }
 

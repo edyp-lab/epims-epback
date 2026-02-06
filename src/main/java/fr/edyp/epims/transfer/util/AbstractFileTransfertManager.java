@@ -30,7 +30,6 @@ public abstract class AbstractFileTransfertManager implements IFileTransferManag
   protected abstract String getDestinationPath(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws IOException;
   protected abstract boolean destinationExist(String destPath);
   protected abstract String getAssociatedDataDestinationPath(Analysis a, File f, String fileType, IEPSystemDataProvider ePimsDataProvider)throws IOException;
-  protected abstract List<File> getAnalysisFilesToDelete(Analysis a);
 
   protected abstract void doAnalysisCopy(Analysis a, String destPath)throws IOException;
   protected abstract void doAssociatedDataCopy(File src, String destPath)throws IOException;
@@ -39,7 +38,7 @@ public abstract class AbstractFileTransfertManager implements IFileTransferManag
   public void copyOnly(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws BackupException {
     //TODO VD : REMOVE copied file in case of error
     try {
-      File analysisFile = a.getFile();
+      File analysisFile = a.getFileToTransfer();
       if(analysisFile == null) {
         throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
       }
@@ -100,7 +99,7 @@ public abstract class AbstractFileTransfertManager implements IFileTransferManag
   public void move(Analysis a, IEPSystemDataProvider ePimsDataProvider) throws BackupException {
     try {
 
-      File analysisFile = a.getFile();
+      File analysisFile = a.getFileToTransfer();
       if(analysisFile == null) {
         throw new BackupException("Problem on analysisFile for analysis " + a.getName() + ". The file is undefined (null)");
       }
@@ -129,7 +128,8 @@ public abstract class AbstractFileTransfertManager implements IFileTransferManag
       msg = MessageFormat.format(msg, args );
       fileLogger.info(msg);
 
-      ArrayList<File> filesToDel = new ArrayList<>(getAnalysisFilesToDelete(a));
+      ArrayList<File> filesToDel = new ArrayList<>();
+      filesToDel.add(a.getFileToTransfer());
 
       File [] associatedFiles = a.getAssociatedFiles();
       for (int i = 0; i < associatedFiles.length; i++) {
@@ -173,7 +173,8 @@ public abstract class AbstractFileTransfertManager implements IFileTransferManag
       long start = System.currentTimeMillis();
 
       // Clean original analysis file
-      ArrayList<File> filesToDel = new ArrayList<>(getAnalysisFilesToDelete(a));
+      ArrayList<File> filesToDel = new ArrayList<>();
+      filesToDel.add(a.getSourceFile());
       boolean delresult = FileUtils.deleteAllFilesOrNone(filesToDel);
       long end = System.currentTimeMillis();
       long duration = (end - start) / 1000;
@@ -187,7 +188,7 @@ public abstract class AbstractFileTransfertManager implements IFileTransferManag
         Object[] args = {a.getName()};
         msg = MessageFormat.format(msg, args);
         fileLogger.info(msg);
-        throw new BackupException("Error cleaning analysisFile " + a.getSourceFile() + " (or any acq file for MultiFilesAnalysis) for analysis " + a.getName() + ". The file can't be deleted. It may be locked");
+        throw new BackupException("Error cleaning analysisFile " + a.getSourceFile() + " for analysis " + a.getName() + ". The file can't be deleted. It may be locked");
       }
 
       File[] associatedFiles = a.getAssociatedFiles();

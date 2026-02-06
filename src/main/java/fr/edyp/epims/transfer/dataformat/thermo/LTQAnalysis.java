@@ -55,10 +55,6 @@ public class LTQAnalysis extends AbstractAnalysis {
     return estimatedSize;
   }
 
-  public File getFile() {
-    return analysisFile;
-  }
-
   public String getFileName(){
     return analysisFile.getName();
   }

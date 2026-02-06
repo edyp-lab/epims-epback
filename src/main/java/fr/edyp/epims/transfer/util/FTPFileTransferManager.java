@@ -43,7 +43,7 @@ public class FTPFileTransferManager extends DefaultFileTransferManager {
   }
 
   protected void doAnalysisCopy(Analysis a, String destPath) throws IOException {
-    m_ftpConnection.upload(a.getFile(), destPath);
+    m_ftpConnection.upload(a.getFileToTransfer(), destPath);
   }
 
   protected void doAssociatedDataCopy(File src, String destPath) throws IOException {

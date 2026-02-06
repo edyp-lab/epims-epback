@@ -6,20 +6,17 @@
 package fr.edyp.epims.transfer.dataformat.applied;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import fr.edyp.epims.transfer.model.DataFormat;
-import fr.edyp.epims.transfer.model.MultiFilesAnalysis;
-import org.apache.commons.io.FileUtils;
 
 /** 
  *  s
  * 
  * @author CB205360
  */
-public class WiffScanAnalysis extends  QTrapAnalysis /*implements MultiFilesAnalysis*/ {
+public class WiffScanAnalysis extends  QTrapAnalysis  {
 
   private List<File> allAcqFiles;
   private String zipFilename = null;
@@ -44,12 +41,15 @@ public class WiffScanAnalysis extends  QTrapAnalysis /*implements MultiFilesAnal
 				estimatedSize += nextF.length();
 			}
 		}
-
 	}
 
-	public File getFile() {
+	public String getZipFilename() {
+		return zipFilename;
+	}
+	@Override
+	public File getFileToTransfer() {
   	if(zipFilename == null)
-  		return super.getFile();
+  		return super.getFileToTransfer();
   	else {
 			if(zipFile == null ) {
 				try {
@@ -70,13 +70,10 @@ public class WiffScanAnalysis extends  QTrapAnalysis /*implements MultiFilesAnal
 		}
   }
 
-  public String getFileName(){
-  	if(zipFile == null && analysisFile==null)
-  		return "INVALID FILE";
-  	else if(zipFilename == null)
-  		return analysisFile.getName();
-  	else 
-  		return zipFilename;
+
+  @Override
+  public boolean isTransferFileTempo() {
+    return zipFile != null;
   }
   
   protected void init(QTrapFormat format){
@@ -94,18 +91,5 @@ public class WiffScanAnalysis extends  QTrapAnalysis /*implements MultiFilesAnal
   	if(format instanceof WiffScanFormat)
   		dataFormat = (WiffScanFormat)format;  
   }
-  
-//	public void setDestination(String destinationDir) {
-//		super.setDestination(destinationDir);
-//		zipFile = new File(destinationDir,analysisFile.getName()+".zip");
-//	}
-	
 
-//	public List<File> getAllAcquisitionFile() {
-//		return allAcqFiles;
-//	}
-//
-//	public boolean keepRelativePath(){
-//		return false;
-//	}
 }

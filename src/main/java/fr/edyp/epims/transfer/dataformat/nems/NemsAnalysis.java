@@ -5,8 +5,6 @@ import fr.edyp.epims.transfer.model.DataFormat;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class NemsAnalysis extends AbstractAnalysis {
 
@@ -36,7 +34,7 @@ public class NemsAnalysis extends AbstractAnalysis {
     }
 
     @Override
-    public File getFile() {
+    public File getFileToTransfer() {
         if(zipFile == null) {
             try {
                 if (!allAcqFiles.isEmpty()) {
@@ -55,12 +53,8 @@ public class NemsAnalysis extends AbstractAnalysis {
         return zipFile;
     }
 
-    public File getSourceFile() {
-        return analysisFile;
-    }
-
     @Override
-    public boolean removeTemporaryZipFile() {
+    public boolean isTransferFileTempo() {
         return true;
     }
 

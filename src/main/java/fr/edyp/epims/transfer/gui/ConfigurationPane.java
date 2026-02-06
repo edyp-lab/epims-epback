@@ -41,11 +41,12 @@ public class ConfigurationPane extends JPanel implements PropertyChangeListener 
 	
 	private JTextField sourcePathTF;
 	private JTextField destPathTF;
-	private JCheckBox removeFilesCB;
+//	private JCheckBox removeFilesCB;
 	private JComboBox<String> transferModeCbB;
 
 	public ConfigurationPane(BackupParameters parameters) {
 		this.parameters = parameters;
+		parameters.setRemoveFilesAfterCopy(false); //No option any more... to be confirmed before complete delete
 		parameters.addPropertyChangeListener(this);
 		setLayout(new GridBagLayout());
 		JComponent pane = buildPanel();
@@ -87,13 +88,14 @@ public class ConfigurationPane extends JPanel implements PropertyChangeListener 
 
 	
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (Objects.equals(evt.getPropertyName(), BackupParameters.TRANSFERT_MODE_PROPERTY)) {
-			removeFilesCB.setEnabled(parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE);
-		} else if (Objects.equals(evt.getPropertyName(), BackupParameters.INSTRUMENT_CONFIGURATION_PROPERTY)) {
+//		if (Objects.equals(evt.getPropertyName(), BackupParameters.TRANSFERT_MODE_PROPERTY)) {
+//			removeFilesCB.setEnabled(parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE);
+//		} else
+		if (Objects.equals(evt.getPropertyName(), BackupParameters.INSTRUMENT_CONFIGURATION_PROPERTY)) {
 			updateValues();
 		} else if (Objects.equals(evt.getPropertyName(), BackupParameters.BACKUP_RUNNING_PROPERTY)) {
 			transferModeCbB.setEnabled(!(Boolean)evt.getNewValue());
-			removeFilesCB.setEnabled( (!(Boolean)evt.getNewValue()) && (parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE));
+		//	removeFilesCB.setEnabled( (!(Boolean)evt.getNewValue()) && (parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE));
 		}
 	}
 
@@ -159,21 +161,21 @@ public class ConfigurationPane extends JPanel implements PropertyChangeListener 
 		//
 		// ligne 6
 		//
-		removeFilesCB = new JCheckBox(RSCS.getString("remove.files.checkbox.text"));
-		removeFilesCB.setSelected(false);
-		removeFilesCB.setEnabled(parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE);
-		pane.add(removeFilesCB, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.VERTICAL, new Insets(0,
-				2 * INSET, INSET, 2 * INSET), 0, 0));
-
-		removeFilesCB.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource().equals(removeFilesCB)) {
-					parameters.setRemoveFilesAfterCopy(((JCheckBox) e.getSource()).isSelected());
-				}
-			}
-
-		});
+//		removeFilesCB = new JCheckBox(RSCS.getString("remove.files.checkbox.text"));
+//		removeFilesCB.setSelected(false);
+//		removeFilesCB.setEnabled(parameters.getTransferMode() == BackupParameters.TRANSFER_COPY_MODE);
+//		pane.add(removeFilesCB, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.VERTICAL, new Insets(0,
+//				2 * INSET, INSET, 2 * INSET), 0, 0));
+//
+//		removeFilesCB.addActionListener(new ActionListener() {
+//
+//			public void actionPerformed(ActionEvent e) {
+//				if (e.getSource().equals(removeFilesCB)) {
+//					parameters.setRemoveFilesAfterCopy(((JCheckBox) e.getSource()).isSelected());
+//				}
+//			}
+//
+//		});
 
 		return pane;
 	}
