@@ -1,0 +1,44 @@
+<map>
+  <entry>
+    <string>C:\Temp\Vero\epims_instrum_data\ttof\DATA\TTOF_01479.wiff</string>
+    <list>
+      <fr.edyp.epims.transfer.dataformat.applied.WiffScanAnalysis>
+        <analysisFile>C:\Temp\Vero\epims_instrum_data\ttof\DATA\TTOF_01479.wiff</analysisFile>
+        <destinationPath>Y:\repository\b\PLATEFORME\TESTS\DH5\samples\data\RAW</destinationPath>
+        <analysisName>TTOF_01479</analysisName>
+        <analyseType>RESEARCH</analyseType>
+        <sample>DH5_500</sample>
+        <description>NCS1 DCMSlink</description>
+        <size>1197866928</size>
+        <acqDate>2015-10-17 13:55:20.389 UTC</acqDate>
+        <statusMask>1</statusMask>
+        <allAcqFiles>
+          <file>C:\Temp\Vero\epims_instrum_data\ttof\DATA\TTOF_01479.wiff</file>
+          <file>C:\Temp\Vero\epims_instrum_data\ttof\DATA\TTOF_01479.wiff.scan</file>
+        </allAcqFiles>
+        <zipFilename>TTOF_01479.wiff.zip</zipFilename>
+      </fr.edyp.epims.transfer.dataformat.applied.WiffScanAnalysis>
+    </list>
+  </entry>
+  <entry>
+    <string>D:\Analyst Data\Projects\Default\Data\TTOF2_00294.wiff</string>
+    <list>
+      <fr.edyp.epims.transfer.dataformat.applied.WiffScanAnalysis>
+        <analysisFile>D:\Analyst Data\Projects\Default\Data\TTOF2_00294.wiff</analysisFile>
+        <destinationPath>Y:\repository\b\PLATEFORME\TESTS\DH5\samples\data\RAW</destinationPath>
+        <analysisName>TTOF2_00294</analysisName>
+        <analyseType>RESEARCH</analyseType>
+        <sample>DH5_100</sample>
+        <description>NCS1 25cm 3um</description>
+        <size>671153992</size>
+        <acqDate>2014-12-06 18:00:04.324 UTC</acqDate>
+        <statusMask>1</statusMask>
+        <allAcqFiles>
+          <file>D:\Analyst Data\Projects\Default\Data\TTOF2_00294.wiff</file>
+          <file>D:\Analyst Data\Projects\Default\Data\TTOF2_00294.wiff.scan</file>
+        </allAcqFiles>
+        <zipFilename>TTOF2_00294.wiff.zip</zipFilename>
+      </fr.edyp.epims.transfer.dataformat.applied.WiffScanAnalysis>
+    </list>
+  </entry>
+</map>
