@@ -9,6 +9,9 @@ Previously hosted on CEA Tuleap Projects.
 
 ### version 2.3.x
 
+* Allow FTP file transfer
+* Use server Rest API to log instruments information
+* Allow more FTP configuration (port/authentification mode)
 * Add TimsTof Analysis support
 * Use ThermoAccess (based on Thermo lib) to read ThermoFisher metadata
 * Refactoring
