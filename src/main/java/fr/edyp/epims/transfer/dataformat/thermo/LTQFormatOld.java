@@ -28,18 +28,18 @@ import org.slf4j.LoggerFactory;
  * 
  * @author CB205360
  */
-public class LTQFormat extends AbstractLTQFormat {
+public class LTQFormatOld extends AbstractLTQFormat {
 
 	private static final long serialVersionUID = 1L;
 
-	public LTQFormat() {
+	public LTQFormatOld() {
 		super();
-		logger = LoggerFactory.getLogger(LTQFormat.class);
+		logger = LoggerFactory.getLogger(LTQFormatOld.class);
 	}
 
 	@Override
 	protected void initFactory() {
-		analysisFactory = new LTQFactory();
+		analysisFactory = new LTQFactoryOld();
 	}
 
 }

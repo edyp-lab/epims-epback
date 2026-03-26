@@ -32,6 +32,26 @@
       </dependency>
 
       <dependency>
+         <groupId>cea.edyp</groupId>
+         <artifactId>JXCalibur2</artifactId>
+         <version>0.0.5</version>
+<!--         <exclusions>-->
+<!--            <exclusion>-->
+<!--               <groupId>org.slf4j</groupId>-->
+<!--               <artifactId>slf4j-log4j12</artifactId>-->
+<!--            </exclusion>-->
+<!--            <exclusion>-->
+<!--               <groupId>log4j</groupId>-->
+<!--               <artifactId>log4j</artifactId>-->
+<!--            </exclusion>-->
+<!--            <exclusion>-->
+<!--               <groupId>org.apache.logging.log4j</groupId>-->
+<!--               <artifactId>log4j-core</artifactId>-->
+<!--            </exclusion>-->
+<!--         </exclusions>-->
+      </dependency>
+
+      <dependency>
          <groupId>com.oracle</groupId>
          <artifactId>jdk</artifactId>
          <version>17.0.3.1</version>

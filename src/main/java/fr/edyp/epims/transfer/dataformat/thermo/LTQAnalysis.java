@@ -41,9 +41,9 @@ public class LTQAnalysis extends AbstractAnalysis {
   private static final String MGF_EXTENTION = "mgf";
   private static final String MGF_DIR = "dta";
   
-  private LTQFormat dataFormat;
+  private AbstractLTQFormat dataFormat;
 
-  public LTQAnalysis(File f, LTQFormat format) {
+  public LTQAnalysis(File f, AbstractLTQFormat format) {
     analysisFile = f;
     estimatedSize = analysisFile.length();
     status = ANALYSIS_STATUS_UNKNOWN;
@@ -53,8 +53,8 @@ public class LTQAnalysis extends AbstractAnalysis {
   }
   
   public void setDataFormat(DataFormat format){
-  	if(format instanceof LTQFormat)
-  		dataFormat = (LTQFormat)format;  
+  	if(format instanceof AbstractLTQFormat)
+  		dataFormat = (AbstractLTQFormat)format;  
   }
 
   @Override

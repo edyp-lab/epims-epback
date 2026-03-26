@@ -9,6 +9,10 @@
 			<name>LTQ Thermo</name>
 			<class>fr.edyp.epims.transfer.dataformat.thermo.LTQFormat</class>
 		</dataformat>
+	   <dataformat>
+		   <name>LTQ Thermo V-1</name>
+		   <class>fr.edyp.epims.transfer.dataformat.thermo.LTQFormatOld</class>
+	   </dataformat>
 		<dataformat>
 			<name>QTrap Applied</name>
 			<class>fr.edyp.epims.transfer.dataformat.applied.QTrapFormat</class>

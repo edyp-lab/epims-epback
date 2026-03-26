@@ -76,7 +76,7 @@ public class LTQFactory extends AbstractCacheFactory {
       throw new IllegalArgumentException("Invalid LTQ File specified");
     }
 
-    LTQAnalysis analysis = new LTQAnalysis(f, (LTQFormat)format);
+    LTQAnalysis analysis = new LTQAnalysis(f, (AbstractLTQFormat)format);
     try {
       fillAnalysisInfo(f, analysis);
     } catch (Exception exp) {
@@ -126,7 +126,7 @@ public class LTQFactory extends AbstractCacheFactory {
     List<LTQAnalysis> resultAnalysis = new ArrayList<>();
     for(File nextFile : allFiles){
       if(nextFile.isFile()){
-        LTQAnalysis analysis = new LTQAnalysis(nextFile, (LTQFormat)format);
+        LTQAnalysis analysis = new LTQAnalysis(nextFile, (AbstractLTQFormat)format);
         resultAnalysis.add(analysis);
       }
     }
