@@ -26,8 +26,9 @@
         </encoder>
     </appender>
 
-  <logger name="fr.edyp.epims" level="DEBUG">
-  </logger>
+    <logger name="fr.edyp.epims" level="INFO"/> <!-- INFO By default. Set to DEBUG if needed -->
+    <logger name="org.perf4j" level="ERROR"/> <!--No timer trace in prod -->
+
 
   <root level="info">
 <!--    <appender-ref ref="STDOUT" />-->
