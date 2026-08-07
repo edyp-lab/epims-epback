@@ -44,6 +44,9 @@ abstract public class AbstractAnalysis implements  Analysis {
   protected String operator;
   protected String description;
   protected Float duration;
+  protected String methodName;
+  protected Float injectionVolume;
+  protected String vialInformation;
   protected long estimatedSize;
   protected List<File> associatedFiles;
 
@@ -171,6 +174,36 @@ abstract public class AbstractAnalysis implements  Analysis {
   @Override
   public void setDuration(Float duration) {
     this.duration = duration;
+  }
+
+  @Override
+  public String getMethodName() {
+    return methodName;
+  }
+
+  @Override
+  public void setMethodName(String methodName) {
+    this.methodName = methodName;
+  }
+
+  @Override
+  public Float getInjectionVolume() {
+    return injectionVolume;
+  }
+
+  @Override
+  public void setInjectionVolume(Float injectionVolume) {
+    this.injectionVolume = injectionVolume;
+  }
+
+  @Override
+  public String getVialInformation() {
+    return vialInformation;
+  }
+
+  @Override
+  public void setVialInformation(String vialInformation) {
+    this.vialInformation = vialInformation;
   }
 
   // By default, source and final analysis file are the same

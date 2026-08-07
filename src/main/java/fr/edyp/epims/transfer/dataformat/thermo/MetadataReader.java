@@ -193,6 +193,9 @@ public class MetadataReader {
             analysis.setDescription(l.getAcqDescription());
             analysis.setOperator(l.getOperator());
             analysis.setDuration((float) l.getDurationMin());
+            analysis.setMethodName(l.getMethodName());
+            analysis.setInjectionVolume((float) l.getInjectionVolume());
+            analysis.setVialInformation(l.getVialInformation());
             logger.info("-- Read info for analysis {}", analysis.getName());
             setAnalyseState(acqFilePath, FINISHED_STATE);
           }

@@ -22,14 +22,12 @@
 package fr.edyp.epims.transfer.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import fr.edyp.epims.json.*;
@@ -236,6 +234,9 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 			break;
 		}
 		acquisitionJson.setDurationMin(analysis.getDuration());
+		acquisitionJson.setMethodName(analysis.getMethodName());
+		acquisitionJson.setInjectionVolume(analysis.getInjectionVolume());
+		acquisitionJson.setVialInformation(analysis.getVialInformation());
 		protocolApplicationJson.setActor(analysis.getOperator());
 		protocolApplicationJson.setComment(analysis.getDescription());
 

@@ -323,6 +323,18 @@ public interface Analysis {
     */
    Float getDuration();
    void setDuration(Float duration);
+
+   String getMethodName();
+
+   void setMethodName(String methodName);
+
+   Float getInjectionVolume();
+
+   void setInjectionVolume(Float injectionVolume);
+
+   String getVialInformation();
+
+   void setVialInformation(String vialInformation);
    
    void setDataFormat(DataFormat dataFormat);
    

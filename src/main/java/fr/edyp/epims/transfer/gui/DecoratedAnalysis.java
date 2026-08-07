@@ -190,6 +190,37 @@ public class DecoratedAnalysis implements Analysis {
 	public void setDataFormat(DataFormat dataFormat) {
 		analysis.setDataFormat(dataFormat);
 	}
+	@Override
+	public String getMethodName() {
+		return analysis.getMethodName();
+	}
+
+	@Override
+	public void setMethodName(String methodName) {
+		analysis.setMethodName(methodName);
+	}
+
+	@Override
+	public Float getInjectionVolume() {
+		return analysis.getInjectionVolume();
+	}
+
+	@Override
+	public void setInjectionVolume(Float injectionVolume) {
+		analysis.setInjectionVolume(injectionVolume);
+	}
+
+	@Override
+	public String getVialInformation() {
+		return analysis.getVialInformation();
+	}
+
+	@Override
+	public void setVialInformation(String vialInformation) {
+		analysis.setVialInformation(vialInformation);
+	}
+
+
 
 	public String toString() {
 		return analysis.toString();
