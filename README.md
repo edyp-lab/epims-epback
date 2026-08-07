@@ -7,7 +7,12 @@ Previously hosted on CEA Tuleap Projects.
 
 ## Revisions
 
-### version 2.3.x
+### version 2.3.6
+
+* Added acquisition properties (methodName, injectionVolume and vialInformation) in Analysis interface and implem. Send this information  through AcquisitionJson.
+* Update dependnceis di msdata converter
+
+### version ... 2.3.5
 
 * Allow FTP file transfer
 * Use server Rest API to log instruments information
