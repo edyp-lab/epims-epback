@@ -9,7 +9,7 @@ Previously hosted on CEA Tuleap Projects.
 
 ### version 2.3.6
 
-* Added acquisition properties (methodName, injectionVolume and vialInformation) in Analysis interface and implem. Send this information  through AcquisitionJson.
+* Added acquisition properties (Category, methodName, injectionVolume and vialInformation) in Analysis interface and implem. Send this information through AcquisitionJson.
 * Update dependnceis di msdata converter
 
 ### version ... 2.3.5

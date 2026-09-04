@@ -44,25 +44,30 @@ abstract public class AbstractAnalysis implements  Analysis {
   protected String operator;
   protected String description;
   protected Float duration;
-  protected String methodName;
-  protected Float injectionVolume;
-  protected String vialInformation;
+ 	protected String methodName;
+ 	protected Float injectionVolume;
+ 	protected String vialInformation;
+ 	protected String category;
   protected long estimatedSize;
   protected List<File> associatedFiles;
 
   protected void determineType() {
-    if (CTRL_INST_CODE.equalsIgnoreCase(sample))
+    if (CTRL_INST_CODE.equalsIgnoreCase(sample)) {
       analyseType = Analysis.AnalysisType.CONTROL_INSTRUMENT;
-    else if (CTRL_LC_CODE.equalsIgnoreCase(sample))
+      category = "LC_CTRL";
+    } else if (CTRL_LC_CODE.equalsIgnoreCase(sample) || CYTC_CODE.equalsIgnoreCase(sample) || BETAGAL_CODE.equalsIgnoreCase(sample)) {
       analyseType = Analysis.AnalysisType.CONTROL_LC;
-    else if (BLANK_CODE.equalsIgnoreCase(sample))
+      category = "LC_CTRL";
+    } else if (BLANK_CODE.equalsIgnoreCase(sample)) {
       analyseType = Analysis.AnalysisType.BLANK;
-    else if (TEST_ANALYSIS_CODE.equalsIgnoreCase(sample))
+      category = "BLANK";
+    } else if (TEST_ANALYSIS_CODE.equalsIgnoreCase(sample)) {
       analyseType = Analysis.AnalysisType.TEST;
-    else if (sample == null || sample.trim().isEmpty())
+    } else if (sample == null || sample.trim().isEmpty()) {
       analyseType = Analysis.AnalysisType.UNKNOWN;
-    else
+    } else {
       analyseType = Analysis.AnalysisType.RESEARCH;
+    }
   }
 
   @Override
@@ -202,9 +207,19 @@ abstract public class AbstractAnalysis implements  Analysis {
   }
 
   @Override
-  public void setVialInformation(String vialInformation) {
-    this.vialInformation = vialInformation;
-  }
+ 	public void setVialInformation(String vialInformation) {
+		this.vialInformation = vialInformation;
+	}
+
+	@Override
+	public String getCategory() {
+		return category;
+	}
+
+	@Override
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
   // By default, source and final analysis file are the same
   @Override

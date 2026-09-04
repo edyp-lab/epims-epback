@@ -171,9 +171,12 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 	public void createAcquisitionAndFilesFor(Analysis a, String instrumentName) throws BackupException {
 		SampleJson splDesc = null;
 		if (a.getType() == Analysis.AnalysisType.RESEARCH) {
-				splDesc = AcquisitionServices.getSampleJson(a.getSample());
+			splDesc = AcquisitionServices.getSampleJson(a.getSample());
 			if (splDesc == null) {
 				throw new BackupException(RSCS.getString("sample.invalid"));
+			}
+			if (a.getCategory() == null && splDesc.getCategory() != null) {
+				a.setCategory(splDesc.getCategory().name());
 			}
 		}
 
@@ -237,6 +240,9 @@ public class WSSystemDataProvider implements IEPSystemDataProvider {
 		acquisitionJson.setMethodName(analysis.getMethodName());
 		acquisitionJson.setInjectionVolume(analysis.getInjectionVolume());
 		acquisitionJson.setVialInformation(analysis.getVialInformation());
+		if (analysis.getCategory() != null) {
+			acquisitionJson.setCategory(Category.valueOf(analysis.getCategory()));
+		}
 		protocolApplicationJson.setActor(analysis.getOperator());
 		protocolApplicationJson.setComment(analysis.getDescription());
 

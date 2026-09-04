@@ -337,5 +337,9 @@ public interface Analysis {
    void setVialInformation(String vialInformation);
    
    void setDataFormat(DataFormat dataFormat);
+
+   String getCategory();
+
+   void setCategory(String category);
    
 }
