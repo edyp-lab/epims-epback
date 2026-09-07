@@ -190,6 +190,17 @@ public class DecoratedAnalysis implements Analysis {
 	public void setDataFormat(DataFormat dataFormat) {
 		analysis.setDataFormat(dataFormat);
 	}
+
+	@Override
+	public String getCategory() {
+		return  analysis.getCategory();
+	}
+
+	@Override
+	public void setCategory(String category) {
+		analysis.setCategory(category);
+	}
+
 	@Override
 	public String getMethodName() {
 		return analysis.getMethodName();
