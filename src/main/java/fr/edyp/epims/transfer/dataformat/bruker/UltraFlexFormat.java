@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -148,6 +149,11 @@ public class UltraFlexFormat extends JPanel implements DataFormat {
 		//we got just one src dir
 		files.add(dir);
 		return analysisFactory.getAnalyses(this, files);        	      	        	       
+	}
+
+	@Override
+	public Analysis[] createAnalyses(File file) {
+		return analysisFactory.getAnalyses(this, Arrays.asList(file));
 	}
 
         

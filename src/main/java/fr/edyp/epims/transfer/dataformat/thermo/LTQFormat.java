@@ -123,6 +123,11 @@ public class LTQFormat extends JPanel implements DataFormat {
 		return this.analysisFactory.getAnalyses(this, Arrays.asList(files));
 	}
 
+	@Override
+	public Analysis[] createAnalyses(File file) {
+		return this.analysisFactory.getAnalyses(this, Arrays.asList(file));
+	}
+
 	public int getPropertyCount() {
 		return areSpectraHandled ? FORMAT_PROPERTIES.length + 1 : FORMAT_PROPERTIES.length;
 	}

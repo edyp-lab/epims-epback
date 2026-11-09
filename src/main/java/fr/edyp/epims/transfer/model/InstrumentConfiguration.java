@@ -74,13 +74,14 @@ public class InstrumentConfiguration {
 		return instrumentsConfig;
 	}
 
-	public InstrumentConfiguration(String label, String name, String format, Boolean removeFiles, Integer transferMode) {
+	public InstrumentConfiguration(String label, String name, String format, Boolean removeFiles, Integer transferMode, String  sourcePath) {
 		super();
 		this.label = label;
 		this.name = name;
 		this.format = format;
 		this.removeFiles = removeFiles;
 		this.transferMode = transferMode;
+		this.sourcePath = sourcePath;
 	}
 
 	public InstrumentConfiguration(String label) {

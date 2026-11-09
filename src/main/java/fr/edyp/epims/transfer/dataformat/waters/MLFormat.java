@@ -242,6 +242,11 @@ public class MLFormat extends JPanel implements DataFormat {
 		return analysisFactory.getAnalyses(this, Arrays.asList(files));
 	}
 
+	@Override
+	public Analysis[] createAnalyses(File file) {
+		return analysisFactory.getAnalyses(this, Arrays.asList(file));
+	}
+
 	public int getPropertyCount() {    
 		int incr = (areSpectraHandled) ? 2 : 0;
 		return PROPERTIES.length + incr;

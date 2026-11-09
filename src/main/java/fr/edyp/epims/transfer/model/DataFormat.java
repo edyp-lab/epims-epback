@@ -42,7 +42,15 @@ public interface DataFormat {
     * @return an Array, may be empty, of all found analysis
     */
    public Analysis[] getAnalysis(File dir);
-   
+
+   /**
+    * Create an Array of Analysis from the specified file.
+    * 
+    * @param file The file to create Analysis from
+    * @return an Array, may be empty, of all found analysis
+    */
+   public Analysis[] createAnalyses(File file);
+
    /**
     * Return the IFileTransferManager appropriated for this
     * DataFormat.

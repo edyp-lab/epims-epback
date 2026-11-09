@@ -124,6 +124,11 @@ public class Maldi4800Format extends JPanel implements DataFormat {
 		return analysisFactory.getAnalyses(this, Arrays.asList(files));
 	}
 
+	@Override
+	public Analysis[] createAnalyses(File file) {
+		return this.analysisFactory.getAnalyses(this, Arrays.asList(file));
+	}
+
 	public int getPropertyCount() {    
 		return PROPERTIES.length;
 	}

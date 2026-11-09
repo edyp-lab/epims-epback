@@ -130,8 +130,12 @@ public class BackupParameters implements PropertyChangeListener {
 
 
 	public BackupParameters() throws InstantiationException {
+		this(new WSSystemDataProvider());
+	}
+
+	public BackupParameters(IEPSystemDataProvider provider) {
 		propertiesSupport = new PropertyChangeSupport(this);
-		dataProvider = new WSSystemDataProvider();
+		dataProvider = provider;
 //	dataProvider = new FakeDataProvider();
 
 		String dataRoot = dataProvider.getPimsRootPath();
@@ -340,6 +344,14 @@ public class BackupParameters implements PropertyChangeListener {
 	 */
 	public String getConfigurationName() {
 		return instrumentConfiguration.getLabel();
+	}
+
+	public void setDataFormat(DataFormat format) {
+		this.dataFormat = format;
+	}
+
+	public void setSourcePath(File sourcePath) {
+		this.sourcePath = sourcePath;
 	}
 
 	/**

@@ -122,6 +122,11 @@
          <version>1.4.21</version>
       </dependency>
       <dependency>
+         <groupId>com.beust</groupId>
+         <artifactId>jcommander</artifactId>
+         <version>1.82</version>
+      </dependency>
+      <dependency>
          <groupId>com.hierynomus</groupId>
          <artifactId>sshj</artifactId>
          <version>0.40.0</version>

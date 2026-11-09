@@ -77,6 +77,11 @@ public class NemsFormat extends JPanel implements DataFormat {
     }
 
     @Override
+    public Analysis[] createAnalyses(File file) {
+        return this.analysisFactory.getAnalyses(this, Arrays.asList(file));
+    }
+
+    @Override
     public IFileTransferManager getFileTransfertManager() {
         Preferences preferences = EPBackPreferences.root();
         String transferMode = preferences.get(PreferencesKeys.TRANSFER_MODE,PreferencesKeys.DEFAULT_TRANSFER_MODE);

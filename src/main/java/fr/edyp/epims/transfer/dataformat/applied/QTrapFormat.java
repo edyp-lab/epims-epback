@@ -154,6 +154,11 @@ public class QTrapFormat extends JPanel implements DataFormat {
 		return analysisFactory.getAnalyses(this, files);
 	}
 
+	@Override
+	public Analysis[] createAnalyses(File file) {
+		return this.analysisFactory.getAnalyses(this, Arrays.asList(file));
+	}
+
 	public JComponent getConfigurator() {
 		return this;
 	}
