@@ -1,0 +1,1 @@
+.\jdk\bin\java -Xms512m -Xmx1G  -Dlogback.configurationFile=conf/logback.xml  -Djava.library.path="./lib"  -cp "lib/*;eP-Back-@version@.jar;config" fr.edyp.epims.transfer.cli.BackPimsCLI  %*
