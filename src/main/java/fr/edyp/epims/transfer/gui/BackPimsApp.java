@@ -24,8 +24,6 @@ package fr.edyp.epims.transfer.gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -37,6 +35,7 @@ import javax.swing.*;
 import fr.edyp.epims.transfer.preferences.EPBackPreferences;
 import fr.edyp.epims.transfer.preferences.PreferencesKeys;
 import fr.edyp.epims.transfer.task.ConnectTask;
+import fr.edyp.epims.transfer.JavaVersion;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 
@@ -108,7 +107,8 @@ public class BackPimsApp extends JFrame implements Backup {
 
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setSize((Integer) RSCS.getObject("app.start.width"), (Integer) RSCS.getObject("app.start.height"));
-		this.setTitle(RSCS.getString("app.title"));
+		JavaVersion version = new  JavaVersion();
+		this.setTitle(version.getModuleName()+" - "+version.getVersion());
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				try {
@@ -123,17 +123,13 @@ public class BackPimsApp extends JFrame implements Backup {
 
 		buildGUI();
 		backupRunning = false;
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				analysisPane.loadAnalysesFromSrcPath(false);
-			}
-		});
+		SwingUtilities.invokeLater(() -> analysisPane.loadAnalysesFromSrcPath(false));
 	}
 
 	private String chooseInstrumentConfig() {
-		String instrumentLabel = null;
-		List<String> labelList = new ArrayList<String>(instrumentsConfig.keySet());
-		JComboBox<String> jcb = new JComboBox<String>(labelList.toArray(new String[labelList.size()]));
+		String instrumentLabel;
+		List<String> labelList = new ArrayList<>(instrumentsConfig.keySet());
+		JComboBox<String> jcb = new JComboBox<>(labelList.toArray(new String[0]));
 		JOptionPane.showMessageDialog(this, jcb, RSCS.getString("getConf.instrument.label"), JOptionPane.QUESTION_MESSAGE);
 		instrumentLabel = (String)jcb.getSelectedItem();
 		this.currentInstrumentCfgName = instrumentLabel;
@@ -159,14 +155,12 @@ public class BackPimsApp extends JFrame implements Backup {
 				new GridBagConstraints(col, row, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(INSET, INSET * 2, INSET,
 								INSET), 0, 0));
 
-		instrumentsCB = new JComboBox<String>(instrumentsConfig.keySet().toArray(new String[instrumentsConfig.size()]));
+		instrumentsCB = new JComboBox<>(instrumentsConfig.keySet().toArray(new String[0]));
 		instrumentsCB.setSelectedItem(currentInstrumentCfgName);
-		instrumentsCB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String newInstrument = (String) instrumentsCB.getSelectedItem();
-				setCurrentInstrumentConfiguration(newInstrument);
-			}
-		});
+		instrumentsCB.addActionListener(e -> {
+      String newInstrument = (String) instrumentsCB.getSelectedItem();
+      setCurrentInstrumentConfiguration(newInstrument);
+    });
 
 		getContentPane().add(
 				instrumentsCB,
@@ -219,12 +213,8 @@ public class BackPimsApp extends JFrame implements Backup {
 		logger.info("START BackPims App");
 
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler());
-				}
-			});
-		} catch (Exception var5) {
+			SwingUtilities.invokeAndWait((Runnable) () -> Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler()));
+		} catch (Exception ignored) {
 		}
 
 //		try {
@@ -239,25 +229,17 @@ public class BackPimsApp extends JFrame implements Backup {
 		ConnectTask task = new ConnectTask(user, pwd);
 		if (!task.fetchData()) {
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-
-					@Override
-					public void run() {
-						JOptionPane.showMessageDialog(null, "No Connection", "Connection to server failed.", JOptionPane.ERROR_MESSAGE);
-					}
-				});
-			} catch (Exception e) {
+				SwingUtilities.invokeAndWait((Runnable) () -> JOptionPane.showMessageDialog(null, "No Connection", "Connection to server failed.", JOptionPane.ERROR_MESSAGE));
+			} catch (Exception ignored) {
 
 			}
 			return;
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				BackPimsApp app = new BackPimsApp();
-				app.setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(() -> {
+      BackPimsApp app = new BackPimsApp();
+      app.setVisible(true);
+    });
 	}
 
 	public Analysis[] getAnalysisToBackup() {

@@ -26,6 +26,7 @@ public class PreferencesKeys {
     public final static String DEFAULT_SERVER_URL = "http://localhost:8080";
 
     public final static String TRANSFER_MODE = "transfer.mode";
+    public final static String NB_THERMO_THREAD = "nb_thermo_reader_thread";
 
     //FTP Keys
     public final static String FTP_HOST = "ftp.host";

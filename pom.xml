@@ -336,6 +336,36 @@
                </descriptors>
             </configuration>
          </plugin>
+         <plugin>
+            <groupId>com.google.code.maven-replacer-plugin</groupId>
+            <artifactId>replacer</artifactId>
+            <version>1.5.3</version>
+
+            <executions>
+               <execution>
+                  <id>java-version-generation</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                     <goal>replace</goal>
+                  </goals>
+                  <configuration>
+                     <file>${basedir}/src/main/java/fr/edyp/epims/transfer/JavaVersion.java.template</file>
+                     <outputFile>${basedir}/src/main/java/fr/edyp/epims/transfer/JavaVersion.java</outputFile>
+                     <replacements>
+                        <replacement>
+                           <token>_moduleName_</token>
+                           <value>${project.name}</value>
+                        </replacement>
+                        <replacement>
+                           <token>_version_</token>
+                           <value>${project.version}_${maven.build.timestamp}_${user.name}</value>
+                        </replacement>
+                     </replacements>
+                  </configuration>
+               </execution>
+
+            </executions>
+         </plugin>
       </plugins>
    </build>
 </project>

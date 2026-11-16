@@ -19,6 +19,8 @@ package fr.edyp.epims.transfer.dataformat.thermo;
 import fr.edyp.epims.transfer.log.LogTextPanel;
 import fr.edyp.epims.transfer.model.AbstractCacheFactory;
 import fr.edyp.epims.transfer.model.Analysis;
+import fr.edyp.epims.transfer.preferences.EPBackPreferences;
+import fr.edyp.epims.transfer.preferences.PreferencesKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 /**
  * Create Thermo Analysis from specified source path.
@@ -133,9 +136,12 @@ public class LTQFactory extends AbstractCacheFactory {
 
     try {
 //      MetadataReader.getInstance().fillAnalysisInfos(resultAnalysis); //SingleThread implementation
-      MetadataReader.getInstance().fillAnalysisInfosXThreaded(resultAnalysis,5);
+      Preferences preferences = EPBackPreferences.root();
+      int nbThread = preferences.getInt(PreferencesKeys.NB_THERMO_THREAD,5);
+      logger.debug(" - Will use {} thread to read  {} files  ", nbThread, allFiles.size());
+      MetadataReader.getInstance().fillAnalysisInfosXThreaded(resultAnalysis,nbThread);
     } catch (Exception exp) {
-      logger.error("erreur de lecture depuis les " + allFiles.size()+" fichiers ");
+      logger.error(" !!! erreur de lecture depuis les " + allFiles.size()+" fichiers ");
       String msg = RSCS.getString("analysis.creation.error");
       allFiles.forEach(nextFile -> {
         Object[] twoArgs = {nextFile.getAbsolutePath(), exp.getMessage()};

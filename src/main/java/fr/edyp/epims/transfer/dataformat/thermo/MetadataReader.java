@@ -109,11 +109,12 @@ public class MetadataReader {
 
 
   public void fillAnalysisInfosXThreaded( List<LTQAnalysis> analysis, int nbThreads) {
-    logger.info("   --- Register task for "+analysis.size()+"; files " );
+    logger.info("   --- Register task for {} files ", analysis.size());
 
     List<List<LTQAnalysis>> analysisByThread = ListUtils.splitInto(analysis, nbThreads);
     List<List<File>> analysisFilesByThread = new ArrayList<>(nbThreads);
     List<List<String>> analysisFilePathsByThread = new ArrayList<>(nbThreads);
+
     int nbAnalysis =0;
     for(List<LTQAnalysis> eachList : analysisByThread){
       if(!eachList.isEmpty()) {
@@ -165,7 +166,7 @@ public class MetadataReader {
         throw new RuntimeException(e);
       }
     }
-    logger.debug( " ------------ CALLED isAnalyseFilled {} times ....  ",loopCount);
+    logger.debug( " ------------ CALLED isAnalyseFilled {} times to verify all analyses was filled....  ",loopCount);
   }
 
   public static class MySerializationCallback extends SerializationCallback {
