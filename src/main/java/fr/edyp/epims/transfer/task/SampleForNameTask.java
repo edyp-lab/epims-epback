@@ -45,6 +45,10 @@ public class SampleForNameTask extends AbstractAuthenticateDatabaseTask {
 
         try {
 
+            if(m_sampleName==null || m_sampleName.trim().isEmpty()) {
+                m_error="Empty sample name. Can't search path";
+                return false;
+            }
             // Send request with GET method, and Headers.
             ResponseEntity<SampleJson> response = restTemplate.exchange(URL + m_sampleName, //
                     HttpMethod.GET, entity, SampleJson.class);
