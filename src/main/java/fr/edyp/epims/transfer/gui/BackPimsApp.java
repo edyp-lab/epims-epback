@@ -37,6 +37,7 @@ import javax.swing.*;
 import fr.edyp.epims.transfer.preferences.EPBackPreferences;
 import fr.edyp.epims.transfer.preferences.PreferencesKeys;
 import fr.edyp.epims.transfer.task.ConnectTask;
+import fr.edyp.epims.transfer.JavaVersion;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 
@@ -108,7 +109,8 @@ public class BackPimsApp extends JFrame implements Backup {
 
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setSize((Integer) RSCS.getObject("app.start.width"), (Integer) RSCS.getObject("app.start.height"));
-		this.setTitle(RSCS.getString("app.title"));
+		JavaVersion version = new  JavaVersion();
+		this.setTitle(version.getModuleName()+" - "+version.getVersion());
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				try {

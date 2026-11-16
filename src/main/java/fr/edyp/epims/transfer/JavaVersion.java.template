@@ -1,0 +1,14 @@
+package fr.edyp.epims.transfer;
+
+
+public class JavaVersion {
+
+    public String getModuleName() {
+	return "_moduleName_";
+    }
+
+    public String getVersion() {
+	return "_version_";
+    }
+
+}
